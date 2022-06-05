@@ -17,24 +17,25 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.imageviewGoToLogin.setOnClickListener{toast()}
+        binding.btnGoToMain.setOnClickListener (this)
         binding.btnRegistrar.setOnClickListener(this)
     }
 
-    override fun onClick(p0: View) {
 
-
-    }
 
     private fun goToLogin(){
-        val i = Intent(this, MainActivity::class.java)
-        startActivity(i)
+        this.finish()
     }
 
     private fun toast(){
-        Toast.makeText(this, "hizo click", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "hizo click", Toast.LENGTH_SHORT).show()
     }
 
+    override fun onClick(p0: View) {
+        if (p0 is ImageView){
+            goToLogin()
+        }
+    }
 
 
 }

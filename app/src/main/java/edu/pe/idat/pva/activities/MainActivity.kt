@@ -18,10 +18,17 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.btnGoRegister.setOnClickListener{ goToRegister() }
+        binding.btnLogin.setOnClickListener{gotoHome()}
     }
 
     private fun goToRegister(){
         val i = Intent(this, RegisterActivity::class.java)
+        startActivity(i)
+    }
+
+
+    private fun gotoHome(){
+        val i = Intent(this, HomeActivity::class.java)
         startActivity(i)
     }
 

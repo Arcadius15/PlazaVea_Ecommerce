@@ -44,8 +44,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigationView.setNavigationItemSelectedListener(this)
 
 
-
-
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

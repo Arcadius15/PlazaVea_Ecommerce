@@ -5,5 +5,5 @@ data class Cliente(
     val dni: Int,
     val fechaNacimiento: String,
     val nombre: String,
-    val numTelefonico: Int
+    val numTelefonico: String
 )

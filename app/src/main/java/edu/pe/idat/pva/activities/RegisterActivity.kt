@@ -1,6 +1,5 @@
 package edu.pe.idat.pva.activities
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -10,8 +9,9 @@ import edu.pe.idat.pva.R
 import edu.pe.idat.pva.api.UsuarioApi
 import edu.pe.idat.pva.databinding.ActivityRegisterBinding
 import edu.pe.idat.pva.models.Cliente
-import edu.pe.idat.pva.models.Rol
 import edu.pe.idat.pva.models.UsuarioRequest
+import edu.pe.idat.pva.models.UsuarioResponse
+import org.json.JSONObject
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -50,13 +50,11 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
             binding.edtDNI.text.toString().toInt(),
             binding.edtFechaNacimiento.text.toString(),
             binding.edtNombre.text.toString(),
-            binding.edtPhone.text.toString().toInt()
+            binding.edtPhone.text.toString()
         )
 
-        val lstRol = ArrayList<Rol>()
-
-        val rol = Rol("cliente")
-        lstRol.add(rol)
+        val lstRol = ArrayList<String>()
+        lstRol.add("cliente")
 
         val usuarioRequest = UsuarioRequest(
             cliente,
@@ -72,16 +70,15 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
 
         val usuarioApi : UsuarioApi = retrofit.create(UsuarioApi::class.java)
 
-        val call : Call<UsuarioRequest> = usuarioApi.registrar(usuarioRequest)
-        call.enqueue(object : Callback<UsuarioRequest>{
-            override fun onFailure(call: Call<UsuarioRequest>, t: Throwable) {
+        val call : Call<UsuarioResponse> = usuarioApi.registrar(usuarioRequest)
+        call.enqueue(object : Callback<UsuarioResponse>{
+            override fun onFailure(call: Call<UsuarioResponse>, t: Throwable) {
                 Toast.makeText(applicationContext,"ERROR! Revisa la consola.",Toast.LENGTH_LONG).show()
             }
 
-            override fun onResponse(call: Call<UsuarioRequest>, response: Response<UsuarioRequest>){
+            override fun onResponse(call: Call<UsuarioResponse>, response: Response<UsuarioResponse>){
                 if (response.body() != null) {
                     val usuarioData = response.body()!!
-
                     Toast.makeText(
                         applicationContext,
                         "${usuarioData.email} Registrado con éxito. Recuerda confirmar tu correo.",

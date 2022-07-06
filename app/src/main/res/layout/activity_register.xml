@@ -24,7 +24,6 @@
             android:src="@drawable/ic__arrow_back"
             tools:ignore="SpeakableTextPresentCheck" />
 
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,131 +35,138 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         app:layout_anchor="@+id/linearLayout"
-        app:layout_anchorGravity="center">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="60dp"
-            android:fontFamily="@font/montserrat_regular"
-            android:text="Completa estos datos" />
-
-        <EditText
-            android:id="@+id/edtNombre"
+        android:layout_marginTop="50dp"
+        app:layout_anchorGravity="center_vertical">
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/edittext_custom"
-            android:hint="Nombres"
-            android:inputType="text"
-            android:padding="15dp" />
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_above="@+id/llButton">
 
-        <EditText
-            android:id="@+id/edtApellidos"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/edittext_custom"
-            android:hint="Apellidos"
-            android:inputType="text"
-            android:padding="15dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="Completa estos datos" />
 
-        <EditText
-            android:id="@+id/edtDNI"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/edittext_custom"
-            android:hint="DNI"
-            android:inputType="text"
-            android:padding="15dp" />
+                <EditText
+                    android:id="@+id/edtNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/edittext_custom"
+                    android:hint="Nombres"
+                    android:inputType="text"
+                    android:padding="15dp" />
 
-        <EditText
-            android:id="@+id/edtPhone"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/edittext_custom"
-            android:hint="Telefono"
-            android:inputType="phone"
-            android:padding="15dp" />
+                <EditText
+                    android:id="@+id/edtApellidos"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/edittext_custom"
+                    android:hint="Apellidos"
+                    android:inputType="text"
+                    android:padding="15dp" />
 
-        <EditText
-            android:id="@+id/edtFechaNacimiento"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/edittext_custom"
-            android:hint="Fecha de nacimiento"
-            android:inputType="phone"
-            android:padding="15dp" />
+                <EditText
+                    android:id="@+id/edtDNI"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/edittext_custom"
+                    android:hint="DNI"
+                    android:inputType="text"
+                    android:padding="15dp" />
 
-        <EditText
-            android:id="@+id/edtEmail"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/edittext_custom"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:padding="15dp" />
+                <EditText
+                    android:id="@+id/edtPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/edittext_custom"
+                    android:hint="Telefono"
+                    android:inputType="phone"
+                    android:padding="15dp" />
 
+                <EditText
+                    android:id="@+id/edtFechaNacimiento"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/edittext_custom"
+                    android:hint="Fecha de nacimiento"
+                    android:inputType="phone"
+                    android:padding="15dp" />
 
-        <EditText
-            android:id="@+id/edtPassword"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/edittext_custom"
-            android:hint="Contraseña"
-            android:inputType="textPassword"
-            android:padding="15dp" />
-
-        <EditText
-            android:id="@+id/edtPasswordConf"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/edittext_custom"
-            android:hint="Confirmar Contraseña"
-            android:inputType="textPassword"
-            android:padding="15dp" />
+                <EditText
+                    android:id="@+id/edtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/edittext_custom"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:padding="15dp" />
 
 
+                <EditText
+                    android:id="@+id/edtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/edittext_custom"
+                    android:hint="Contraseña"
+                    android:inputType="textPassword"
+                    android:padding="15dp" />
+
+                <EditText
+                    android:id="@+id/edtPasswordConf"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/edittext_custom"
+                    android:hint="Confirmar Contraseña"
+                    android:inputType="textPassword"
+                    android:padding="15dp" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/white"
         android:layout_marginBottom="20dp">
-
 
         <Button
             android:id="@+id/btn_registrar"
@@ -171,8 +177,6 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/rounded_button"/>
-
-
 
     </LinearLayout>
 

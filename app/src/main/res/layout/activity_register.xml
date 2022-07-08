@@ -53,7 +53,7 @@
                 android:fontFamily="@font/montserrat_regular" />
 
             <EditText
-                android:id="@+id/edtNombre"
+                android:id="@+id/edittext_name"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Nombres"
@@ -64,8 +64,10 @@
                 android:padding="15dp"
                 android:inputType="text" />
 
+
+
             <EditText
-                android:id="@+id/edtApellidos"
+                android:id="@+id/edittext_lastname"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Apellidos"
@@ -75,32 +77,9 @@
                 android:layout_marginRight="20dp"
                 android:padding="15dp"
                 android:inputType="text" />
-            <EditText
-                android:id="@+id/edtDNI"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="DNI"
-                android:background="@drawable/edittext_custom"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:padding="15dp"
-                android:inputType="text" />
 
             <EditText
-                android:id="@+id/edtDireccion"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="Dirección"
-                android:background="@drawable/edittext_custom"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:padding="15dp"
-                android:inputType="text" />
-
-            <EditText
-                android:id="@+id/edtPhone"
+                android:id="@+id/edittext_phone"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Telefono"
@@ -112,19 +91,7 @@
                 android:inputType="phone" />
 
             <EditText
-                android:id="@+id/edtFechaNacimiento"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="Fecha de nacimiento"
-                android:background="@drawable/edittext_custom"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:padding="15dp"
-                android:inputType="phone" />
-
-            <EditText
-                android:id="@+id/edtEmail"
+                android:id="@+id/edittext_email"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Email"
@@ -138,7 +105,7 @@
 
 
             <EditText
-                android:id="@+id/edtPassword"
+                android:id="@+id/edittext_password"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Contraseña"
@@ -150,7 +117,7 @@
                 android:inputType="textPassword" />
 
             <EditText
-                android:id="@+id/edtPasswordConf"
+                android:id="@+id/edittext_confirm_password"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Confirmar Contraseña"
@@ -159,6 +126,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:padding="15dp"
+                android:layout_marginBottom="50dp"
                 android:inputType="textPassword" />
 
 

@@ -1,6 +1,18 @@
 package edu.pe.idat.pva.models
 
+import com.google.gson.Gson
+
 data class Categoria(
-    val idCategoria: Int,
-    val nombre: String
-)
+    val id: String? = null,
+    val name: String,
+    val image: String? = null,
+) {
+
+    override fun toString(): String {
+        return "Category(id='$id', name='$name', image='$image')"
+    }
+
+    fun toJson(): String {
+        return Gson().toJson(this)
+    }
+}

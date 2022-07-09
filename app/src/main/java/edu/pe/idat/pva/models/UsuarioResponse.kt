@@ -8,4 +8,5 @@ data class UsuarioResponse(
     val idUsuario: String,
     val pswExp: String,
     val roles: List<Role>
+
 )

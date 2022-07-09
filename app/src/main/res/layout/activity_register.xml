@@ -7,142 +7,226 @@
     tools:context=".activities.RegisterActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
         android:layout_marginBottom="20dp"
-        >
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/btnGoToMain"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="39dp"
+            android:layout_height="37dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="15dp"
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic__arrow_back"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="15dp"/>
-
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Registro"
-            android:textSize="25dp"
-            android:layout_marginBottom="16dp"
             android:layout_marginTop="15dp"
+            android:layout_marginBottom="16dp"
             android:fontFamily="@font/montserrat_semibold"
-            />
+            android:text="Registro"
+            android:textSize="25dp" />
 
     </LinearLayout>
 
-
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_anchor="@+id/linearLayout"
+        android:layout_marginTop="50dp"
+        app:layout_anchorGravity="center_vertical">
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Completa estos datos"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="60dp"
-                android:fontFamily="@font/montserrat_regular" />
-
-            <EditText
-                android:id="@+id/edittext_name"
+            android:layout_height="match_parent">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="Nombres"
-                android:background="@drawable/edittext_custom"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:padding="15dp"
-                android:inputType="text" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_above="@+id/llButton">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="Completa estos datos" />
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout1"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp">
 
-            <EditText
-                android:id="@+id/edittext_lastname"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="Apellidos"
-                android:background="@drawable/edittext_custom"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:padding="15dp"
-                android:inputType="text" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtNombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_custom"
+                        android:hint="Nombres"
+                        android:inputType="text"
+                        android:maxLength="40" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edittext_phone"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="Telefono"
-                android:background="@drawable/edittext_custom"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:padding="15dp"
-                android:inputType="phone" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout2"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp">
 
-            <EditText
-                android:id="@+id/edittext_email"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="Email"
-                android:background="@drawable/edittext_custom"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:padding="15dp"
-                android:inputType="textEmailAddress" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtApellidos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_custom"
+                        android:hint="Apellidos"
+                        android:inputType="text"
+                        android:maxLength="40" />
+                </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout3"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp">
 
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtDNI"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_custom"
+                        android:hint="DNI"
+                        android:inputType="number"
+                        android:maxLength="8" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edittext_password"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="Contraseña"
-                android:background="@drawable/edittext_custom"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:padding="15dp"
-                android:inputType="textPassword" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout4"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp">
 
-            <EditText
-                android:id="@+id/edittext_confirm_password"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="Confirmar Contraseña"
-                android:background="@drawable/edittext_custom"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:padding="15dp"
-                android:layout_marginBottom="50dp"
-                android:inputType="textPassword" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Telefono"
+                        android:inputType="phone"
+                        android:maxLength="9"
+                        android:background="@drawable/edittext_custom"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout5"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp"
+                    android:focusable="false"
+                    app:startIconDrawable="@drawable/ic_calendario">
 
-        </LinearLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtFechaNacimiento"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_custom"
+                        android:focusable="false"
+                        android:hint="Fecha de Nacimiento"
+                        android:inputType="text"
+                        android:maxLength="12" />
+                </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout6"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp">
 
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Email"
+                        android:inputType="textEmailAddress"
+                        android:maxLength="50"
+                        android:background="@drawable/edittext_custom"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout7"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp"
+                    app:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Contraseña"
+                        android:inputType="textPassword"
+                        android:maxLength="30"
+                        android:background="@drawable/edittext_custom"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout8"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp"
+                    app:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtPasswordConf"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Confirmar Contraseña"
+                        android:inputType="textPassword"
+                        android:maxLength="30"
+                        android:background="@drawable/edittext_custom"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/white"
         android:layout_marginBottom="20dp">
-
 
         <Button
             android:id="@+id/btn_registrar"
@@ -153,8 +237,6 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/rounded_button"/>
-
-
 
     </LinearLayout>
 

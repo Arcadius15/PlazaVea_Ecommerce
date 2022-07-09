@@ -6,4 +6,5 @@ data class Cliente(
     val fechaNacimiento: String,
     val nombre: String,
     val numTelefonico: String
+
 )

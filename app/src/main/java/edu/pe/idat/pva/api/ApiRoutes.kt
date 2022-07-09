@@ -6,7 +6,7 @@ import edu.pe.idat.pva.routes.UserRoutes
 
 class ApiRoutes {
 
-    val API_URL = "puerto"
+    val API_URL = "http://192.168.3.82:3000/"
     val retrofit = RetrofitInstance()
 
     fun getUsersRoutes(): UserRoutes {

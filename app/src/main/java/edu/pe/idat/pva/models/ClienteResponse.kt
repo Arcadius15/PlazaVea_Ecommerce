@@ -11,4 +11,5 @@ data class ClienteResponse(
     val ordenes: List<Orden>,
     val rucs: List<Ruc>,
     val tarjetas: List<Tarjeta>
+
 )

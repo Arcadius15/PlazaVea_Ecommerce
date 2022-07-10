@@ -7,17 +7,19 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
-import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import edu.pe.idat.pva.R
-import edu.pe.idat.pva.api.UsuarioApi
+import edu.pe.idat.pva.apirep.UsuarioApiRepository
+import edu.pe.idat.pva.routes.UsuarioRoutes
 import edu.pe.idat.pva.databinding.ActivityRegisterBinding
 import edu.pe.idat.pva.models.Cliente
 import edu.pe.idat.pva.models.UsuarioRequest
 import edu.pe.idat.pva.models.UsuarioResponse
-import org.json.JSONObject
+import edu.pe.idat.pva.providers.UsuarioProvider
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
@@ -28,10 +30,14 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
 
     private lateinit var binding: ActivityRegisterBinding
 
+    private lateinit var usuarioProvider: UsuarioProvider
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        usuarioProvider = ViewModelProvider(this)
+            .get(UsuarioProvider::class.java)
 
         val c = Calendar.getInstance()
 
@@ -50,6 +56,31 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
                 c.get(Calendar.DAY_OF_MONTH))
             d.datePicker.maxDate = System.currentTimeMillis()
             d.show()
+        }
+
+        usuarioProvider.usuarioResponse.observe(this
+        ) {
+            obtenerDatosRegistro(it!!)
+        }
+    }
+
+    private fun obtenerDatosRegistro(usuarioResponse: UsuarioResponse) {
+        if(usuarioResponse != null){
+            AlertDialog.Builder(this)
+                .setTitle("Registro exitoso")
+                .setMessage("El correo ${usuarioResponse.email} se registró correctamente." +
+                        " Recuerde confirmar su correo para iniciar sesión.")
+                .setPositiveButton("OK", DialogInterface.OnClickListener { dialogInterface, i ->
+                    val int = Intent(applicationContext, MainActivity::class.java)
+                    startActivity(int)
+                    dialogInterface.cancel()
+                }).show()
+        } else {
+            Toast.makeText(
+                applicationContext,
+                "ERROR! Es posible que el correo ya esté registrado.",
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -108,42 +139,7 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
             lstRol
         )
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://plazavea-webservice.herokuapp.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val usuarioApi : UsuarioApi = retrofit.create(UsuarioApi::class.java)
-
-        val call : Call<UsuarioResponse> = usuarioApi.registrar(usuarioRequest)
-        call.enqueue(object : Callback<UsuarioResponse>{
-            override fun onFailure(call: Call<UsuarioResponse>, t: Throwable) {
-                Toast.makeText(applicationContext,"ERROR! Revisa la consola.",Toast.LENGTH_LONG).show()
-            }
-
-            override fun onResponse(call: Call<UsuarioResponse>, response: Response<UsuarioResponse>){
-                if (response.body() != null) {
-                    val usuarioData = response.body()!!
-
-                    AlertDialog.Builder(this@RegisterActivity)
-                        .setTitle("Registro Exitoso")
-                        .setMessage("El correo ${usuarioData.email} fue registrado correctamente." +
-                                " Recuerde confirmar su correo.")
-                        .setPositiveButton("Ok", DialogInterface.OnClickListener { dialogInterface, i ->
-                            val int = Intent(applicationContext, MainActivity::class.java)
-                            startActivity(int)
-                            dialogInterface.cancel()
-                        })
-                        .show()
-                } else {
-                    Toast.makeText(
-                        applicationContext,
-                        "ERROR! Hubo un problema con el WS.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
-        })
+        usuarioProvider.registrar(usuarioRequest)
     }
 
     private fun updateLabel(c: Calendar) {
@@ -158,10 +154,14 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
     }
 
     private fun validarCampos() : Boolean {
-        if(binding.edtNombre.text.toString().isEmpty() || binding.edtApellidos.text.toString().isEmpty() ||
-            binding.edtDNI.text.toString().isEmpty() || binding.edtPhone.text.toString().isEmpty() ||
-            binding.edtFechaNacimiento.text.toString().isEmpty() || binding.edtEmail.text.toString().isEmpty() ||
-            binding.edtPassword.text.toString().isEmpty() || binding.edtPasswordConf.text.toString().isEmpty()){
+        if(binding.edtNombre.text.toString().trim().isEmpty() ||
+            binding.edtApellidos.text.toString().trim().isEmpty() ||
+            binding.edtDNI.text.toString().trim().isEmpty() ||
+            binding.edtPhone.text.toString().trim().isEmpty() ||
+            binding.edtFechaNacimiento.text.toString().trim().isEmpty() ||
+            binding.edtEmail.text.toString().trim().isEmpty() ||
+            binding.edtPassword.text.toString().trim().isEmpty() ||
+            binding.edtPasswordConf.text.toString().trim().isEmpty()){
             return false
         }
         return true

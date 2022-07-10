@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     var editTextEmail: EditText? = null
     var editTextPassword: EditText? = null
     var buttonLogin: Button? = null
-    var usersProvider = UsersProvider()
+    //var usersProvider = UsersProvider()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,13 +36,13 @@ class MainActivity : AppCompatActivity() {
         buttonLogin = findViewById(R.id.btn_login)
 
         imageViewGoToRegister?.setOnClickListener { goToRegister() }
-        buttonLogin?.setOnClickListener { login() }
+        //buttonLogin?.setOnClickListener { login() }
 
         getUserFromSession()
     }
 
     private fun login() {
-        val email = editTextEmail?.text.toString() // NULL POINTER EXCEPTION
+        /*val email = editTextEmail?.text.toString() // NULL POINTER EXCEPTION
         val password = editTextPassword?.text.toString()
 
         if (isValidForm(email, password)) {
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "No es valido", Toast.LENGTH_LONG).show()
         }
 
-        Log.d("MainActivity", "El email es: $email")
+        Log.d("MainActivity", "El email es: $email")*/
     }
 
     private fun gotoHome(){

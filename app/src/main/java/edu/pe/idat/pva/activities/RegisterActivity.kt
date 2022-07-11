@@ -58,8 +58,7 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
             d.show()
         }
 
-        usuarioProvider.usuarioResponse.observe(this
-        ) {
+        usuarioProvider.usuarioResponse.observe(this) {
             obtenerDatosRegistro(it!!)
         }
     }
@@ -71,8 +70,7 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
                 .setMessage("El correo ${usuarioResponse.email} se registró correctamente." +
                         " Recuerde confirmar su correo para iniciar sesión.")
                 .setPositiveButton("OK", DialogInterface.OnClickListener { dialogInterface, i ->
-                    val int = Intent(applicationContext, MainActivity::class.java)
-                    startActivity(int)
+                    startActivity(Intent(applicationContext, MainActivity::class.java))
                     dialogInterface.cancel()
                 }).show()
         } else {
@@ -86,10 +84,6 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
 
     private fun goToLogin(){
         this.finish()
-    }
-
-    private fun toast(){
-        Toast.makeText(this, "hizo click", Toast.LENGTH_SHORT).show()
     }
 
     override fun onClick(p0: View) {
@@ -123,10 +117,10 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
     private fun registrarUsuario(){
         val cliente = Cliente(
             binding.edtApellidos.text.toString(),
-            binding.edtDNI.text.toString().toInt(),
-            binding.edtFechaNacimiento.text.toString(),
+            binding.edtDNI.text.toString().trim().toInt(),
+            binding.edtFechaNacimiento.text.toString().trim(),
             binding.edtNombre.text.toString(),
-            binding.edtPhone.text.toString()
+            binding.edtPhone.text.toString().trim()
         )
 
         val lstRol = ArrayList<String>()
@@ -134,8 +128,8 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
 
         val usuarioRequest = UsuarioRequest(
             cliente,
-            binding.edtEmail.text.toString(),
-            binding.edtPassword.text.toString(),
+            binding.edtEmail.text.toString().trim(),
+            binding.edtPassword.text.toString().trim(),
             lstRol
         )
 

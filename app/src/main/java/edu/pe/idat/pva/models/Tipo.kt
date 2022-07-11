@@ -1,6 +1,6 @@
 package edu.pe.idat.pva.models
 
 data class Tipo(
-    val id: Int,
+    val idTipo: Int,
     val nombre: String
 )

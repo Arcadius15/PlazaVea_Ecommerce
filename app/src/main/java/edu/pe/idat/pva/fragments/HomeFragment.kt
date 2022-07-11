@@ -7,13 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.adapter.CategoriaAdapter
-import edu.pe.idat.pva.models.Categoria
+import edu.pe.idat.pva.models.SubCategoriaResponse
 import edu.pe.idat.pva.models.User
 import edu.pe.idat.pva.providers.CategoriaProvider
 import edu.pe.idat.pva.utils.SharedPref
@@ -27,17 +28,24 @@ class HomeFragment : Fragment() {
     val TAG = "HomeFragment"
     var myView: View? = null
     var rvCategorias: RecyclerView? = null
-    var categoriaProvider: CategoriaProvider? = null
+
+    private lateinit var categoriaProvider: CategoriaProvider
+
     var adapter: CategoriaAdapter? = null
     var user: User? = null
     var sharedPref: SharedPref? = null
-    var categories = ArrayList<Categoria>()
+
+    var categories = ArrayList<SubCategoriaResponse>()
+
     var manager = GridLayoutManager(context, 2)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        categoriaProvider = ViewModelProvider(this)
+            .get(CategoriaProvider::class.java)
+
         // Inflate the layout for this fragment
         myView = inflater.inflate(R.layout.fragment_home, container, false)
         rvCategorias = myView?.findViewById(R.id.rvCategorias)
@@ -48,36 +56,31 @@ class HomeFragment : Fragment() {
 
         getUserFromSession()
 
-        categoriaProvider = CategoriaProvider(user?.sessionToken!!)
-
         rvCategorias?.setLayoutManager(manager)
         getCagories()
+
+        categoriaProvider.subCategoriaResponse.observe(viewLifecycleOwner){
+            obtenerCategoriasList(it!!)
+        }
+
         return myView
     }
 
+    private fun obtenerCategoriasList(subCategoriaResponse: ArrayList<SubCategoriaResponse>) {
+        if (subCategoriaResponse != null){
+            categories = subCategoriaResponse
+            adapter = CategoriaAdapter(requireActivity(), categories)
+            rvCategorias?.adapter = adapter
+        } else {
+            Toast.makeText(requireContext(), "Error: Hubo un problema con la consulta", Toast.LENGTH_LONG).show()
+        }
+    }
+
     private fun getCagories(){
-        categoriaProvider?.getAll()?.enqueue(object: Callback<ArrayList<Categoria>> {
-            override fun onResponse(
-                call: Call<ArrayList<Categoria>>,
-                response: Response<ArrayList<Categoria>>
-            ) {
-                if(response.body() != null) {
-                    categories = response.body()!!
-                    adapter = CategoriaAdapter(requireActivity(), categories)
-                    rvCategorias?.adapter = adapter
-                }
-            }
-
-            override fun onFailure(call: Call<ArrayList<Categoria>>, t: Throwable) {
-                Log.d(TAG, "Error: ${t.message}")
-                Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_LONG).show()
-            }
-
-        })
+        categoriaProvider.getAll()
     }
 
     private fun getUserFromSession() {
-
         val gson = Gson()
 
         if (!sharedPref?.getData("user").isNullOrBlank()) {
@@ -86,6 +89,5 @@ class HomeFragment : Fragment() {
         }
 
     }
-
 
 }

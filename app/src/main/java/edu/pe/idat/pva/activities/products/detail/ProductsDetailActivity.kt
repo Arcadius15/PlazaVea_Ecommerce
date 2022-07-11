@@ -42,32 +42,32 @@ class ProductsDetailActivity : AppCompatActivity() {
         buttonAdd = findViewById(R.id.btn_add_product)
 
 
-        Glide.with(this@ProductsDetailActivity).load(product?.image1).into(this.imageView1!!)
-        textViewName?.text = product?.name
-        textViewDescription?.text = product?.description
-        textViewPrice?.text = "S/${product?.price}"
-        imageViewAdd?.setOnClickListener{addItem()}
-        imageViewRemove?.setOnClickListener{removeItem()}
+//        Glide.with(this@ProductsDetailActivity).load(product?.image1).into(this.imageView1!!)
+//        textViewName?.text = product?.name
+//        textViewDescription?.text = product?.description
+//        textViewPrice?.text = "S/${product?.price}"
+//        imageViewAdd?.setOnClickListener{addItem()}
+//        imageViewRemove?.setOnClickListener{removeItem()}
 
     }
 
     private fun addItem(){
-        contador = contador + 1
-        productPrice= product?.price!! * contador
-        product?.quantity = contador
-        textViewContador?.text= "${product?.quantity}"
-        textViewPrice?.text = "${productPrice}"
+//        contador = contador + 1
+//        productPrice= product?.price!! * contador
+//        product?.quantity = contador
+//        textViewContador?.text= "${product?.quantity}"
+//        textViewPrice?.text = "${productPrice}"
     }
 
 
     private fun removeItem(){
-        if(contador > 1){
-            contador--
-            productPrice= product?.price!! * contador
-            product?.quantity = contador
-            textViewContador?.text= "${product?.quantity}"
-            textViewPrice?.text = "${productPrice}"
-        }
+//        if(contador > 1){
+//            contador--
+//            productPrice= product?.price!! * contador
+//            product?.quantity = contador
+//            textViewContador?.text= "${product?.quantity}"
+//            textViewPrice?.text = "${productPrice}"
+//        }
 
     }
 }

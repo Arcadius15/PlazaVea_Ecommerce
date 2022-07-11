@@ -20,14 +20,13 @@ import edu.pe.idat.pva.databinding.ActivityHomeBinding
 import edu.pe.idat.pva.models.User
 import edu.pe.idat.pva.utils.SharedPref
 
-const val TAG = "HomeActivity"
-var sharedPref: SharedPref? = null
-
 class HomeActivity : AppCompatActivity() {
+
+    val TAG = "HomeActivity"
+    var sharedPref: SharedPref? = null
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomeBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

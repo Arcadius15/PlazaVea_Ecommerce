@@ -28,33 +28,44 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/montserrat_regular"/>
 
-        <EditText
-            android:id="@+id/edTextEmail"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Email"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="50dp"
-            android:inputType="textEmailAddress"
-            android:textSize="15sp"
-            android:padding="15dp"
-            android:background="@drawable/edittext_custom"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="20dp">
 
-        <EditText
-            android:id="@+id/edTextPassword"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:maxLength="50"
+                android:background="@drawable/edittext_custom"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Password"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:inputType="textPassword"
-            android:textSize="15sp"
-            android:padding="15dp"
-            android:background="@drawable/edittext_custom"
-            />
+            app:passwordToggleEnabled="true">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contraseña"
+                android:inputType="textPassword"
+                android:maxLength="30"
+                android:background="@drawable/edittext_custom"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 

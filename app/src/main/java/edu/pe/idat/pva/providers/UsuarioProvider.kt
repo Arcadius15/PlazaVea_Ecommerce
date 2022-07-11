@@ -30,7 +30,7 @@ class UsuarioProvider : ViewModel() {
         loginResponse = repository.autenticar(loginRequest)
     }
 
-    fun getUserByEmail(email: String){
-        usuarioResponse = repository.getUserByEmail(email)
+    fun getUserByEmail(loginRequest: LoginRequest, token: String){
+        usuarioResponse = repository.getUserByEmail(loginRequest, token)
     }
 }

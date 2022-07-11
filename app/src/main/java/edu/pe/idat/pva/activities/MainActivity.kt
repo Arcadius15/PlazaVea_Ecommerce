@@ -13,10 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.ActivityMainBinding
-import edu.pe.idat.pva.models.LoginRequest
-import edu.pe.idat.pva.models.LoginResponse
-import edu.pe.idat.pva.models.ResponseHttp
-import edu.pe.idat.pva.models.User
+import edu.pe.idat.pva.models.*
 import edu.pe.idat.pva.providers.UsersProvider
 import edu.pe.idat.pva.providers.UsuarioProvider
 import edu.pe.idat.pva.utils.SharedPref
@@ -30,7 +27,6 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
     var editTextEmail: EditText? = null
     var editTextPassword: EditText? = null
     var buttonLogin: Button? = null
-    //var usersProvider = UsersProvider()
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var usuarioProvider: UsuarioProvider
@@ -54,17 +50,41 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
             obtenerDatosLogin(it!!)
         }
 
+        usuarioProvider.usuarioResponse.observe(this){
+            obtenerDatosUsuario(it!!)
+        }
+
         getUserFromSession()
     }
 
-    private fun obtenerDatosLogin(loginResponse: LoginResponse) {
-        if(loginResponse != null){
+    private fun obtenerDatosUsuario(usuarioResponse: UsuarioResponse) {
+        if(usuarioResponse != null){
             Toast.makeText(
                 applicationContext,
                 "Sesión Iniciada",
                 Toast.LENGTH_LONG
             ).show()
-            startActivity(Intent(applicationContext, HomeActivity::class.java))
+            saveUserInSession(usuarioResponse)
+        } else {
+            Toast.makeText(
+                applicationContext,
+                "ERROR! Ocurrió un error con el servicio web.",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    private fun obtenerDatosLogin(loginResponse: LoginResponse) {
+        if(loginResponse != null){
+            saveTokenInSession(loginResponse)
+
+            val loginRequest = LoginRequest(
+                binding.edTextEmail.text.toString().trim(),
+                binding.edTextPassword.text.toString().trim()
+            )
+
+            usuarioProvider.getUserByEmail(loginRequest,
+                                            loginResponse.token)
         } else {
             Toast.makeText(
                 applicationContext,
@@ -75,39 +95,6 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
     }
 
     private fun login() {
-        /*val email = editTextEmail?.text.toString() // NULL POINTER EXCEPTION
-        val password = editTextPassword?.text.toString()
-
-        if (isValidForm(email, password)) {
-            usersProvider.login(email, password)?.enqueue(object : Callback<ResponseHttp> {
-                override fun onResponse(
-                    call: Call<ResponseHttp>,
-                    response: Response<ResponseHttp>
-                ) {
-                    Log.d("MainActivity", "Response: ${response.body()}" )
-
-                    if(response.body()?.isSuccess == true){
-                        Toast.makeText(this@MainActivity, response.body()?.message, Toast.LENGTH_LONG).show()
-
-                        saveUserInSession(response.body()?.data.toString())
-                    }
-                    else{
-                        Toast.makeText(this@MainActivity, "Los datos son incorrectos", Toast.LENGTH_LONG).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<ResponseHttp>, t: Throwable) {
-                    Toast.makeText(this@MainActivity, "Hubo un error ${t.message}", Toast.LENGTH_LONG).show()
-                }
-
-            })
-
-        }
-        else {
-            Toast.makeText(this, "No es valido", Toast.LENGTH_LONG).show()
-        }
-
-        Log.d("MainActivity", "El email es: $email")*/
         if (isValidForm(binding.edTextEmail.text.toString(),
                 binding.edTextPassword.text.toString())){
             val loginRequest = LoginRequest(
@@ -130,13 +117,16 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
         startActivity(i)
     }
 
-    private fun saveUserInSession(data: String){
+    private fun saveUserInSession(usuarioResponse: UsuarioResponse){
         val sharedPref = SharedPref(this)
-        val gson = Gson()
-        val user = gson.fromJson(data, User::class.java)
-        sharedPref.save("user", user)
+        sharedPref.save("user", usuarioResponse)
 
         gotoHome()
+    }
+
+    private fun saveTokenInSession(loginResponse: LoginResponse){
+        val sharedPref = SharedPref(this)
+        sharedPref.save("user", loginResponse)
     }
 
     private fun getUserFromSession(){

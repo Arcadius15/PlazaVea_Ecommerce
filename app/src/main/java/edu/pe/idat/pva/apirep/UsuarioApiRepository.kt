@@ -53,9 +53,9 @@ class UsuarioApiRepository {
         return loginResponse
     }
 
-    fun getUserByEmail(email: String) : MutableLiveData<UsuarioResponse>{
+    fun getUserByEmail(loginRequest: LoginRequest, token: String) : MutableLiveData<UsuarioResponse>{
         val call: Call<UsuarioResponse> = RetrofitInstanceCreate
-            .getUsuarioRoutes.getUserByEmail(email)
+            .getUsuarioRoutes.getUserByEmail(loginRequest, token)
         call.enqueue(object : Callback<UsuarioResponse>{
             override fun onResponse(call: Call<UsuarioResponse>, response: Response<UsuarioResponse>) {
                 usuarioResponse.value = response.body()

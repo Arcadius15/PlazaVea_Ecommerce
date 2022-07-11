@@ -5,5 +5,5 @@ data class UsuarioRequest(
     val email: String,
     val password: String,
     val roles: List<String>
-)
 
+)

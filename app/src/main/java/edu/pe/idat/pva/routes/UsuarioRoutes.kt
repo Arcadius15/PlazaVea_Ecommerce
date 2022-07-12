@@ -15,7 +15,7 @@ interface UsuarioRoutes {
     @POST("jwt/authenticate")
     fun autenticar(@Body loginRequest: LoginRequest) : Call<LoginResponse>
 
-    @GET("jwt/getuserdetails")
+    @POST("jwt/getuserdetails")
     fun getUserByEmail(@Body loginRequest: LoginRequest,
                        @Header("Authorization") token: String) : Call<UsuarioResponse>
 }

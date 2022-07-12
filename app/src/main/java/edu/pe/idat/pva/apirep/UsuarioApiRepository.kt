@@ -58,7 +58,11 @@ class UsuarioApiRepository {
             .getUsuarioRoutes.getUserByEmail(loginRequest, token)
         call.enqueue(object : Callback<UsuarioResponse>{
             override fun onResponse(call: Call<UsuarioResponse>, response: Response<UsuarioResponse>) {
-                usuarioResponse.value = response.body()
+                if (response.body() != null){
+                    usuarioResponse.value = response.body()
+                } else {
+                    Log.e("ERROR!", response.errorBody()!!.string())
+                }
             }
 
             override fun onFailure(call: Call<UsuarioResponse>, t: Throwable) {

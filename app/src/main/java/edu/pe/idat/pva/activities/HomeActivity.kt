@@ -17,15 +17,15 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import edu.pe.idat.pva.R
-import edu.pe.idat.pva.activities.shopping_bag.ShoppingBagActivity
 import edu.pe.idat.pva.databinding.ActivityHomeBinding
 import edu.pe.idat.pva.models.User
+import edu.pe.idat.pva.models.UsuarioResponse
 import edu.pe.idat.pva.utils.SharedPref
 
 class HomeActivity : AppCompatActivity() {
 
     val TAG = "HomeActivity"
-    var sharedPref: SharedPref? = null
+    private lateinit var sharedPref: SharedPref
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomeBinding
@@ -40,7 +40,10 @@ class HomeActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarHome.toolbar)
 
-
+        binding.appBarHome.fab.setOnClickListener { view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_home)
@@ -54,32 +57,17 @@ class HomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        binding.btnLogout.setOnClickListener{ logout() }
+
         getUserFromSession()
 
-
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.home, menu)
         return true
     }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.action_shopping){
-            goToShoppingBag()
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun goToShoppingBag(){
-        val i = Intent(this, ShoppingBagActivity::class.java)
-        startActivity(i)
-    }
-
-
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_home)
@@ -89,14 +77,14 @@ class HomeActivity : AppCompatActivity() {
     private fun getUserFromSession(){
         val gson = Gson()
 
-        if(!sharedPref?.getData("user").isNullOrBlank()){
-            val user = gson.fromJson(sharedPref?.getData("user"), User::class.java)
-            Log.d(TAG, "Usuario $user")
+        if(!sharedPref.getData("user").isNullOrBlank()){
+            val user = gson.fromJson(sharedPref.getData("user"), UsuarioResponse::class.java)
         }
     }
 
     private fun logout() {
-        sharedPref?.remove("user")
+        sharedPref.remove("user")
+        sharedPref.remove("token")
         val i = Intent(this, MainActivity::class.java)
         startActivity(i)
     }

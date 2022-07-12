@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
             )
 
             usuarioProvider.getUserByEmail(loginRequest,
-                                            loginResponse.token)
+                                            "Bearer " + loginResponse.token)
         } else {
             Toast.makeText(
                 applicationContext,
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
 
     private fun saveTokenInSession(loginResponse: LoginResponse){
         val sharedPref = SharedPref(this)
-        sharedPref.save("user", loginResponse)
+        sharedPref.save("token", loginResponse)
     }
 
     private fun getUserFromSession(){
@@ -134,7 +134,14 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
         val gson = Gson()
 
         if(!sharedPref.getData("user").isNullOrBlank()){
-            val user = gson.fromJson(sharedPref.getData("user"), User::class.java)
+            val user = gson.fromJson(sharedPref.getData("user"), UsuarioResponse::class.java)
+            val token = gson.fromJson(sharedPref.getData("token"), LoginResponse::class.java)
+
+            Toast.makeText(
+                applicationContext,
+                "Bienvenido, ${user.cliente.nombre}.",
+                Toast.LENGTH_LONG
+            ).show()
 
             gotoHome()
         }
@@ -172,6 +179,5 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
             R.id.btn_login -> login()
         }
     }
-
 
 }

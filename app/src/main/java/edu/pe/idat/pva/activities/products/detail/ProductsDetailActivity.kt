@@ -52,19 +52,19 @@ class ProductsDetailActivity : AppCompatActivity() {
 
 
 
-        Glide.with(this@ProductsDetailActivity).load(product?.image1).into(this.imageView1!!)
+/*        Glide.with(this@ProductsDetailActivity).load(product?.image1).into(this.imageView1!!)
         textViewName?.text = product?.name
         textViewDescription?.text = product?.description
         textViewPrice?.text = "S/${product?.price}"
         imageViewAdd?.setOnClickListener{addItem()}
         imageViewRemove?.setOnClickListener{removeItem()}
-        buttonAdd?.setOnClickListener{ addToBag()}
+        buttonAdd?.setOnClickListener{ addToBag()}*/
 
 
-        getProductsFromSharedPref()
+        //getProductsFromSharedPref()
 
     }
-
+/*
     private fun addToBag(){
         val index = getIndexOf(product?.id!!) //indice del producto si existe
 
@@ -115,6 +115,8 @@ class ProductsDetailActivity : AppCompatActivity() {
 
         return -1
     }
+
+ */
 
     private fun addItem(){
 //        contador = contador + 1

@@ -14,7 +14,6 @@ import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.activities.products.ProductsActivity
 import edu.pe.idat.pva.activities.products.detail.ProductsDetailActivity
-import edu.pe.idat.pva.models.Categoria
 import edu.pe.idat.pva.models.Product
 import edu.pe.idat.pva.utils.SharedPref
 
@@ -35,10 +34,10 @@ class ShoppingBagAdapter(val context: Activity, val productos: ArrayList<Product
     }
 
     override fun onBindViewHolder(holder: ShoppingBagViewHolder, position: Int) {
-        val product = productos[position]
-        holder.textViewName.text = product.name
-        holder.textViewPrice.text = "S/${product.price}"
-        Glide.with(context).load(product.image1).into(holder.imageViewProduct)
+//        val product = productos[position]
+//        holder.textViewName.text = product.name
+//        holder.textViewPrice.text = "S/${product.price}"
+//        Glide.with(context).load(product.image1).into(holder.imageViewProduct)
 
        // holder.itemView.setOnClickListener{goToDetail(product)}
     }
@@ -46,7 +45,7 @@ class ShoppingBagAdapter(val context: Activity, val productos: ArrayList<Product
     private fun goToDetail(product: Product){
 
         val i = Intent(context, ProductsDetailActivity::class.java)
-        i.putExtra("product", product.toJson())
+       // i.putExtra("product", product.toJson())
         context.startActivity(i)
     }
 

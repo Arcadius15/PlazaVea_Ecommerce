@@ -15,6 +15,7 @@ import edu.pe.idat.pva.databinding.ActivityProductsBinding
 import edu.pe.idat.pva.databinding.FragmentProductoBinding
 import edu.pe.idat.pva.models.Product
 import edu.pe.idat.pva.models.Producto
+import edu.pe.idat.pva.models.ProductosCategoriaResponse
 import edu.pe.idat.pva.models.User
 import edu.pe.idat.pva.providers.ProductsProvider
 import edu.pe.idat.pva.utils.SharedPref
@@ -34,7 +35,7 @@ class ProductsActivity : AppCompatActivity() {
     var adapter: ProductsAdapter? = null
     var user: User? = null
 
-    var products: ArrayList<Producto> = ArrayList()
+    private lateinit var products: List<Producto>
     var sharedPref: SharedPref? = null
 
     var idSubcategoria: String? = null
@@ -55,7 +56,7 @@ class ProductsActivity : AppCompatActivity() {
         recyclerViewProducts?.setHasFixedSize(true)
         recyclerViewProducts?.layoutManager= GridLayoutManager(this, 2)
 
-       // getProducts()
+       getProducts(idSubcategoria!!)
 
         productsProvider.productResponse.observe(this){
             findProductById(it!!)
@@ -63,16 +64,17 @@ class ProductsActivity : AppCompatActivity() {
 
         getUserFromSession()
 
-
-
     }
 
-
-
-    private fun findProductById(productResponse:  ArrayList<Producto>) {
-        if(productResponse != null){
-            products = productResponse
-            adapter = ProductsAdapter(this, products)
+    private fun findProductById(productResponse: ProductosCategoriaResponse) {
+        if(productResponse.content.isNotEmpty()){
+            Toast.makeText(
+                applicationContext,
+                "El primer producto es: ${productResponse.content[0].nombre}",
+                Toast.LENGTH_LONG
+            ).show()
+            products = productResponse.content
+            adapter = ProductsAdapter(this, ArrayList(products))
             recyclerViewProducts?.adapter = adapter
         }
         else {
@@ -81,25 +83,9 @@ class ProductsActivity : AppCompatActivity() {
         }
     }
 
-//    private fun getProducts(){
-////        productsProvider?.findByCategory(idCategory!!)?.enqueue(object : Callback<ArrayList<Product>>{
-////            override fun onResponse(
-////                call: Call<ArrayList<Product>>,
-////                response: Response<ArrayList<Product>>
-////            ) {
-////                if(response.body() != null){
-////                    products = response.body()!!
-////                    adapter = ProductsAdapter(this@ProductsActivity, products)
-////                    recyclerViewProducts?.adapter = adapter
-////                }
-////            }
-////
-////            override fun onFailure(call: Call<ArrayList<Product>>, t: Throwable) {
-////                Log.d(TAG, "Error: ${t.message}")
-////                Toast.makeText(this@ProductsActivity, "Error: ${t.message}", Toast.LENGTH_LONG).show()
-////            }
-////        })
-////    }
+    private fun getProducts(idSubcategoria: String){
+        productsProvider.findByCategory(idSubcategoria)
+    }
 
     private fun getUserFromSession() {
 

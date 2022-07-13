@@ -1,20 +1,22 @@
 package edu.pe.idat.pva.providers
 
-import edu.pe.idat.pva.api.ApiRoutes
-import edu.pe.idat.pva.models.Product
-import edu.pe.idat.pva.routes.ProductsRoutes
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import edu.pe.idat.pva.apirep.ProductoApiRepository
+import edu.pe.idat.pva.models.Producto
 import retrofit2.Call
+import retrofit2.http.Path
 
-class ProductsProvider(val token: String) {
-    private var  productsRoutes: ProductsRoutes? = null
+class ProductsProvider() : ViewModel() {
+    var productResponse: LiveData<ArrayList<Producto>>
+
+    private var repository = ProductoApiRepository()
 
     init{
-        val api = ApiRoutes()
-        productsRoutes = api.getProducts(token)
+       productResponse = repository.productoResponse
     }
 
-    fun findByCategory(idCategory: String): Call<ArrayList<Product>>? {
-        return productsRoutes?.findByCategory(idCategory, token)
-
+    fun findByCategory(@Path("idSubcategoria") idSubcategoria: String)  {
+         productResponse = repository.findByCategory(idSubcategoria)
     }
 }

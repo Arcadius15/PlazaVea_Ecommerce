@@ -19,6 +19,7 @@ class CategoriaAdapter(val context: Activity, val categorias: ArrayList<SubCateg
 
     val sharedPref = SharedPref(context)
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.cardview_categories, parent, false)
        return CategoryViewHolder(view)
@@ -38,8 +39,9 @@ class CategoriaAdapter(val context: Activity, val categorias: ArrayList<SubCateg
 
     private fun goToProducts(category: SubCategoriaResponse){
         val i = Intent(context, ProductsActivity::class.java)
-        i.putExtra("idCategory", category.idSubcategoria)
+        i.putExtra("idSubcategoria", category.idSubcategoria)
         context.startActivity(i)
+
     }
 
     class  CategoryViewHolder(view: View): RecyclerView.ViewHolder(view){

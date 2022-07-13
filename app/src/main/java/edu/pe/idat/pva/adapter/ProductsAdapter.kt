@@ -12,10 +12,11 @@ import com.bumptech.glide.Glide
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.activities.products.detail.ProductsDetailActivity
 import edu.pe.idat.pva.models.Product
+import edu.pe.idat.pva.models.Producto
 import edu.pe.idat.pva.utils.SharedPref
 
 
-class ProductsAdapter(val context: Activity, val productos: ArrayList<Product>): RecyclerView.Adapter<ProductsAdapter.ProductViewHolder>() {
+class ProductsAdapter(val context: Activity, val productos: ArrayList<Producto>): RecyclerView.Adapter<ProductsAdapter.ProductViewHolder>() {
 
     val sharedPref = SharedPref(context)
 
@@ -31,12 +32,12 @@ class ProductsAdapter(val context: Activity, val productos: ArrayList<Product>):
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-//        val product = productos[position]
-//        holder.textViewName.text = product.name
-//        holder.textViewPrice.text = "S/${product.price}"
-//        Glide.with(context).load(product.image1).into(holder.imageViewProduct)
-//
-//        holder.itemView.setOnClickListener{goToDetail(product)}
+        val product = productos[position]
+        holder.textViewName.text = product.nombre
+        holder.textViewPrice.text = "S/${product.precioRegular}"
+        Glide.with(context).load(product.imagenUrl).into(holder.imageViewProduct)
+
+        //holder.itemView.setOnClickListener{goToDetail(product)}
     }
 
     private fun goToDetail(product: Product){

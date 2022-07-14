@@ -56,8 +56,14 @@ class HomeActivity : AppCompatActivity() {
 
         binding.btnLogout.setOnClickListener{ logout() }
 
+        binding.btnRegDir.setOnClickListener{ goregdir() }
+
         getUserFromSession()
 
+    }
+
+    private fun goregdir() {
+        startActivity(Intent(this, DireccionRegistroActivity::class.java))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

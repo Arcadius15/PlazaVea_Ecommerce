@@ -27,13 +27,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="600dp">
+            android:layout_marginTop="600dp"
+            android:orientation="vertical">
             <Button
                 android:id="@+id/btnLogout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_button"
                 android:text="Cerrar Sesión"></Button>
+            <Button
+                android:id="@+id/btnRegDir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_button"
+                android:text="Registrar Direccion"></Button>
         </LinearLayout>
 
     </com.google.android.material.navigation.NavigationView>

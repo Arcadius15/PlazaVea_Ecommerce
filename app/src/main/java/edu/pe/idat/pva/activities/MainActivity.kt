@@ -72,6 +72,9 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
                 Toast.LENGTH_LONG
             ).show()
         }
+
+        binding.btnLogin.isEnabled = true
+        binding.btnGoRegister.isEnabled = true
     }
 
     private fun obtenerDatosLogin(loginResponse: LoginResponse) {
@@ -95,6 +98,8 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
     }
 
     private fun login() {
+        binding.btnLogin.isEnabled = false
+        binding.btnGoRegister.isEnabled = false
         if (isValidForm(binding.edTextEmail.text.toString(),
                 binding.edTextPassword.text.toString())){
             val loginRequest = LoginRequest(
@@ -103,6 +108,8 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
             )
             usuarioProvider.autenticar(loginRequest)
         } else {
+            binding.btnLogin.isEnabled = true
+            binding.btnGoRegister.isEnabled = true
             Toast.makeText(
                 applicationContext,
                 "ERROR! Complete los campos e ingrese un correo válido.",

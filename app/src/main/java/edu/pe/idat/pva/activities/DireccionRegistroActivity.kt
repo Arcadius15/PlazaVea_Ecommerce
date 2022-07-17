@@ -1,12 +1,13 @@
 package edu.pe.idat.pva.activities
 
+import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.ViewModelProvider
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -15,8 +16,12 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.ActivityDireccionRegistroBinding
+import edu.pe.idat.pva.models.*
+import edu.pe.idat.pva.providers.ClienteProvider
+import edu.pe.idat.pva.utils.SharedPref
 import java.io.IOException
 
 class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener {
@@ -24,13 +29,23 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityDireccionRegistroBinding
 
+    private lateinit var sharedPref: SharedPref
+
+    private lateinit var usuario: UsuarioResponse
+
     private var marker: Marker? = null
+
+    private lateinit var clienteProvider: ClienteProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityDireccionRegistroBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        sharedPref = SharedPref(this)
+
+        clienteProvider = ViewModelProvider(this)[ClienteProvider::class.java]
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -88,10 +103,36 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
             imprimirDatos()
         }
 
+        clienteProvider.responseHttp.observe(this){
+            obtenerRespuesta(it!!)
+        }
+
         mapFragment.getMapAsync(this)
     }
 
+    private fun obtenerRespuesta(responseHttp: ResponseHttp) {
+        if (responseHttp.isSuccess){
+            Toast.makeText(
+                applicationContext,
+                "Dirección registrada.",
+                Toast.LENGTH_LONG
+            ).show()
+
+            val i = Intent(this, HomeActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(i)
+        } else {
+            Toast.makeText(
+                applicationContext,
+                "Por favor, introduzca una dirección válida",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        binding.btnGuardarDir.isEnabled = true
+    }
+
     private fun imprimirDatos() {
+        binding.btnGuardarDir.isEnabled = false
         if (!binding.svLocation.query.toString().isNullOrBlank() && marker != null) {
             Toast.makeText(applicationContext,
                 "Eso brad lat y long: ${marker!!.position.latitude} - ${marker!!.position.longitude}",
@@ -99,12 +140,29 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
             Toast.makeText(applicationContext,
                 "Direccion (Enr Seg): ${binding.svLocation.query}",
                 Toast.LENGTH_LONG).show()
+
+            usuario = getUserFromSession()!!
+
+            var clienteIDRequest = ClienteIDRequest(
+                usuario.cliente.idCliente
+            )
+
+            var direccionRequest = DireccionRequest(
+                binding.svLocation.query.toString(),
+                marker!!.position.latitude,
+                marker!!.position.longitude,
+                clienteIDRequest
+            )
+
+            clienteProvider.registrarDireccion(direccionRequest,
+                "Bearer " + getTokenFromSession()!!.token)
         } else {
             Toast.makeText(
                 applicationContext,
                 "Por favor, introduzca una dirección",
                 Toast.LENGTH_LONG
             ).show()
+            binding.btnGuardarDir.isEnabled = true
         }
     }
 
@@ -130,5 +188,27 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
 
     override fun onMarkerDragStart(p0: Marker) {
         p0.showInfoWindow()
+    }
+
+    private fun getUserFromSession(): UsuarioResponse?{
+        val gson = Gson()
+
+        return if(sharedPref.getData("user").isNullOrBlank()){
+            null
+        } else {
+            val user = gson.fromJson(sharedPref.getData("user"), UsuarioResponse::class.java)
+            user
+        }
+    }
+
+    private fun getTokenFromSession(): LoginResponse?{
+        val gson = Gson()
+
+        return if(sharedPref.getData("token").isNullOrBlank()){
+            null
+        } else {
+            val token = gson.fromJson(sharedPref.getData("token"), LoginResponse::class.java)
+            token
+        }
     }
 }

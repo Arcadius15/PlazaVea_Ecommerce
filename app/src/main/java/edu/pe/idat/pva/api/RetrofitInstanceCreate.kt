@@ -1,6 +1,7 @@
 package edu.pe.idat.pva.api
 
 import edu.pe.idat.pva.routes.CategoriaRoutes
+import edu.pe.idat.pva.routes.ClienteRoutes
 import edu.pe.idat.pva.routes.ProductsRoutes
 import edu.pe.idat.pva.routes.UsuarioRoutes
 import okhttp3.OkHttpClient
@@ -35,5 +36,7 @@ object RetrofitInstanceCreate {
         buildRetrofit().create(ProductsRoutes::class.java)
     }
 
-
+    val getClienteRoutes: ClienteRoutes by lazy {
+        buildRetrofit().create(ClienteRoutes::class.java)
+    }
 }

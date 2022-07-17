@@ -46,7 +46,7 @@
             android:id="@+id/btnGuardarDir"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Guardar Dirección"
+            android:text="@string/boton_guardar_direccion"
             android:background="@drawable/rounded_button"></Button>
         <TextView
             android:layout_width="match_parent"

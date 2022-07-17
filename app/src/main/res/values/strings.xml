@@ -19,4 +19,7 @@
     <string name="mes_caducidad_tarjeta"><font size="40">Mes</font></string>
     <string name="anio_caducidad_tarjeta"><font size="40">Año</font></string>
     <string name="guion">___</string>
+    <string name="frag_home_label">Inicio</string>
+    <string name="boton_registrar">Registrar</string>
+    <string name="boton_guardar_direccion">Guardar Dirección</string>
 </resources>

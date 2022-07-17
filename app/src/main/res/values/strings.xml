@@ -15,4 +15,8 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_producto">Productos</string>
     <string name="title_activity_direccion_registro">DireccionRegistroActivity</string>
+
+    <string name="mes_caducidad_tarjeta"><font size="40">Mes</font></string>
+    <string name="anio_caducidad_tarjeta"><font size="40">Año</font></string>
+    <string name="guion">___</string>
 </resources>

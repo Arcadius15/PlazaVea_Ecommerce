@@ -57,13 +57,23 @@ class HomeActivity : AppCompatActivity() {
         binding.btnLogout.setOnClickListener{ logout() }
 
         binding.btnRegDir.setOnClickListener{ goregdir() }
+        binding.btnRegRuc.setOnClickListener{ goregruc() }
+        binding.btnRegTarjeta.setOnClickListener{ goregtarjeta() }
 
         getUserFromSession()
 
     }
 
+    private fun goregtarjeta() {
+        startActivity(Intent(this, RegTarjetaActivity::class.java))
+    }
+
     private fun goregdir() {
         startActivity(Intent(this, DireccionRegistroActivity::class.java))
+    }
+
+    private fun goregruc() {
+        startActivity(Intent(this, RegRucActivity::class.java))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -41,6 +41,18 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_button"
                 android:text="Registrar Direccion"></Button>
+            <Button
+                android:id="@+id/btnRegRuc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_button"
+                android:text="Registrar RUC"></Button>
+            <Button
+                android:id="@+id/btnRegTarjeta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_button"
+                android:text="Registrar Tarjeta"></Button>
         </LinearLayout>
 
     </com.google.android.material.navigation.NavigationView>

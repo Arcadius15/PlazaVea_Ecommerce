@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.ActivityHomeBinding
-import edu.pe.idat.pva.models.User
 import edu.pe.idat.pva.models.UsuarioResponse
 import edu.pe.idat.pva.utils.SharedPref
 

@@ -1,12 +1,9 @@
 package edu.pe.idat.pva.activities
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.lifecycle.ViewModelProvider
@@ -14,12 +11,8 @@ import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.ActivityMainBinding
 import edu.pe.idat.pva.models.*
-import edu.pe.idat.pva.providers.UsersProvider
 import edu.pe.idat.pva.providers.UsuarioProvider
 import edu.pe.idat.pva.utils.SharedPref
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() , View.OnClickListener {
 
@@ -110,11 +103,6 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
         } else {
             binding.btnLogin.isEnabled = true
             binding.btnGoRegister.isEnabled = true
-            Toast.makeText(
-                applicationContext,
-                "ERROR! Complete los campos e ingrese un correo válido.",
-                Toast.LENGTH_LONG
-            ).show()
         }
     }
 
@@ -161,14 +149,29 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
     private fun isValidForm(email: String, password: String): Boolean {
 
         if (email.isBlank()) {
+            Toast.makeText(
+                applicationContext,
+                "Debe ingresar su correo.",
+                Toast.LENGTH_LONG
+            ).show()
             return false
         }
 
         if (password.isBlank()) {
+            Toast.makeText(
+                applicationContext,
+                "Debe ingresar su contraseña.",
+                Toast.LENGTH_LONG
+            ).show()
             return false
         }
 
         if (!email.isEmailValid()) {
+            Toast.makeText(
+                applicationContext,
+                "Debe ingresar un correo válido.",
+                Toast.LENGTH_LONG
+            ).show()
             return false
         }
 

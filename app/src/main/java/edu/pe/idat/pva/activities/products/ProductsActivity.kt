@@ -7,21 +7,13 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.adapter.ProductsAdapter
-import edu.pe.idat.pva.databinding.ActivityMainBinding
 import edu.pe.idat.pva.databinding.ActivityProductsBinding
-import edu.pe.idat.pva.databinding.FragmentProductoBinding
-import edu.pe.idat.pva.models.Product
 import edu.pe.idat.pva.models.Producto
 import edu.pe.idat.pva.models.ProductosCategoriaResponse
-import edu.pe.idat.pva.models.User
 import edu.pe.idat.pva.providers.ProductsProvider
 import edu.pe.idat.pva.utils.SharedPref
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ProductsActivity : AppCompatActivity() {
 
@@ -33,7 +25,6 @@ class ProductsActivity : AppCompatActivity() {
 
     var recyclerViewProducts: RecyclerView? = null
     var adapter: ProductsAdapter? = null
-    var user: User? = null
 
     private lateinit var products: List<Producto>
     var sharedPref: SharedPref? = null
@@ -62,7 +53,6 @@ class ProductsActivity : AppCompatActivity() {
             findProductById(it!!)
         }
 
-        getUserFromSession()
 
     }
 
@@ -87,14 +77,4 @@ class ProductsActivity : AppCompatActivity() {
         productsProvider.findByCategory(idSubcategoria)
     }
 
-    private fun getUserFromSession() {
-
-        val gson = Gson()
-
-        if (!sharedPref?.getData("user").isNullOrBlank()) {
-            // SI EL USARIO EXISTE EN SESION
-            user = gson.fromJson(sharedPref?.getData("user"), User::class.java)
-        }
-
-    }
 }

@@ -87,53 +87,39 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
     }
 
     override fun onClick(p0: View) {
-        if (p0 is ImageView){
-            goToLogin()
-        } else if (p0.id == R.id.btn_registrar){
-            if (!validarCampos()){
-                Toast.makeText(
-                    applicationContext,
-                    "ERROR! Complete todos los campos.",
-                    Toast.LENGTH_LONG
-                ).show()
-            }else if (!validarCorreo(binding.edtEmail.text.toString())) {
-                Toast.makeText(
-                    applicationContext,
-                    "ERROR! Correo no válido.",
-                    Toast.LENGTH_LONG
-                ).show()
-            }else if(binding.edtPassword.text.toString() != binding.edtPasswordConf.text.toString()) {
-                Toast.makeText(
-                    applicationContext,
-                    "ERROR! Las contraseñas no coinciden.",
-                    Toast.LENGTH_LONG
-                ).show()
-            }else {
-                registrarUsuario()
-            }
+        when (p0.id){
+            R.id.btnGoToMain -> goToLogin()
+            R.id.btn_registrar -> registrarUsuario()
         }
     }
 
     private fun registrarUsuario(){
-        val cliente = Cliente(
-            binding.edtApellidos.text.toString(),
-            binding.edtDNI.text.toString().trim().toInt(),
-            binding.edtFechaNacimiento.text.toString().trim(),
-            binding.edtNombre.text.toString(),
-            binding.edtPhone.text.toString().trim()
-        )
+        binding.btnRegistrar.isEnabled = false
+        binding.btnGoToMain.isEnabled = false
+        if (validarForm()) {
+            val cliente = Cliente(
+                binding.edtApellidos.text.toString(),
+                binding.edtDNI.text.toString().trim().toInt(),
+                binding.edtFechaNacimiento.text.toString().trim(),
+                binding.edtNombre.text.toString(),
+                binding.edtPhone.text.toString().trim()
+            )
 
-        val lstRol = ArrayList<String>()
-        lstRol.add("cliente")
+            val lstRol = ArrayList<String>()
+            lstRol.add("cliente")
 
-        val usuarioRequest = UsuarioRequest(
-            cliente,
-            binding.edtEmail.text.toString().trim(),
-            binding.edtPassword.text.toString().trim(),
-            lstRol
-        )
+            val usuarioRequest = UsuarioRequest(
+                cliente,
+                binding.edtEmail.text.toString().trim(),
+                binding.edtPassword.text.toString().trim(),
+                lstRol
+            )
 
-        usuarioProvider.registrar(usuarioRequest)
+            usuarioProvider.registrar(usuarioRequest)
+        } else {
+            binding.btnRegistrar.isEnabled = true
+            binding.btnGoToMain.isEnabled = true
+        }
     }
 
     private fun updateLabel(c: Calendar) {
@@ -156,6 +142,46 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
             binding.edtEmail.text.toString().trim().isEmpty() ||
             binding.edtPassword.text.toString().trim().isEmpty() ||
             binding.edtPasswordConf.text.toString().trim().isEmpty()){
+            return false
+        }
+        return true
+    }
+
+    private fun validarForm() : Boolean {
+        if (!validarCampos()){
+            Toast.makeText(
+                applicationContext,
+                "ERROR! Complete todos los campos.",
+                Toast.LENGTH_LONG
+            ).show()
+            return false
+        }else if (!validarCorreo(binding.edtEmail.text.toString())) {
+            Toast.makeText(
+                applicationContext,
+                "ERROR! Correo no válido.",
+                Toast.LENGTH_LONG
+            ).show()
+            return false
+        }else if(binding.edtPassword.text.toString() != binding.edtPasswordConf.text.toString()) {
+            Toast.makeText(
+                applicationContext,
+                "ERROR! Las contraseñas no coinciden.",
+                Toast.LENGTH_LONG
+            ).show()
+            return false
+        } else if (binding.edtDNI.text.toString().trim().length < 8) {
+            Toast.makeText(
+                applicationContext,
+                "ERROR! Ingrese un DNI válido (8 dígitos).",
+                Toast.LENGTH_LONG
+            ).show()
+            return false
+        } else if (binding.edtPhone.text.toString().trim().length < 9) {
+            Toast.makeText(
+                applicationContext,
+                "ERROR! Ingrese un número de celular válido (9 dígitos).",
+                Toast.LENGTH_LONG
+            ).show()
             return false
         }
         return true

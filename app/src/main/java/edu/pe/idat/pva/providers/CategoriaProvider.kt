@@ -2,11 +2,8 @@ package edu.pe.idat.pva.providers
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import edu.pe.idat.pva.api.ApiRoutes
 import edu.pe.idat.pva.apirep.CategoriaApiRepository
 import edu.pe.idat.pva.models.SubCategoriaResponse
-import edu.pe.idat.pva.routes.CategoriaRoutes
-import retrofit2.Call
 
 class CategoriaProvider : ViewModel() {
     var subCategoriaResponse: LiveData<ArrayList<SubCategoriaResponse>>

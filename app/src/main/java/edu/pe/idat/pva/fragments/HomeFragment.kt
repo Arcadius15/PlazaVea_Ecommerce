@@ -1,7 +1,6 @@
 package edu.pe.idat.pva.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,16 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.adapter.CategoriaAdapter
 import edu.pe.idat.pva.models.SubCategoriaResponse
-import edu.pe.idat.pva.models.User
 import edu.pe.idat.pva.providers.CategoriaProvider
 import edu.pe.idat.pva.utils.SharedPref
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class HomeFragment : Fragment() {
@@ -32,7 +26,6 @@ class HomeFragment : Fragment() {
     private lateinit var categoriaProvider: CategoriaProvider
 
     var adapter: CategoriaAdapter? = null
-    var user: User? = null
     var sharedPref: SharedPref? = null
 
     var categories = ArrayList<SubCategoriaResponse>()
@@ -53,8 +46,6 @@ class HomeFragment : Fragment() {
         rvCategorias?.layoutManager = LinearLayoutManager(requireContext())
 
         sharedPref = SharedPref(requireActivity())
-
-        getUserFromSession()
 
         rvCategorias?.setLayoutManager(manager)
         getCagories()
@@ -80,14 +71,5 @@ class HomeFragment : Fragment() {
         categoriaProvider.getAll()
     }
 
-    private fun getUserFromSession() {
-        val gson = Gson()
-
-        if (!sharedPref?.getData("user").isNullOrBlank()) {
-            // SI EL USARIO EXISTE EN SESION
-            user = gson.fromJson(sharedPref?.getData("user"), User::class.java)
-        }
-
-    }
 
 }

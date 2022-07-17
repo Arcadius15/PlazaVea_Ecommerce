@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.adapter.CategoriaAdapter
+import edu.pe.idat.pva.databinding.FragmentHomeBinding
 import edu.pe.idat.pva.models.SubCategoriaResponse
 import edu.pe.idat.pva.providers.CategoriaProvider
 import edu.pe.idat.pva.utils.SharedPref
@@ -19,9 +20,8 @@ import edu.pe.idat.pva.utils.SharedPref
 
 class HomeFragment : Fragment() {
 
-    val TAG = "HomeFragment"
-    var myView: View? = null
-    var rvCategorias: RecyclerView? = null
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var categoriaProvider: CategoriaProvider
 
@@ -30,45 +30,29 @@ class HomeFragment : Fragment() {
 
     var categories = ArrayList<SubCategoriaResponse>()
 
-    var manager = GridLayoutManager(context, 2)
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        categoriaProvider = ViewModelProvider(this)
-            .get(CategoriaProvider::class.java)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        categoriaProvider = ViewModelProvider(requireActivity())[CategoriaProvider::class.java]
 
         // Inflate the layout for this fragment
-        myView = inflater.inflate(R.layout.fragment_home, container, false)
-        rvCategorias = myView?.findViewById(R.id.rvCategorias)
-        rvCategorias?.setHasFixedSize(true)
-        rvCategorias?.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvCategorias.setHasFixedSize(true)
+        binding.rvCategorias.layoutManager = GridLayoutManager(requireContext(),2)
 
         sharedPref = SharedPref(requireActivity())
 
-        rvCategorias?.setLayoutManager(manager)
         getCagories()
 
-        categoriaProvider.subCategoriaResponse.observe(viewLifecycleOwner){
-            obtenerCategoriasList(it!!)
-        }
-
-        return myView
-    }
-
-    private fun obtenerCategoriasList(subCategoriaResponse: ArrayList<SubCategoriaResponse>) {
-        if (subCategoriaResponse != null){
-            categories = subCategoriaResponse
-            adapter = CategoriaAdapter(requireActivity(), categories)
-            rvCategorias?.adapter = adapter
-        } else {
-            Toast.makeText(requireContext(), "Error: Hubo un problema con la consulta", Toast.LENGTH_LONG).show()
-        }
+        return binding.root
     }
 
     private fun getCagories(){
-        categoriaProvider.getAll()
+        categoriaProvider.getAll().observe(viewLifecycleOwner){
+            binding.rvCategorias.adapter = CategoriaAdapter(it)
+        }
     }
 
 

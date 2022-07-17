@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_button"
-                android:text="Cerrar Sesión"></Button>
+                android:text="@string/boton_cerrarsesion"></Button>
             <Button
                 android:id="@+id/btnRegDir"
                 android:layout_width="wrap_content"

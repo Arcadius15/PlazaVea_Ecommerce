@@ -19,6 +19,6 @@
         <item
             android:id="@+id/cerrarSesion"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Cerrar sesión"/>
+            android:title="@string/menu_historialcompras"/>
     </group>
 </menu>

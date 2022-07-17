@@ -1,6 +1,7 @@
 package edu.pe.idat.pva.adapter
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -11,46 +12,39 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.activities.products.ProductsActivity
+import edu.pe.idat.pva.databinding.CardviewCategoriesBinding
 import edu.pe.idat.pva.models.SubCategoriaResponse
 import edu.pe.idat.pva.utils.SharedPref
 
 
-class CategoriaAdapter(val context: Activity, val categorias: ArrayList<SubCategoriaResponse>): RecyclerView.Adapter<CategoriaAdapter.CategoryViewHolder>() {
-
-    val sharedPref = SharedPref(context)
-
+class CategoriaAdapter(private var categorias: ArrayList<SubCategoriaResponse>): RecyclerView.Adapter<CategoriaAdapter.CategoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.cardview_categories, parent, false)
-       return CategoryViewHolder(view)
+        val binding = CardviewCategoriesBinding
+            .inflate(LayoutInflater.from(parent.context),parent,false)
+
+        return CategoryViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return  categorias.size
-    }
+    override fun getItemCount()= categorias.size
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        val category = categorias[position] //cada rol
-        holder.textViewCategory.text = category.nombre
-        Glide.with(context).load(category.urlFoto).into(holder.imageViewCategory)
-
-        holder.itemView.setOnClickListener{goToProducts(category)}
+        with(holder){
+            with(categorias[position]){
+                binding.tvCategory.text = nombre
+                Glide.with(holder.itemView.context)
+                    .load(urlFoto)
+                    .into(binding.ivCategory)
+                itemView.setOnClickListener{goToProducts(this, holder.itemView.context)}
+            }
+        }
     }
 
-    private fun goToProducts(category: SubCategoriaResponse){
+    private fun goToProducts(category: SubCategoriaResponse, context: Context){
         val i = Intent(context, ProductsActivity::class.java)
         i.putExtra("idSubcategoria", category.idSubcategoria)
         context.startActivity(i)
-
     }
 
-    class  CategoryViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val textViewCategory: TextView
-        val imageViewCategory: ImageView
-
-        init {
-            textViewCategory = view.findViewById(R.id.tv_category)
-            imageViewCategory = view.findViewById(R.id.iv_category)
-        }
-    }
+    inner class CategoryViewHolder (val binding: CardviewCategoriesBinding): RecyclerView.ViewHolder(binding.root)
 }

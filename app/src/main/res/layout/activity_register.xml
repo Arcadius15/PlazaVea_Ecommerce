@@ -30,7 +30,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/montserrat_semibold"
-            android:text="Registro"
+            android:text="@string/registro_titulo"
             android:textSize="25dp" />
 
     </LinearLayout>
@@ -56,7 +56,7 @@
                     android:layout_marginLeft="25dp"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/montserrat_regular"
-                    android:text="Completa estos datos" />
+                    android:text="@string/completar_datos" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputLayout1"
@@ -72,7 +72,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_custom"
-                        android:hint="Nombres"
+                        android:hint="@string/hint_nombres"
                         android:inputType="text"
                         android:maxLength="30" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -91,7 +91,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_custom"
-                        android:hint="Apellidos"
+                        android:hint="@string/hint_apellidos"
                         android:inputType="text"
                         android:maxLength="50" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -110,7 +110,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_custom"
-                        android:hint="DNI"
+                        android:hint="@string/hint_dni"
                         android:inputType="number"
                         android:maxLength="8" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -128,7 +128,7 @@
                         android:id="@+id/edtPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Telefono"
+                        android:hint="@string/hint_telefono"
                         android:inputType="phone"
                         android:maxLength="9"
                         android:background="@drawable/edittext_custom"/>
@@ -151,7 +151,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_custom"
                         android:focusable="false"
-                        android:hint="Fecha de Nacimiento"
+                        android:hint="@string/hint_fechanacimiento"
                         android:inputType="text"
                         android:maxLength="12" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -169,7 +169,7 @@
                         android:id="@+id/edtEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Email"
+                        android:hint="@string/hint_email"
                         android:inputType="textEmailAddress"
                         android:maxLength="50"
                         android:background="@drawable/edittext_custom"/>
@@ -189,7 +189,7 @@
                         android:id="@+id/edtPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Contraseña"
+                        android:hint="@string/hint_contrasenia"
                         android:inputType="textPassword"
                         android:maxLength="30"
                         android:background="@drawable/edittext_custom"/>
@@ -209,7 +209,7 @@
                         android:id="@+id/edtPasswordConf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Confirmar Contraseña"
+                        android:hint="@string/hint_confirmarcontra"
                         android:inputType="textPassword"
                         android:maxLength="30"
                         android:background="@drawable/edittext_custom"/>
@@ -232,7 +232,7 @@
             android:id="@+id/btn_registrar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Registrarse"
+            android:text="@string/boton_registrarse"
             android:layout_marginTop="30dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"

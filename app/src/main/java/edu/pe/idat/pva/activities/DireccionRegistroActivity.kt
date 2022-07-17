@@ -82,7 +82,7 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
                     }
 
                     return false
-                } catch (e: IOException){
+                } catch (e: Exception){
                     Toast.makeText(
                         applicationContext,
                         "Por favor, introduzca una dirección válida",
@@ -134,13 +134,6 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
     private fun imprimirDatos() {
         binding.btnGuardarDir.isEnabled = false
         if (!binding.svLocation.query.toString().isNullOrBlank() && marker != null) {
-            Toast.makeText(applicationContext,
-                "Eso brad lat y long: ${marker!!.position.latitude} - ${marker!!.position.longitude}",
-                Toast.LENGTH_LONG).show()
-            Toast.makeText(applicationContext,
-                "Direccion (Enr Seg): ${binding.svLocation.query}",
-                Toast.LENGTH_LONG).show()
-
             usuario = getUserFromSession()!!
 
             var clienteIDRequest = ClienteIDRequest(

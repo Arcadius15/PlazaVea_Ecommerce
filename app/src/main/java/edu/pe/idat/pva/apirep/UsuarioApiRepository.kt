@@ -1,16 +1,12 @@
 package edu.pe.idat.pva.apirep
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import edu.pe.idat.pva.api.ApiRoutes
 import edu.pe.idat.pva.api.RetrofitInstanceCreate
 import edu.pe.idat.pva.models.LoginRequest
 import edu.pe.idat.pva.models.LoginResponse
 import edu.pe.idat.pva.models.UsuarioRequest
 import edu.pe.idat.pva.models.UsuarioResponse
-import edu.pe.idat.pva.providers.UsuarioProvider
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

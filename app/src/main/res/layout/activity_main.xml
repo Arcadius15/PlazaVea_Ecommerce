@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login"
+            android:text="@string/login_titulo"
             android:fontFamily="@font/montserrat_semibold"
             android:textSize="50sp"
             android:layout_marginTop="60dp"
@@ -23,7 +23,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ingresa con tu correo y contraseña"
+            android:text="@string/ingresa_con_correoycontra"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/montserrat_regular"/>
@@ -41,7 +41,7 @@
                 android:id="@+id/edTextEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
+                android:hint="@string/hint_email"
                 android:inputType="textEmailAddress"
                 android:maxLength="50"
                 android:background="@drawable/edittext_custom"/>
@@ -61,7 +61,7 @@
                 android:id="@+id/edTextPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Contraseña"
+                android:hint="@string/hint_contrasenia"
                 android:inputType="textPassword"
                 android:maxLength="30"
                 android:background="@drawable/edittext_custom"/>
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
-            android:text="Iniciar sesión"
+            android:text="@string/boton_iniciarseison"
             android:layout_marginTop="200dp"
             android:backgroundTint="@color/granate_700"
             android:background="@drawable/rounded_button" />
@@ -97,7 +97,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Registrate aqui"
+            android:text="@string/boton_registrateaqui"
             android:layout_marginBottom="20dp"/>
 
 

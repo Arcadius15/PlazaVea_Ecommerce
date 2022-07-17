@@ -21,5 +21,20 @@
     <string name="guion">___</string>
     <string name="frag_home_label">Inicio</string>
     <string name="boton_registrar">Registrar</string>
+    <string name="boton_registrarse">Registrarse</string>
+    <string name="boton_iniciarseison">Iniciar sesión</string>
+    <string name="boton_registrateaqui">Registrate aqui</string>
     <string name="boton_guardar_direccion">Guardar Dirección</string>
+    <string name="registro_titulo">Registro</string>
+    <string name="login_titulo">Login</string>
+    <string name="completar_datos">Completa estos datos</string>
+    <string name="hint_nombres">Nombres</string>
+    <string name="hint_apellidos">Apellidos</string>
+    <string name="hint_dni">DNI</string>
+    <string name="hint_telefono">Teléfono celular</string>
+    <string name="hint_fechanacimiento">Fecha de Nacimiento</string>
+    <string name="hint_email">E-Mail</string>
+    <string name="hint_contrasenia">Contraseña</string>
+    <string name="hint_confirmarcontra">Confirmar Contraseña</string>
+    <string name="ingresa_con_correoycontra">Ingresa con tu correo y contraseña</string>
 </resources>

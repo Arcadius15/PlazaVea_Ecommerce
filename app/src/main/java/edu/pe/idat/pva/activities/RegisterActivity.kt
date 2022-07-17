@@ -59,26 +59,40 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
         }
 
         usuarioProvider.usuarioResponse.observe(this) {
-            obtenerDatosRegistro(it!!)
+            try {
+                obtenerDatosRegistro(it!!)
+            } catch (e: Exception) {
+                Toast.makeText(
+                    applicationContext,
+                    "ERROR! El correo ya está registrado o no es válido.",
+                    Toast.LENGTH_LONG
+                ).show()
+                binding.btnRegistrar.isEnabled = true
+                binding.btnGoToMain.isEnabled = true
+            }
         }
     }
 
     private fun obtenerDatosRegistro(usuarioResponse: UsuarioResponse) {
-        if(usuarioResponse != null){
+        try {
             AlertDialog.Builder(this)
                 .setTitle("Registro exitoso")
                 .setMessage("El correo ${usuarioResponse.email} se registró correctamente." +
                         " Recuerde confirmar su correo para iniciar sesión.")
-                .setPositiveButton("OK", DialogInterface.OnClickListener { dialogInterface, i ->
+                .setPositiveButton("OK") { dialogInterface, i ->
                     startActivity(Intent(applicationContext, MainActivity::class.java))
                     dialogInterface.cancel()
-                }).show()
-        } else {
+                }.show()
+            binding.btnRegistrar.isEnabled = true
+            binding.btnGoToMain.isEnabled = true
+        } catch (e: Exception) {
             Toast.makeText(
                 applicationContext,
-                "ERROR! Es posible que el correo ya esté registrado.",
+                "ERROR! El correo ya está registrado o no es válido.",
                 Toast.LENGTH_LONG
             ).show()
+            binding.btnRegistrar.isEnabled = true
+            binding.btnGoToMain.isEnabled = true
         }
     }
 

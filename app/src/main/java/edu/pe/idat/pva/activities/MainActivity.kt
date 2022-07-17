@@ -40,7 +40,17 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
         binding.btnLogin.setOnClickListener(this)
 
         usuarioProvider.loginResponse.observe(this){
-            obtenerDatosLogin(it!!)
+            try {
+                obtenerDatosLogin(it!!)
+            } catch (e: Exception) {
+                Toast.makeText(
+                    applicationContext,
+                    "ERROR! Las credenciales son incorrectas o falta confirmar correo.",
+                    Toast.LENGTH_LONG
+                ).show()
+                binding.btnLogin.isEnabled = true
+                binding.btnGoRegister.isEnabled = true
+            }
         }
 
         usuarioProvider.usuarioResponse.observe(this){
@@ -57,6 +67,8 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
                 "Sesión Iniciada",
                 Toast.LENGTH_LONG
             ).show()
+            binding.btnLogin.isEnabled = true
+            binding.btnGoRegister.isEnabled = true
             saveUserInSession(usuarioResponse)
         } else {
             Toast.makeText(
@@ -64,14 +76,13 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
                 "ERROR! Ocurrió un error con el servicio web.",
                 Toast.LENGTH_LONG
             ).show()
+            binding.btnLogin.isEnabled = true
+            binding.btnGoRegister.isEnabled = true
         }
-
-        binding.btnLogin.isEnabled = true
-        binding.btnGoRegister.isEnabled = true
     }
 
     private fun obtenerDatosLogin(loginResponse: LoginResponse) {
-        if(loginResponse != null){
+        try{
             saveTokenInSession(loginResponse)
 
             val loginRequest = LoginRequest(
@@ -80,13 +91,15 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
             )
 
             usuarioProvider.getUserByEmail(loginRequest,
-                                            "Bearer " + loginResponse.token)
-        } else {
+                "Bearer " + loginResponse.token)
+        } catch (e: Exception) {
             Toast.makeText(
                 applicationContext,
                 "ERROR! Las credenciales son incorrectas o falta confirmar correo.",
                 Toast.LENGTH_LONG
             ).show()
+            binding.btnLogin.isEnabled = true
+            binding.btnGoRegister.isEnabled = true
         }
     }
 

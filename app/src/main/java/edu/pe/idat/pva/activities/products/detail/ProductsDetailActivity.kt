@@ -60,7 +60,11 @@ class ProductsDetailActivity : AppCompatActivity() {
 
          Glide.with(this@ProductsDetailActivity).load(idProducto?.imagenUrl).into(this.imageView1!!)
         textViewName?.text = idProducto?.nombre
-        textViewDescription?.text = idProducto?.descripciones.toString()
+        if(idProducto?.descripciones?.size!! > 0){
+            textViewDescription?.text = idProducto?.descripciones?.get(0)?.descripcion
+        } else {
+            textViewDescription?.text = "Descripción de ejemplo para el producto ${idProducto?.nombre}."
+        }
          textViewPrice?.text = "S/${idProducto?.precioRegular}"
         imageViewAdd?.setOnClickListener{addItem()}
         imageViewRemove?.setOnClickListener{removeItem()}
@@ -127,11 +131,14 @@ class ProductsDetailActivity : AppCompatActivity() {
 
 
     private fun addItem(){
-      contador = contador + 1
-      productPrice= idProducto?.precioRegular!! * contador
-      idProducto?.quantity = contador
+        contador = contador + 1
+        productPrice= idProducto?.precioRegular!! * contador
+        idProducto?.quantity = contador
         textViewContador?.text= "${idProducto?.quantity}"
-        textViewPrice?.text = "${productPrice}"
+        textViewPrice?.text = "S/${productPrice}"
+        if(idProducto?.quantity == 10){
+            imageViewAdd?.isEnabled = false
+        }
     }
 
 
@@ -141,8 +148,10 @@ class ProductsDetailActivity : AppCompatActivity() {
             productPrice= idProducto?.precioRegular!! * contador
             idProducto?.quantity = contador
             textViewContador?.text= "${idProducto?.quantity}"
-            textViewPrice?.text = "${productPrice}"
+            textViewPrice?.text = "S/${productPrice}"
+            if (!imageViewAdd?.isEnabled!!){
+                imageViewAdd?.isEnabled = true
+            }
         }
-
     }
 }

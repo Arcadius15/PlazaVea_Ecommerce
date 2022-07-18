@@ -52,6 +52,7 @@ class HomeFragment : Fragment() {
     private fun getCagories(){
         categoriaProvider.getAll().observe(viewLifecycleOwner){
             binding.rvCategorias.adapter = CategoriaAdapter(it)
+            binding.progressbar.visibility = View.GONE
         }
     }
 

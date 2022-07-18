@@ -76,7 +76,7 @@ class ProductsDetailActivity : AppCompatActivity() {
     }
 
     private fun addToBag(){
-        val index = getIndexOf(idProducto?.idProducto!!) //indice del producto si existe
+        val index = getIndexOf(idProducto?.idProducto!!)
 
         if(index == -1){ //No existe en sharedPref
             if(idProducto?.quantity == 0){
@@ -84,14 +84,15 @@ class ProductsDetailActivity : AppCompatActivity() {
             }
             selectProduct.add(idProducto!!)
         }
-        else{// ya existe el producto - debemos editar cantidad
+        else{
             selectProduct[index].quantity = contador
-
         }
+
+
 
         sharedPref?.save("shopBag", selectProduct)
         Log.d(TAG, selectProduct.toString())
-        Toast.makeText(this, "Producto agregado", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Producto agregado  ${ idProducto?.quantity}", Toast.LENGTH_LONG).show()
     }
 
 
@@ -131,7 +132,7 @@ class ProductsDetailActivity : AppCompatActivity() {
 
 
     private fun addItem(){
-        contador = contador + 1
+        contador++
         productPrice= idProducto?.precioRegular!! * contador
         idProducto?.quantity = contador
         textViewContador?.text= "${idProducto?.quantity}"

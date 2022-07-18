@@ -2,6 +2,7 @@ package edu.pe.idat.pva.adapter
 
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import edu.pe.idat.pva.utils.SharedPref
 
 class ShoppingBagAdapter(val context: Activity, private var productos: ArrayList<Producto>): RecyclerView.Adapter<ShoppingBagAdapter.ShoppingBagViewHolder>() {
 
+    val TAG = "ShoppingAdapter"
     val sharedPref = SharedPref(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingBagViewHolder {
@@ -37,14 +39,64 @@ class ShoppingBagAdapter(val context: Activity, private var productos: ArrayList
         with(holder){
             with(productos[position]){
                 binding.tvNameBag.text = nombre
-                binding.tvPrice.text = "S/${precioRegular}"
+                binding.tvContador.text = "${quantity}"
+                binding.tvPrecio.text = "S/${precioRegular} * ${quantity}"
                 Glide.with(holder.itemView.context)
                     .load(imagenUrl)
                     .into(binding.ivProductBag)
+                binding.ivAdd.setOnClickListener{addItem(this, holder)}
+                binding.ivRemove.setOnClickListener{removeItem(this, holder)}
             }
+
         }
 
         // holder.itemView.setOnClickListener{goToDetail(product)}
+    }
+
+    private fun getIndexOf(idProduct: String): Int{
+        var ps = 0
+        for(p in productos){
+            if(p.idProducto == idProduct){
+                return ps
+            }
+            ps++
+        }
+
+        return -1
+    }
+
+
+
+    private fun addItem(product: Producto, holder: ShoppingBagViewHolder){
+
+        val index = getIndexOf(product.idProducto)
+        product.quantity = product.quantity!! + 1
+        productos[index].quantity = product.quantity
+
+        with(holder){
+            binding.tvContador.text = "${product.quantity}"
+            binding.tvPrecio.text = "${product.quantity!! * product.precioRegular}"
+        }
+
+        sharedPref.save("shopBag", productos)
+
+    }
+
+
+    private fun removeItem(product: Producto, holder: ShoppingBagViewHolder){
+       if(product.quantity!! > 1)
+       {
+           val index = getIndexOf(product.idProducto)
+           product.quantity = product.quantity!! - 1
+           productos[index].quantity = product.quantity
+
+           with(holder){
+               binding.tvContador.text = "${product.quantity}"
+               binding.tvPrecio.text = "${product.quantity!! * product.precioRegular}"
+           }
+
+           sharedPref.save("shopBag", productos)
+       }
     }
 
     private fun goToDetail(product: Product){

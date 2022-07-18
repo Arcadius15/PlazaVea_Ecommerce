@@ -93,7 +93,7 @@ class ProductsDetailActivity : AppCompatActivity() {
 
     private fun getProductsFromSharedPref(){
         if(!sharedPref?.getData("shopBag").isNullOrBlank()){
-            val type = object: TypeToken<ArrayList<Product>>() {}.type
+            val type = object: TypeToken<ArrayList<Producto>>() {}.type
             selectProduct = gson.fromJson(sharedPref?.getData("shopBag"), type)
             val index = getIndexOf(idProducto?.idProducto!!)
 

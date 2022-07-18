@@ -14,62 +14,48 @@ import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.activities.products.ProductsActivity
 import edu.pe.idat.pva.activities.products.detail.ProductsDetailActivity
+import edu.pe.idat.pva.databinding.CardviewShoppingbagBinding
 import edu.pe.idat.pva.models.Product
 import edu.pe.idat.pva.models.Producto
 import edu.pe.idat.pva.utils.SharedPref
 
-
-class ShoppingBagAdapter(val context: Activity, val productos: ArrayList<Producto>): RecyclerView.Adapter<ShoppingBagAdapter.ShoppingBagViewHolder>() {
+class ShoppingBagAdapter(val context: Activity, private var productos: ArrayList<Producto>): RecyclerView.Adapter<ShoppingBagAdapter.ShoppingBagViewHolder>() {
 
     val sharedPref = SharedPref(context)
 
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingBagViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.cardview_shoppingbag, parent, false)
-       return ShoppingBagViewHolder(view)
+        val binding = CardviewShoppingbagBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
+
+        return ShoppingBagViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return  productos.size
-    }
+    override fun getItemCount() = productos.size
+
 
     override fun onBindViewHolder(holder: ShoppingBagViewHolder, position: Int) {
-        val product = productos[position]
-        holder.textViewName.text = product.nombre
-        holder.textViewPrice.text = "S/${product.precioRegular}"
-        Glide.with(context).load(product.imagenUrl).into(holder.imageViewProduct)
+        with(holder){
+            with(productos[position]){
+                binding.tvNameBag.text = nombre
+                binding.tvPrice.text = "S/${precioRegular}"
+                Glide.with(holder.itemView.context)
+                    .load(imagenUrl)
+                    .into(binding.ivProductBag)
+            }
+        }
 
-       // holder.itemView.setOnClickListener{goToDetail(product)}
+        // holder.itemView.setOnClickListener{goToDetail(product)}
     }
 
     private fun goToDetail(product: Product){
 
         val i = Intent(context, ProductsDetailActivity::class.java)
-       // i.putExtra("product", product.toJson())
+        // i.putExtra("product", product.toJson())
         context.startActivity(i)
     }
 
 
 
-    class  ShoppingBagViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val textViewName: TextView
-        val textViewPrice: TextView
-        val textViewContador: TextView
-        val imageViewProduct: ImageView
-        val imageViewAdd: ImageView
-        val imageViewRemove: ImageView
-        val imageViewDelete: ImageView
+    inner class  ShoppingBagViewHolder(val binding: CardviewShoppingbagBinding): RecyclerView.ViewHolder(binding.root)
 
-
-        init {
-            textViewName = view.findViewById(R.id.tv_nameBag)
-            textViewPrice = view.findViewById(R.id.tv_price)
-            textViewContador = view.findViewById(R.id.tv_contador)
-            imageViewProduct = view.findViewById(R.id.iv_productBag)
-            imageViewAdd = view.findViewById(R.id.iv_add)
-            imageViewRemove = view.findViewById(R.id.iv_remove)
-            imageViewDelete = view.findViewById(R.id.iv_delete)
-        }
-    }
 }

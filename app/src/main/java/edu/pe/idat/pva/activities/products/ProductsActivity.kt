@@ -3,6 +3,7 @@ package edu.pe.idat.pva.activities.products
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -53,6 +54,7 @@ class ProductsActivity : AppCompatActivity() {
 
         productsProvider.productResponse.observe(this){
             findProductById(it!!)
+            binding.progressbar.visibility = View.GONE
         }
 
         getUserFromSession()

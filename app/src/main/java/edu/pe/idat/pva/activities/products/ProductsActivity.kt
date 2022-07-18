@@ -63,11 +63,6 @@ class ProductsActivity : AppCompatActivity() {
 
     private fun findProductById(productResponse: ProductosCategoriaResponse) {
         if(productResponse.content.isNotEmpty()){
-            Toast.makeText(
-                applicationContext,
-                "El primer producto es: ${productResponse.content[0].nombre}",
-                Toast.LENGTH_LONG
-            ).show()
             products = productResponse.content
             adapter = ProductsAdapter(this, ArrayList(products))
             recyclerViewProducts?.adapter = adapter

@@ -44,7 +44,7 @@ class ProductsAdapter(val context: Activity, val productos: ArrayList<Producto>)
     private fun goToDetail(product: Producto){
 
         val i = Intent(context, ProductsDetailActivity::class.java)
-        .putExtra("idProducto", product.toJson())
+        .putExtra("producto", product.toJson())
         context.startActivity(i)
     }
 

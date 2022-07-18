@@ -1,12 +1,10 @@
 package edu.pe.idat.pva.api
 
-import edu.pe.idat.pva.routes.CategoriaRoutes
-import edu.pe.idat.pva.routes.ClienteRoutes
-import edu.pe.idat.pva.routes.ProductsRoutes
-import edu.pe.idat.pva.routes.UsuarioRoutes
+import edu.pe.idat.pva.routes.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitInstanceCreate {
@@ -21,6 +19,7 @@ object RetrofitInstanceCreate {
     private fun buildRetrofit() = Retrofit.Builder()
         .baseUrl(HEROKU_URL)
         .client(okHttpClient)
+        .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
@@ -38,5 +37,9 @@ object RetrofitInstanceCreate {
 
     val getClienteRoutes: ClienteRoutes by lazy {
         buildRetrofit().create(ClienteRoutes::class.java)
+    }
+
+    val getOrdenRoutes: OrdenRoutes by lazy {
+        buildRetrofit().create(OrdenRoutes::class.java)
     }
 }

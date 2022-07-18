@@ -42,7 +42,8 @@
             android:label="@string/title_activity_direccion_registro" />
         <activity
             android:name=".activities.shopping_bag.ShoppingBagActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/title_activity_carrito"/>
         <activity
             android:name=".activities.products.detail.ProductsDetailActivity"
             android:exported="false" />

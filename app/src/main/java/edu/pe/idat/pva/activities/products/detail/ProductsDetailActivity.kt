@@ -13,24 +13,18 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import edu.pe.idat.pva.R
-import edu.pe.idat.pva.models.Product
+import edu.pe.idat.pva.databinding.ActivityProductsDetailBinding
 import edu.pe.idat.pva.models.Producto
 import edu.pe.idat.pva.utils.SharedPref
 
 class ProductsDetailActivity : AppCompatActivity() {
 
     val TAG = "ProductsDetail"
-    var idProducto: Producto? = null
+    var producto: Producto? = null
     val gson = Gson()
 
-    var imageView1: ImageView? = null
-    var textViewName: TextView? = null
-    var textViewDescription: TextView? = null
-    var textViewPrice: TextView? = null
-    var textViewContador: TextView? = null
-    var imageViewAdd: ImageView? = null
-    var imageViewRemove: ImageView? = null
-    var buttonAdd: Button? = null
+    private lateinit var binding: ActivityProductsDetailBinding
+
     var selectProduct = ArrayList<Producto>()
 
 
@@ -41,48 +35,41 @@ class ProductsDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_products_detail)
+        binding = ActivityProductsDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         sharedPref = SharedPref(this)
-       idProducto = gson.fromJson(intent.getStringExtra("idProducto"), Producto::class.java)
+        producto = gson.fromJson(intent.getStringExtra("producto"), Producto::class.java)
 
-        Log.d(TAG, idProducto!!.toString())
+        Log.d(TAG, producto!!.toString())
 
-        imageView1 = findViewById(R.id.iv_productImage)
-        textViewName = findViewById(R.id.tv_productName)
-        textViewDescription = findViewById(R.id.tv_productDescription)
-        textViewPrice = findViewById(R.id.tv_price)
-        textViewContador = findViewById(R.id.tv_contador)
-        imageViewAdd = findViewById(R.id.iv_add)
-        imageViewRemove = findViewById(R.id.iv_remove)
-        buttonAdd = findViewById(R.id.btn_add_product)
-
-
-
-         Glide.with(this@ProductsDetailActivity).load(idProducto?.imagenUrl).into(this.imageView1!!)
-        textViewName?.text = idProducto?.nombre
-        if(idProducto?.descripciones?.size!! > 0){
-            textViewDescription?.text = idProducto?.descripciones?.get(0)?.descripcion
+        Glide.with(this@ProductsDetailActivity).load(producto?.imagenUrl).into(binding.ivProductImage)
+        binding.tvProductName.text = producto?.nombre
+        if(producto?.descripciones?.size!! > 0){
+            var desc = ""
+            producto?.descripciones!!.forEach{
+                desc += it.descripcion + "\n"
+            }
+            binding.tvProductDescription.text = desc
         } else {
-            textViewDescription?.text = "Descripción de ejemplo para el producto ${idProducto?.nombre}."
+            binding.tvProductDescription.text = "Descripción de ejemplo para el producto ${producto?.nombre}."
         }
-         textViewPrice?.text = "S/${idProducto?.precioRegular}"
-        imageViewAdd?.setOnClickListener{addItem()}
-        imageViewRemove?.setOnClickListener{removeItem()}
-       buttonAdd?.setOnClickListener{ addToBag()}
+        binding.tvPrice.text = "S/${String.format("%.2f",producto?.precioRegular)}"
+        binding.ivAdd.setOnClickListener{addItem()}
+        binding.ivRemove.setOnClickListener{removeItem()}
+        binding.btnAddProduct.setOnClickListener{ addToBag()}
 
 
         getProductsFromSharedPref()
-
     }
 
     private fun addToBag(){
-        val index = getIndexOf(idProducto?.idProducto!!)
+        val index = getIndexOf(producto?.idProducto!!)
 
         if(index == -1){ //No existe en sharedPref
-            if(idProducto?.quantity == 0){
-                idProducto?.quantity = 1
+            if(binding.tvContador.text.toString().toInt() == 1){
+                producto?.quantity = 1
             }
-            selectProduct.add(idProducto!!)
+            selectProduct.add(producto!!)
         }
         else{
             selectProduct[index].quantity = contador
@@ -92,7 +79,7 @@ class ProductsDetailActivity : AppCompatActivity() {
 
         sharedPref?.save("shopBag", selectProduct)
         Log.d(TAG, selectProduct.toString())
-        Toast.makeText(this, "Producto agregado  ${ idProducto?.quantity}", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Producto agregado  ${producto?.quantity}", Toast.LENGTH_LONG).show()
     }
 
 
@@ -100,15 +87,16 @@ class ProductsDetailActivity : AppCompatActivity() {
         if(!sharedPref?.getData("shopBag").isNullOrBlank()){
             val type = object: TypeToken<ArrayList<Producto>>() {}.type
             selectProduct = gson.fromJson(sharedPref?.getData("shopBag"), type)
-            val index = getIndexOf(idProducto?.idProducto!!)
+            val index = getIndexOf(producto?.idProducto!!)
 
             if(index != -1){
-                idProducto?.quantity = selectProduct[index].quantity
-                textViewContador?.text = "${idProducto?.quantity}"
-                productPrice = idProducto?.precioRegular!! * idProducto?.quantity!!
-                textViewPrice?.text = "${productPrice}"
-                buttonAdd?.setText("Editar producto")
-                buttonAdd?.backgroundTintList= ColorStateList.valueOf(Color.RED)
+                producto?.quantity = selectProduct[index].quantity
+                binding.tvContador.text = "${producto?.quantity}"
+                contador = producto?.quantity!!.toInt()
+                productPrice = producto?.precioRegular!! * producto?.quantity!!
+                binding.tvPrice.text = "S/${String.format("%.2f",productPrice)}"
+                binding.btnAddProduct.setText("Editar producto")
+                binding.btnAddProduct.backgroundTintList= ColorStateList.valueOf(Color.RED)
             }
 
             for(p in selectProduct){
@@ -129,29 +117,26 @@ class ProductsDetailActivity : AppCompatActivity() {
         return -1
     }
 
-
-
     private fun addItem(){
         contador++
-        productPrice= idProducto?.precioRegular!! * contador
-        idProducto?.quantity = contador
-        textViewContador?.text= "${idProducto?.quantity}"
-        textViewPrice?.text = "S/${productPrice}"
-        if(idProducto?.quantity == 10){
-            imageViewAdd?.isEnabled = false
+        productPrice= producto?.precioRegular!! * contador
+        producto?.quantity = contador
+        binding.tvContador.text= "${producto?.quantity}"
+        binding.tvPrice.text = "S/${String.format("%.2f",productPrice)}"
+        if(producto?.quantity == 10){
+            binding.ivAdd.isEnabled = false
         }
     }
-
 
     private fun removeItem(){
         if(contador > 1){
             contador--
-            productPrice= idProducto?.precioRegular!! * contador
-            idProducto?.quantity = contador
-            textViewContador?.text= "${idProducto?.quantity}"
-            textViewPrice?.text = "S/${productPrice}"
-            if (!imageViewAdd?.isEnabled!!){
-                imageViewAdd?.isEnabled = true
+            productPrice= producto?.precioRegular!! * contador
+            producto?.quantity = contador
+            binding.tvContador.text= "${producto?.quantity}"
+            binding.tvPrice.text = "S/${String.format("%.2f",productPrice)}"
+            if (binding.ivAdd.isEnabled!!){
+                binding.ivAdd.isEnabled = true
             }
         }
     }

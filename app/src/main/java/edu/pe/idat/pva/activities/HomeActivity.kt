@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -60,8 +62,12 @@ class HomeActivity : AppCompatActivity() {
         binding.btnRegRuc.setOnClickListener{ goregruc() }
         binding.btnRegTarjeta.setOnClickListener{ goregtarjeta() }
 
-        getUserFromSession()
+        val usuario = getUserFromSession()!!
 
+        var header = binding.navView.getHeaderView(0)
+        header.findViewById<TextView>(R.id.tvUsuario).text = usuario.cliente.nombre +
+                                                                " " + usuario.cliente.apellidos
+        header.findViewById<TextView>(R.id.tvCorreo).text = usuario.email
     }
 
     private fun goregtarjeta() {
@@ -95,17 +101,23 @@ class HomeActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    private fun getUserFromSession(){
+    private fun getUserFromSession(): UsuarioResponse?{
         val gson = Gson()
 
-        if(!sharedPref.getData("user").isNullOrBlank()){
+        return if(sharedPref.getData("user").isNullOrBlank()){
+            null
+        } else {
             val user = gson.fromJson(sharedPref.getData("user"), UsuarioResponse::class.java)
+            user
         }
     }
 
     private fun logout() {
         sharedPref.remove("user")
         sharedPref.remove("token")
+        if(!sharedPref.getData("shopBag").isNullOrBlank()){
+            sharedPref.remove(("shopBag"))
+        }
         val i = Intent(this, MainActivity::class.java)
         startActivity(i)
     }

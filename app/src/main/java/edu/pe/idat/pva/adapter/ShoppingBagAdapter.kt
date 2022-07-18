@@ -40,17 +40,23 @@ class ShoppingBagAdapter(val context: Activity, private var productos: ArrayList
             with(productos[position]){
                 binding.tvNameBag.text = nombre
                 binding.tvContador.text = "${quantity}"
-                binding.tvPrecio.text = "S/${precioRegular} * ${quantity}"
+                binding.tvPrecio.text = "S/${String.format("%.2f",precioRegular * quantity!!)}"
                 Glide.with(holder.itemView.context)
                     .load(imagenUrl)
                     .into(binding.ivProductBag)
                 binding.ivAdd.setOnClickListener{addItem(this, holder)}
                 binding.ivRemove.setOnClickListener{removeItem(this, holder)}
+                binding.ivDelete.setOnClickListener{deleteItem(this)}
+                holder.itemView.setOnClickListener{goToDetail(this)}
             }
 
         }
+    }
 
-        // holder.itemView.setOnClickListener{goToDetail(product)}
+    private fun deleteItem(producto: Producto) {
+        productos.remove(producto)
+        sharedPref.save("shopBag", productos)
+        notifyDataSetChanged()
     }
 
     private fun getIndexOf(idProduct: String): Int{
@@ -75,11 +81,15 @@ class ShoppingBagAdapter(val context: Activity, private var productos: ArrayList
 
         with(holder){
             binding.tvContador.text = "${product.quantity}"
-            binding.tvPrecio.text = "${product.quantity!! * product.precioRegular}"
+            binding.tvPrecio.text = "S/${String.format("%.2f",product.quantity!! * product.precioRegular)}"
+            if(product.quantity == 10){
+                binding.ivAdd.isEnabled = false
+            }
         }
 
         sharedPref.save("shopBag", productos)
 
+        notifyDataSetChanged()
     }
 
 
@@ -92,17 +102,22 @@ class ShoppingBagAdapter(val context: Activity, private var productos: ArrayList
 
            with(holder){
                binding.tvContador.text = "${product.quantity}"
-               binding.tvPrecio.text = "${product.quantity!! * product.precioRegular}"
+               binding.tvPrecio.text = "S/${String.format("%.2f",product.quantity!! * product.precioRegular)}"
+               if (!binding.ivAdd.isEnabled){
+                   binding.ivAdd.isEnabled = true
+               }
            }
 
            sharedPref.save("shopBag", productos)
+
+           notifyDataSetChanged()
        }
     }
 
-    private fun goToDetail(product: Product){
+    private fun goToDetail(product: Producto){
 
         val i = Intent(context, ProductsDetailActivity::class.java)
-        // i.putExtra("product", product.toJson())
+        i.putExtra("producto", product.toJson())
         context.startActivity(i)
     }
 

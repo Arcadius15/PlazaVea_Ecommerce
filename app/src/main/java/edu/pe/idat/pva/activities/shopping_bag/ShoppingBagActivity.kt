@@ -11,6 +11,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.adapter.ShoppingBagAdapter
+import edu.pe.idat.pva.databinding.ActivityShoppingBagBinding
 import edu.pe.idat.pva.models.Product
 import edu.pe.idat.pva.models.Producto
 import edu.pe.idat.pva.utils.SharedPref
@@ -18,9 +19,7 @@ import edu.pe.idat.pva.utils.SharedPref
 class ShoppingBagActivity : AppCompatActivity() {
 
     val TAG = "ShoppingBag"
-    var recyclerViewShoppingBag: RecyclerView? = null
-    var  textViewTotal: TextView? = null
-    var buttonContinuar: Button? = null
+    private lateinit var binding: ActivityShoppingBagBinding
 
     var adapter: ShoppingBagAdapter? = null
     var sharedPref: SharedPref? = null
@@ -29,19 +28,26 @@ class ShoppingBagActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_shopping_bag)
+        binding = ActivityShoppingBagBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         sharedPref = SharedPref(this)
 
-        recyclerViewShoppingBag = findViewById(R.id.rvShoppingBag)
-        textViewTotal = findViewById(R.id.tv_total)
-        buttonContinuar = findViewById(R.id.btn_continuar)
-
-        recyclerViewShoppingBag?.layoutManager = LinearLayoutManager(this)
+        binding.rvShoppingBag.layoutManager = LinearLayoutManager(this)
 
         getProductsFromSharedPref()
+        adapter!!.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
+            override fun onChanged() {
+                if (selectProduct.size > 0) {
+                    setearPrecios(selectProduct)
+                } else {
+                    binding.tvMonto.text = "S/0"
+                    binding.tvIgv.text = "S/0"
+                    binding.tvTotal.text = "S/0"
+                }
+            }
+        })
         Log.d(TAG, selectProduct.toString())
-
     }
 
     private fun getProductsFromSharedPref() {
@@ -49,9 +55,30 @@ class ShoppingBagActivity : AppCompatActivity() {
             val type = object : TypeToken<ArrayList<Producto>>() {}.type
             selectProduct = gson.fromJson(sharedPref?.getData("shopBag"), type)
             adapter = ShoppingBagAdapter(this, selectProduct)
-            recyclerViewShoppingBag?.adapter = adapter
+            binding.rvShoppingBag.adapter = adapter
 
+            setearPrecios(selectProduct)
+        } else {
+            binding.tvMonto.text = "S/0"
+            binding.tvIgv.text = "S/0"
+            binding.tvTotal.text = "S/0"
         }
 
+    }
+
+    private fun setearPrecios(lst: ArrayList<Producto>) {
+        var monto = 0.0
+        var igv = 0.0
+        var total = 0.0
+
+        lst.forEach{
+            monto += it.precioRegular * it.quantity!!
+            igv += monto * 0.18
+            total += monto + igv
+
+            binding.tvMonto.text = "S/${String.format("%.2f",monto)}"
+            binding.tvIgv.text = "S/${String.format("%.2f",igv)}"
+            binding.tvTotal.text = "S/${String.format("%.2f",total)}"
+        }
     }
 }

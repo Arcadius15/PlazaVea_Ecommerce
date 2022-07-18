@@ -17,6 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import edu.pe.idat.pva.R
+import edu.pe.idat.pva.activities.shopping_bag.ShoppingBagActivity
 import edu.pe.idat.pva.databinding.ActivityHomeBinding
 import edu.pe.idat.pva.models.UsuarioResponse
 import edu.pe.idat.pva.utils.SharedPref
@@ -81,6 +82,14 @@ class HomeActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.action_shopping){
+            goToShoppingBag()
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_home)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
@@ -98,6 +107,11 @@ class HomeActivity : AppCompatActivity() {
         sharedPref.remove("user")
         sharedPref.remove("token")
         val i = Intent(this, MainActivity::class.java)
+        startActivity(i)
+    }
+
+    private fun goToShoppingBag(){
+        val i = Intent(this, ShoppingBagActivity::class.java)
         startActivity(i)
     }
 }

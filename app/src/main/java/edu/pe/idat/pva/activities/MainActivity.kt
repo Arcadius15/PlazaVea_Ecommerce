@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
             val user = gson.fromJson(sharedPref.getData("user"), UsuarioResponse::class.java)
             val token = gson.fromJson(sharedPref.getData("token"), LoginResponse::class.java)
 
-            Toast.makeText(
+         Toast.makeText(
                 applicationContext,
                 "Bienvenido, ${user.cliente.nombre}.",
                 Toast.LENGTH_LONG

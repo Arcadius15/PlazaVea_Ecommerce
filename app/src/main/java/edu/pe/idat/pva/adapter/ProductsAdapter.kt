@@ -1,6 +1,7 @@
 package edu.pe.idat.pva.adapter
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -37,14 +38,14 @@ class ProductsAdapter(val context: Activity, val productos: ArrayList<Producto>)
         holder.textViewPrice.text = "S/${product.precioRegular}"
         Glide.with(context).load(product.imagenUrl).into(holder.imageViewProduct)
 
-        //holder.itemView.setOnClickListener{goToDetail(product)}
+        holder.itemView.setOnClickListener{goToDetail(product)}
     }
 
-    private fun goToDetail(product: Product){
+    private fun goToDetail(product: Producto){
 
-        //val i = Intent(context, ProductsDetailActivity::class.java)
-        //i.putExtra("product", product.toJson())
-        //context.startActivity(i)
+        val i = Intent(context, ProductsDetailActivity::class.java)
+        .putExtra("idProducto", product.toJson())
+        context.startActivity(i)
     }
 
 

@@ -14,12 +14,13 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.models.Product
+import edu.pe.idat.pva.models.Producto
 import edu.pe.idat.pva.utils.SharedPref
 
 class ProductsDetailActivity : AppCompatActivity() {
 
     val TAG = "ProductsDetail"
-    var product: Product? = null
+    var idProducto: Producto? = null
     val gson = Gson()
 
     var imageView1: ImageView? = null
@@ -30,7 +31,9 @@ class ProductsDetailActivity : AppCompatActivity() {
     var imageViewAdd: ImageView? = null
     var imageViewRemove: ImageView? = null
     var buttonAdd: Button? = null
-    var selectProduct = ArrayList<Product>()
+    var selectProduct = ArrayList<Producto>()
+
+
 
     var contador = 1
     var productPrice = 0.0
@@ -39,8 +42,11 @@ class ProductsDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_products_detail)
+        sharedPref = SharedPref(this)
+       idProducto = gson.fromJson(intent.getStringExtra("idProducto"), Producto::class.java)
 
-        product = gson.fromJson(intent.getStringExtra("product"), Product::class.java)
+        Log.d(TAG, idProducto!!.toString())
+
         imageView1 = findViewById(R.id.iv_productImage)
         textViewName = findViewById(R.id.tv_productName)
         textViewDescription = findViewById(R.id.tv_productDescription)
@@ -52,47 +58,49 @@ class ProductsDetailActivity : AppCompatActivity() {
 
 
 
-/*        Glide.with(this@ProductsDetailActivity).load(product?.image1).into(this.imageView1!!)
-        textViewName?.text = product?.name
-        textViewDescription?.text = product?.description
-        textViewPrice?.text = "S/${product?.price}"
+         Glide.with(this@ProductsDetailActivity).load(idProducto?.imagenUrl).into(this.imageView1!!)
+        textViewName?.text = idProducto?.nombre
+        textViewDescription?.text = idProducto?.descripciones.toString()
+         textViewPrice?.text = "S/${idProducto?.precioRegular}"
         imageViewAdd?.setOnClickListener{addItem()}
         imageViewRemove?.setOnClickListener{removeItem()}
-        buttonAdd?.setOnClickListener{ addToBag()}*/
+       buttonAdd?.setOnClickListener{ addToBag()}
 
 
-        //getProductsFromSharedPref()
+        getProductsFromSharedPref()
 
     }
-/*
+
     private fun addToBag(){
-        val index = getIndexOf(product?.id!!) //indice del producto si existe
+        val index = getIndexOf(idProducto?.idProducto!!) //indice del producto si existe
 
         if(index == -1){ //No existe en sharedPref
-            if(product?.quantity == 0){
-                product?.quantity = 1
+            if(idProducto?.quantity == 0){
+                idProducto?.quantity = 1
             }
-            selectProduct.add(product!!)
+            selectProduct.add(idProducto!!)
         }
         else{// ya existe el producto - debemos editar cantidad
             selectProduct[index].quantity = contador
 
         }
 
-        sharedPref?.save("orden", selectProduct)
+        sharedPref?.save("shopBag", selectProduct)
+        Log.d(TAG, selectProduct.toString())
         Toast.makeText(this, "Producto agregado", Toast.LENGTH_LONG).show()
     }
 
+
     private fun getProductsFromSharedPref(){
-        if(!sharedPref?.getData("orden").isNullOrBlank()){
+        if(!sharedPref?.getData("shopBag").isNullOrBlank()){
             val type = object: TypeToken<ArrayList<Product>>() {}.type
-            selectProduct = gson.fromJson(sharedPref?.getData("orden"), type)
-            val index = getIndexOf(product?.id!!)
+            selectProduct = gson.fromJson(sharedPref?.getData("shopBag"), type)
+            val index = getIndexOf(idProducto?.idProducto!!)
 
             if(index != -1){
-                product?.quantity = selectProduct[index].quantity
-                textViewContador?.text = "${product?.quantity}"
-                productPrice = product?.price!! * product?.quantity!!
+                idProducto?.quantity = selectProduct[index].quantity
+                textViewContador?.text = "${idProducto?.quantity}"
+                productPrice = idProducto?.precioRegular!! * idProducto?.quantity!!
                 textViewPrice?.text = "${productPrice}"
                 buttonAdd?.setText("Editar producto")
                 buttonAdd?.backgroundTintList= ColorStateList.valueOf(Color.RED)
@@ -107,7 +115,7 @@ class ProductsDetailActivity : AppCompatActivity() {
     private fun getIndexOf(idProduct: String): Int{
         var ps = 0
         for(p in selectProduct){
-            if(p.id == idProduct){
+            if(p.idProducto == idProduct){
                 return ps
             }
             ps++
@@ -116,25 +124,25 @@ class ProductsDetailActivity : AppCompatActivity() {
         return -1
     }
 
- */
+
 
     private fun addItem(){
-//        contador = contador + 1
-//        productPrice= product?.price!! * contador
-//        product?.quantity = contador
-//        textViewContador?.text= "${product?.quantity}"
-//        textViewPrice?.text = "${productPrice}"
+      contador = contador + 1
+      productPrice= idProducto?.precioRegular!! * contador
+      idProducto?.quantity = contador
+        textViewContador?.text= "${idProducto?.quantity}"
+        textViewPrice?.text = "${productPrice}"
     }
 
 
     private fun removeItem(){
-//        if(contador > 1){
-//            contador--
-//            productPrice= product?.price!! * contador
-//            product?.quantity = contador
-//            textViewContador?.text= "${product?.quantity}"
-//            textViewPrice?.text = "${productPrice}"
-//        }
+        if(contador > 1){
+            contador--
+            productPrice= idProducto?.precioRegular!! * contador
+            idProducto?.quantity = contador
+            textViewContador?.text= "${idProducto?.quantity}"
+            textViewPrice?.text = "${productPrice}"
+        }
 
     }
 }

@@ -15,10 +15,11 @@ import edu.pe.idat.pva.R
 import edu.pe.idat.pva.activities.products.ProductsActivity
 import edu.pe.idat.pva.activities.products.detail.ProductsDetailActivity
 import edu.pe.idat.pva.models.Product
+import edu.pe.idat.pva.models.Producto
 import edu.pe.idat.pva.utils.SharedPref
 
 
-class ShoppingBagAdapter(val context: Activity, val productos: ArrayList<Product>): RecyclerView.Adapter<ShoppingBagAdapter.ShoppingBagViewHolder>() {
+class ShoppingBagAdapter(val context: Activity, val productos: ArrayList<Producto>): RecyclerView.Adapter<ShoppingBagAdapter.ShoppingBagViewHolder>() {
 
     val sharedPref = SharedPref(context)
 
@@ -34,10 +35,10 @@ class ShoppingBagAdapter(val context: Activity, val productos: ArrayList<Product
     }
 
     override fun onBindViewHolder(holder: ShoppingBagViewHolder, position: Int) {
-//        val product = productos[position]
-//        holder.textViewName.text = product.name
-//        holder.textViewPrice.text = "S/${product.price}"
-//        Glide.with(context).load(product.image1).into(holder.imageViewProduct)
+        val product = productos[position]
+        holder.textViewName.text = product.nombre
+        holder.textViewPrice.text = "S/${product.precioRegular}"
+        Glide.with(context).load(product.imagenUrl).into(holder.imageViewProduct)
 
        // holder.itemView.setOnClickListener{goToDetail(product)}
     }

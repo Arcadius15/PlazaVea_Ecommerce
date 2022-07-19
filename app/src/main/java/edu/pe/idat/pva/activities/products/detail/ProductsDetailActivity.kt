@@ -135,7 +135,7 @@ class ProductsDetailActivity : AppCompatActivity() {
             producto?.quantity = contador
             binding.tvContador.text= "${producto?.quantity}"
             binding.tvPrice.text = "S/${String.format("%.2f",productPrice)}"
-            if (binding.ivAdd.isEnabled!!){
+            if (!binding.ivAdd.isEnabled){
                 binding.ivAdd.isEnabled = true
             }
         }

@@ -1,5 +1,6 @@
 package edu.pe.idat.pva.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -31,42 +32,9 @@ class RegRucActivity : AppCompatActivity() {
         }
     }
 
-    private fun obtenerRespuesta(responseHttp: ResponseHttp) {
-        if (responseHttp.isSuccess){
-            Toast.makeText(
-                applicationContext,
-                "RUC registrado.",
-                Toast.LENGTH_LONG
-            ).show()
-        } else {
-            Toast.makeText(
-                applicationContext,
-                "Ingrese un número de RUC válido.",
-                Toast.LENGTH_LONG
-            ).show()
-        }
-    }
-
     private fun registrarRuc() {
-        if (binding.edtRUC.text.toString().isNullOrBlank()){
-            Toast.makeText(
-                applicationContext,
-                "Ingrese un número de RUC.",
-                Toast.LENGTH_LONG
-            ).show()
-        } else if (binding.edtRUC.text.toString().trim().length < 11) {
-            Toast.makeText(
-                applicationContext,
-                "Ingrese un número de RUC válido (11 dígitos).",
-                Toast.LENGTH_LONG
-            ).show()
-        } else if (binding.edtRUC.text.toString().trim().take(2) != "10"){
-            Toast.makeText(
-                applicationContext,
-                "Ingrese un número de RUC válido (empieza con 10).",
-                Toast.LENGTH_LONG
-            ).show()
-        } else {
+        binding.btnregistrarruc.isEnabled = false
+        if (validarRuc()){
             val clienteIDRequest = ClienteIDRequest(
                 getUserFromSession()!!.cliente.idCliente
             )
@@ -78,7 +46,55 @@ class RegRucActivity : AppCompatActivity() {
 
             clienteProvider.registrarRuc(rucRequest,
                 "Bearer ${getTokenFromSession()!!.token}")
+        } else {
+            binding.btnregistrarruc.isEnabled = true
         }
+    }
+
+    private fun obtenerRespuesta(responseHttp: ResponseHttp) {
+        if (responseHttp.isSuccess){
+            Toast.makeText(
+                applicationContext,
+                "RUC registrado.",
+                Toast.LENGTH_LONG
+            ).show()
+            startActivity(Intent(this,DireccionRegistroActivity::class.java)
+                .putExtra("tipo",intent.getStringExtra("tipo").toString())
+                .putExtra("ruc",binding.edtRUC.text.toString()))
+        } else {
+            Toast.makeText(
+                applicationContext,
+                "Ingrese un número de RUC válido.",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        binding.btnregistrarruc.isEnabled = true
+    }
+
+    private fun validarRuc() : Boolean {
+        if (binding.edtRUC.text.toString().isNullOrBlank()){
+            Toast.makeText(
+                applicationContext,
+                "Ingrese un número de RUC.",
+                Toast.LENGTH_LONG
+            ).show()
+            return false
+        } else if (binding.edtRUC.text.toString().trim().length < 11) {
+            Toast.makeText(
+                applicationContext,
+                "Ingrese un número de RUC válido (11 dígitos).",
+                Toast.LENGTH_LONG
+            ).show()
+            return false
+        } else if (binding.edtRUC.text.toString().trim().take(2) != "10"){
+            Toast.makeText(
+                applicationContext,
+                "Ingrese un número de RUC válido (empieza con 10).",
+                Toast.LENGTH_LONG
+            ).show()
+            return false
+        }
+        return true
     }
 
     private fun getUserFromSession(): UsuarioResponse?{

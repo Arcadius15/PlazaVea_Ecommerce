@@ -2,10 +2,9 @@ package edu.pe.idat.pva.routes
 
 import edu.pe.idat.pva.models.OrdenHistorialRequest
 import edu.pe.idat.pva.models.OrdenRequest
+import edu.pe.idat.pva.models.OrdenResponse
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface OrdenRoutes {
 
@@ -20,4 +19,8 @@ interface OrdenRoutes {
         @Body ordenHistorialRequest: OrdenHistorialRequest,
         @Header("Authorization") token: String
     ): Call<Void>
+
+    @GET("orden/{idOrden}")
+    fun getOrden(@Path("idOrden") idOrden: String,
+                @Header("Authorization") token: String): Call<OrdenResponse>
 }

@@ -77,8 +77,8 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
         try {
             AlertDialog.Builder(this)
                 .setTitle("Registro exitoso")
-                .setMessage("El correo ${usuarioResponse.email} se registró correctamente." +
-                        " Recuerde confirmar su correo para iniciar sesión.")
+                .setMessage("El usuario se registró correctamente." +
+                        " Se le envió un enlace de activación al correo ${usuarioResponse.email}.")
                 .setPositiveButton("OK") { dialogInterface, i ->
                     startActivity(Intent(applicationContext, MainActivity::class.java))
                     dialogInterface.cancel()

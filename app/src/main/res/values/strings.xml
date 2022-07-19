@@ -14,7 +14,8 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_producto">Productos</string>
-    <string name="title_activity_direccion_registro">DireccionRegistroActivity</string>
+    <string name="title_activity_direccion_registro">Registrar dirección</string>
+    <string name="title_activity_carrito">Carrito</string>
 
     <string name="mes_caducidad_tarjeta"><font size="40">Mes</font></string>
     <string name="anio_caducidad_tarjeta"><font size="40">Año</font></string>
@@ -39,4 +40,19 @@
     <string name="hint_confirmarcontra">Confirmar Contraseña</string>
     <string name="ingresa_con_correoycontra">Ingresa con tu correo y contraseña</string>
     <string name="menu_historialcompras">Historial de Compras</string>
+    <string name="monto">Monto</string>
+    <string name="igv">IGV (18%)</string>
+    <string name="total">Total</string>
+    <string name="boton_elegir">Elegir</string>
+    <string name="boleta">Boleta</string>
+    <string name="factura">Factura</string>
+    <string name="escoger_tipo_ticket">¿Qué tipo de ticket desea?</string>
+    <string name="resumen_pedido">Resumen del Pedido</string>
+    <string name="tipo_ticket_titulo">Tipo de Ticket</string>
+    <string name="texto_ejemplo">Texto de ejemplo</string>
+    <string name="boton_confcompra">Confirmar Compra</string>
+    <string name="direccion_titulo">Dirección</string>
+    <string name="metodopago_titulo">Método de Pago</string>
+    <string name="precio_titulo">Precio a pagar</string>
+    <string name="productos_titulo">Productos</string>
 </resources>

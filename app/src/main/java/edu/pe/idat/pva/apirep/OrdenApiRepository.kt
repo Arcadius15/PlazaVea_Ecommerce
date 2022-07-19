@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import edu.pe.idat.pva.api.RetrofitInstanceCreate
 import edu.pe.idat.pva.models.OrdenHistorialRequest
 import edu.pe.idat.pva.models.OrdenRequest
+import edu.pe.idat.pva.models.OrdenResponse
 import edu.pe.idat.pva.models.ResponseHttp
 import retrofit2.Call
 import retrofit2.Callback
@@ -14,15 +15,22 @@ class OrdenApiRepository {
 
     var ordenId = MutableLiveData<String>()
     var responseHttp = MutableLiveData<ResponseHttp>()
+    var ordenResponse = MutableLiveData<OrdenResponse>()
 
     fun registrarOrden(ordenRequest: OrdenRequest, token: String) : MutableLiveData<String> {
         val call: Call<String> = RetrofitInstanceCreate
             .getOrdenRoutes.registrarOrden(ordenRequest, token)
         call.enqueue(object : Callback<String>{
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                ordenId.value = "error"
-                if(response.isSuccessful){
-                    ordenId.value = response.body()
+                try{
+                    if(response.isSuccessful){
+                        ordenId.value = response.body()
+                    } else {
+                        ordenId.value = "error"
+                    }
+                } catch (e: Exception){
+                    e.printStackTrace()
+                    ordenId.value = "error"
                 }
             }
 
@@ -40,18 +48,19 @@ class OrdenApiRepository {
             .getOrdenRoutes.registrarHistorial(ordenHistorialRequest, token)
         call.enqueue(object : Callback<Void>{
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                responseHttp.value = ResponseHttp(
-                    "Error",
-                    response.isSuccessful,
-                    "Problema",
-                    "Sí"
-                )
                 if (response.isSuccessful){
                     responseHttp.value = ResponseHttp(
                         "Éxito",
                         response.isSuccessful,
                         "Correcto",
                         "No"
+                    )
+                } else {
+                    responseHttp.value = ResponseHttp(
+                        "Error",
+                        response.isSuccessful,
+                        "Problema",
+                        "Sí"
                     )
                 }
             }
@@ -63,5 +72,22 @@ class OrdenApiRepository {
         })
 
         return responseHttp
+    }
+
+    fun getOrden(idOrden: String, token: String) : MutableLiveData<OrdenResponse> {
+        val call: Call<OrdenResponse> = RetrofitInstanceCreate
+            .getOrdenRoutes.getOrden(idOrden, token)
+        call.enqueue(object : Callback<OrdenResponse>{
+            override fun onResponse(call: Call<OrdenResponse>, response: Response<OrdenResponse>) {
+                ordenResponse.value = response.body()
+            }
+
+            override fun onFailure(call: Call<OrdenResponse>, t: Throwable) {
+                Log.e("ERROR!", t.message.toString())
+            }
+
+        })
+
+        return ordenResponse
     }
 }

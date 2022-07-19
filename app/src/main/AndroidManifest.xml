@@ -16,6 +16,9 @@
         android:theme="@style/Theme.PlazaVeaApp"
         tools:targetApi="31">
         <activity
+            android:name=".activities.pasarela.EscogerTipoActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.RegTarjetaActivity"
             android:exported="false" />
         <activity
@@ -43,7 +46,7 @@
         <activity
             android:name=".activities.shopping_bag.ShoppingBagActivity"
             android:exported="false"
-            android:label="@string/title_activity_carrito"/>
+            android:label="@string/title_activity_carrito" />
         <activity
             android:name=".activities.products.detail.ProductsDetailActivity"
             android:exported="false" />

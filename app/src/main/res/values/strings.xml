@@ -43,4 +43,8 @@
     <string name="monto">Monto</string>
     <string name="igv">IGV (18%)</string>
     <string name="total">Total</string>
+    <string name="boton_elegir">Elegir</string>
+    <string name="boleta">Boleta</string>
+    <string name="factura">Factura</string>
+    <string name="escoger_tipo_ticket">¿Qué tipo de ticket desea?</string>
 </resources>

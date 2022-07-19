@@ -4,7 +4,6 @@ data class OrdenRequest(
     var cliente: ClienteIDRequest,
     var direccion: String,
     var fecha: String,
-    var fechaEntrega: String,
     var formaPago: String,
     var igv: Double,
     var monto: Double,

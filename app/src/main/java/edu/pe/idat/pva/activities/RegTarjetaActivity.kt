@@ -1,5 +1,6 @@
 package edu.pe.idat.pva.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import edu.pe.idat.pva.R
+import edu.pe.idat.pva.activities.pasarela.ResumenActivity
 import edu.pe.idat.pva.databinding.ActivityRegTarjetaBinding
 import edu.pe.idat.pva.models.*
 import edu.pe.idat.pva.providers.ClienteProvider
@@ -66,6 +68,14 @@ class RegTarjetaActivity : AppCompatActivity(), View.OnClickListener {
                 "Tarjeta Registrada.",
                 Toast.LENGTH_LONG
             ).show()
+            var i = Intent(this,ResumenActivity::class.java)
+            i.putExtra("tipo",intent.getStringExtra("tipo").toString())
+            i.putExtra("direccion",intent.getStringExtra("direccion").toString())
+            i.putExtra("numtarjeta",binding.edtNumTarjeta.text.toString())
+            if (!intent.getStringExtra("ruc").toString().equals(null)) {
+                i.putExtra("ruc",intent.getStringExtra("ruc").toString())
+            }
+            startActivity(i)
         } else {
             Toast.makeText(
                 applicationContext,

@@ -119,11 +119,10 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
             ).show()
 
             val i = Intent(this, RegTarjetaActivity::class.java)
-            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            i.putExtra("direccion",binding.svLocation.query)
-            i.putExtra("tipo",intent.getStringExtra("tipo"))
-            if (!intent.getStringExtra("ruc").equals(null)) {
-                i.putExtra("ruc",intent.getStringExtra("ruc"))
+            i.putExtra("direccion",binding.svLocation.query.toString())
+            i.putExtra("tipo",intent.getStringExtra("tipo").toString())
+            if (!intent.getStringExtra("ruc").toString().equals(null)) {
+                i.putExtra("ruc",intent.getStringExtra("ruc").toString())
             }
             startActivity(i)
         } else {

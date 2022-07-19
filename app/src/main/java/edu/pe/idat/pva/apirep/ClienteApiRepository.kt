@@ -18,18 +18,19 @@ class ClienteApiRepository {
 
         call.enqueue(object : Callback<Void>{
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                responseHttp.value = ResponseHttp(
-                    "Error",
-                    response.isSuccessful,
-                    "Problema",
-                    "Sí"
-                )
                 if (response.isSuccessful){
                     responseHttp.value = ResponseHttp(
                         "Éxito",
                         response.isSuccessful,
                         "Correcto",
                         "No"
+                    )
+                } else {
+                    responseHttp.value = ResponseHttp(
+                        "Error",
+                        response.isSuccessful,
+                        "Problema",
+                        "Sí"
                     )
                 }
             }
@@ -48,18 +49,19 @@ class ClienteApiRepository {
 
         call.enqueue(object : Callback<Void>{
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                responseHttp.value = ResponseHttp(
-                    "Error",
-                    response.isSuccessful,
-                    "Problema",
-                    "Sí"
-                )
                 if (response.isSuccessful){
                     responseHttp.value = ResponseHttp(
                         "Éxito",
                         response.isSuccessful,
                         "Correcto",
                         "No"
+                    )
+                } else {
+                    responseHttp.value = ResponseHttp(
+                        "Error",
+                        response.isSuccessful,
+                        "Problema",
+                        "Sí"
                     )
                 }
             }
@@ -79,18 +81,19 @@ class ClienteApiRepository {
 
         call.enqueue(object : Callback<Void>{
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                responseHttp.value = ResponseHttp(
-                    "Error",
-                    response.isSuccessful,
-                    "Problema",
-                    "Sí"
-                )
                 if (response.isSuccessful){
                     responseHttp.value = ResponseHttp(
                         "Éxito",
                         response.isSuccessful,
                         "Correcto",
                         "No"
+                    )
+                } else {
+                    responseHttp.value = ResponseHttp(
+                        "Error",
+                        response.isSuccessful,
+                        "Problema",
+                        "Sí"
                     )
                 }
             }

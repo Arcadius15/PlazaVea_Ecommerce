@@ -42,17 +42,6 @@ class ShoppingBagActivity : AppCompatActivity(), View.OnClickListener {
         binding.rvShoppingBag.layoutManager = LinearLayoutManager(this)
 
         getProductsFromSharedPref()
-        adapter!!.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
-            override fun onChanged() {
-                if (selectProduct.size > 0) {
-                    setearPrecios(selectProduct)
-                } else {
-                    binding.tvMonto.text = "S/0"
-                    binding.tvIgv.text = "S/0"
-                    binding.tvTotal.text = "S/0"
-                }
-            }
-        })
         Log.d(TAG, selectProduct.toString())
 
         binding.btnContinuar.setOnClickListener(this)
@@ -63,6 +52,17 @@ class ShoppingBagActivity : AppCompatActivity(), View.OnClickListener {
             val type = object : TypeToken<ArrayList<Producto>>() {}.type
             selectProduct = gson.fromJson(sharedPref?.getData("shopBag"), type)
             adapter = ShoppingBagAdapter(this, selectProduct)
+            adapter!!.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
+                override fun onChanged() {
+                    if (selectProduct.size > 0) {
+                        setearPrecios(selectProduct)
+                    } else {
+                        binding.tvMonto.text = "S/0"
+                        binding.tvIgv.text = "S/0"
+                        binding.tvTotal.text = "S/0"
+                    }
+                }
+            })
             binding.rvShoppingBag.adapter = adapter
 
             setearPrecios(selectProduct)

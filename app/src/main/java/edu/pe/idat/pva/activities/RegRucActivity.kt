@@ -59,6 +59,7 @@ class RegRucActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
             ).show()
             startActivity(Intent(this,DireccionRegistroActivity::class.java)
+                .putExtra("tipo",intent.getStringExtra("tipo").toString())
                 .putExtra("ruc",binding.edtRUC.text.toString()))
         } else {
             Toast.makeText(

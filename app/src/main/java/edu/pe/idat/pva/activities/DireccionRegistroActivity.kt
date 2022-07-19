@@ -100,7 +100,7 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
         })
 
         binding.btnGuardarDir.setOnClickListener{
-            imprimirDatos()
+            guardarDireccion()
         }
 
         clienteProvider.responseHttp.observe(this){
@@ -118,8 +118,13 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
                 Toast.LENGTH_LONG
             ).show()
 
-            val i = Intent(this, HomeActivity::class.java)
+            val i = Intent(this, RegTarjetaActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            i.putExtra("direccion",binding.svLocation.query)
+            i.putExtra("tipo",intent.getStringExtra("tipo"))
+            if (!intent.getStringExtra("ruc").equals(null)) {
+                i.putExtra("ruc",intent.getStringExtra("ruc"))
+            }
             startActivity(i)
         } else {
             Toast.makeText(
@@ -131,7 +136,7 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
         binding.btnGuardarDir.isEnabled = true
     }
 
-    private fun imprimirDatos() {
+    private fun guardarDireccion() {
         binding.btnGuardarDir.isEnabled = false
         if (!binding.svLocation.query.toString().isNullOrBlank() && marker != null) {
             usuario = getUserFromSession()!!

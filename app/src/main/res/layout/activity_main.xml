@@ -67,6 +67,18 @@
                 android:background="@drawable/edittext_custom"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/tvCambiarContrasenia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/olvidaste_contrasenia"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="30dp"
+            android:textAlignment="center"
+            android:fontFamily="@font/montserrat_regular"
+            android:textColor="@color/blue_700"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <LinearLayout

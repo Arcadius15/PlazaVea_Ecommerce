@@ -118,6 +118,7 @@ class ShoppingBagAdapter(val context: Activity, private var productos: ArrayList
 
         val i = Intent(context, ProductsDetailActivity::class.java)
         i.putExtra("producto", product.toJson())
+        i.putExtra("fromsb","true")
         context.startActivity(i)
     }
 

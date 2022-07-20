@@ -19,11 +19,13 @@ class EscogerTipoActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         binding.btnelegir.setOnClickListener(this)
+        binding.btnGoBackCarrito.setOnClickListener(this)
     }
 
     override fun onClick(p0: View) {
         when(p0.id){
             R.id.btnelegir -> elegirTipo()
+            R.id.btnGoBackCarrito -> finish()
         }
     }
 

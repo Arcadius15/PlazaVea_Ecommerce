@@ -9,6 +9,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.activities.HomeActivity
+import edu.pe.idat.pva.activities.products.ProductsActivity
+import edu.pe.idat.pva.activities.shopping_bag.ShoppingBagActivity
 import edu.pe.idat.pva.databinding.ActivityTicketBinding
 import edu.pe.idat.pva.databinding.CardviewShoppingbagBinding
 import edu.pe.idat.pva.models.LoginResponse
@@ -96,5 +98,9 @@ class TicketActivity : AppCompatActivity(){
             val token = gson.fromJson(sharedPref.getData("token"), LoginResponse::class.java)
             token
         }
+    }
+
+    override fun onBackPressed() {
+        gotoHome()
     }
 }

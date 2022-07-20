@@ -1,5 +1,6 @@
 package edu.pe.idat.pva.activities.products.detail
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,8 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import edu.pe.idat.pva.R
+import edu.pe.idat.pva.activities.products.ProductsActivity
+import edu.pe.idat.pva.activities.shopping_bag.ShoppingBagActivity
 import edu.pe.idat.pva.databinding.ActivityProductsDetailBinding
 import edu.pe.idat.pva.models.Producto
 import edu.pe.idat.pva.utils.SharedPref
@@ -70,16 +73,16 @@ class ProductsDetailActivity : AppCompatActivity() {
                 producto?.quantity = 1
             }
             selectProduct.add(producto!!)
+            binding.btnAddProduct.text = "Editar producto"
+            binding.btnAddProduct.backgroundTintList= ColorStateList.valueOf(Color.RED)
         }
         else{
             selectProduct[index].quantity = contador
         }
 
-
-
         sharedPref?.save("shopBag", selectProduct)
         Log.d(TAG, selectProduct.toString())
-        Toast.makeText(this, "Producto agregado  ${producto?.quantity}", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Producto agregado", Toast.LENGTH_SHORT).show()
     }
 
 
@@ -138,6 +141,16 @@ class ProductsDetailActivity : AppCompatActivity() {
             if (!binding.ivAdd.isEnabled){
                 binding.ivAdd.isEnabled = true
             }
+        }
+    }
+
+    override fun onBackPressed() {
+        if (intent.getStringExtra("fromsb") != null) {
+            val a = Intent(this,ShoppingBagActivity::class.java)
+            a.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(a)
+        } else {
+            finish()
         }
     }
 }

@@ -74,4 +74,9 @@
     <string name="hint_confirmarnuevacontra">Confirmar Nueva Contraseña</string>
     <string name="hint_contraseniaact">Contraseña Actual</string>
     <string name="gracias">Gracias por comprar en Plaza Vea</string>
+    <string name="detalle_producto">Detalle de Producto</string>
+    <string name="lista_productos">Lista de Productos</string>
+    <string name="registrar_ruc">Registrar RUC</string>
+    <string name="registrar_tarjeta">Registrar Tarjeta</string>
+    <string name="escoger_tipo_label">Escoger Tipo de Ticket</string>
 </resources>

@@ -77,6 +77,7 @@ class ResumenActivity : AppCompatActivity() {
         binding.tvProductoslista.text = sb.toString()
 
         binding.btnconfcompra.setOnClickListener{ confirmarCompra() }
+        binding.btnGoBackResumen.setOnClickListener{ finish() }
 
         ordenProvider.ordenId.observe(this){
             try {

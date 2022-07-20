@@ -175,9 +175,9 @@ class ResumenActivity : AppCompatActivity() {
 
         var tipoFop: Int
         if (intent.getStringExtra("tipo").equals("Factura")) {
-            tipoFop = intent.getStringExtra("ruc").toString().toInt()
+            tipoFop = 2
         } else {
-            tipoFop = getUserFromSession()!!.cliente.dni.toInt()
+            tipoFop = 1
         }
 
         val ordenRequest = OrdenRequest(

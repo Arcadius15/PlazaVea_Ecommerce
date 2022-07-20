@@ -29,30 +29,14 @@
             android:gravity="center"
             android:layout_marginTop="600dp"
             android:orientation="vertical">
+
             <Button
                 android:id="@+id/btnLogout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_button"
-                android:text="@string/boton_cerrarsesion"></Button>
-            <Button
-                android:id="@+id/btnRegDir"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_button"
-                android:text="Registrar Direccion"></Button>
-            <Button
-                android:id="@+id/btnRegRuc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_button"
-                android:text="Registrar RUC"></Button>
-            <Button
-                android:id="@+id/btnRegTarjeta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_button"
-                android:text="Registrar Tarjeta"></Button>
+                android:text="@string/boton_cerrarsesion"
+                app:icon="@drawable/ic_logout"></Button>
         </LinearLayout>
 
     </com.google.android.material.navigation.NavigationView>

@@ -128,7 +128,7 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
         } else {
             Toast.makeText(
                 applicationContext,
-                "Por favor, introduzca una dirección válida",
+                "Hubo un problema con el servicio",
                 Toast.LENGTH_LONG
             ).show()
         }

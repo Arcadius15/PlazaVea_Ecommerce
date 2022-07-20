@@ -6,19 +6,74 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.ActivityCambiarContraBinding
+import edu.pe.idat.pva.models.Mensaje
+import edu.pe.idat.pva.models.UsuarioPswRequest
+import edu.pe.idat.pva.models.UsuarioResponse
+import edu.pe.idat.pva.providers.UsuarioProvider
+import edu.pe.idat.pva.utils.SharedPref
 
 class CambiarContraActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityCambiarContraBinding
+    private lateinit var usuarioProvider: UsuarioProvider
+    private lateinit var sharedPref: SharedPref
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCambiarContraBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        usuarioProvider = ViewModelProvider(this)[UsuarioProvider::class.java]
+        sharedPref = SharedPref(this)
+
         binding.btnGoBackHome.setOnClickListener(this)
         binding.btnCambiar.setOnClickListener(this)
+
+        usuarioProvider.mensaje.observe(this){
+            try {
+                obtenerMensaje(it!!)
+            } catch (e: Exception) {
+                Toast.makeText(
+                    applicationContext,
+                    "ERROR! Ocurrió un problema con el servicio, intente de nuevo más tarde.",
+                    Toast.LENGTH_LONG
+                ).show()
+                binding.btnGoBackHome.isEnabled = true
+                binding.btnCambiar.isEnabled = true
+            }
+        }
+    }
+
+    private fun obtenerMensaje(mensaje: Mensaje) {
+        when (mensaje.mensaje) {
+            "Contraseña Actualizada exitosamente" -> {
+                Toast.makeText(
+                    applicationContext,
+                    mensaje.mensaje,
+                    Toast.LENGTH_LONG
+                ).show()
+                gotoHome()
+            }
+            "Contraseña Invalida" -> {
+                Toast.makeText(
+                    applicationContext,
+                    "La contraseña actual ingresada es incorrecta",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            else -> {
+                Toast.makeText(
+                    applicationContext,
+                    "Error: ${mensaje.mensaje}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+        binding.btnGoBackHome.isEnabled = true
+        binding.btnCambiar.isEnabled = true
     }
 
     override fun onClick(p0: View) {
@@ -32,7 +87,13 @@ class CambiarContraActivity : AppCompatActivity(), View.OnClickListener {
         binding.btnGoBackHome.isEnabled = false
         binding.btnCambiar.isEnabled = false
         if (validarCampos()){
+            val usuarioPswRequest = UsuarioPswRequest(
+                getUserFromSession()!!.email,
+                binding.edtNewPassword.text.toString().trim(),
+                binding.edtOldPassword.text.toString().trim()
+            )
 
+            usuarioProvider.editPassword(usuarioPswRequest)
         } else {
             binding.btnGoBackHome.isEnabled = true
             binding.btnCambiar.isEnabled = true
@@ -40,10 +101,10 @@ class CambiarContraActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun validarCampos(): Boolean {
-        if (binding.edtEmail.text.toString().isNullOrBlank()) {
+        if (binding.edtOldPassword.text.toString().isNullOrBlank()) {
             Toast.makeText(
                 applicationContext,
-                "Debe ingresar su correo.",
+                "Debe ingresar su contraseña actual.",
                 Toast.LENGTH_LONG
             ).show()
             return false
@@ -68,25 +129,23 @@ class CambiarContraActivity : AppCompatActivity(), View.OnClickListener {
             return false
         }
 
-        if (!binding.edtEmail.text.toString().trim().isEmailValid()) {
-            Toast.makeText(
-                applicationContext,
-                "Debe ingresar un correo válido.",
-                Toast.LENGTH_LONG
-            ).show()
-            return false
-        }
-
         return true
-    }
-
-    fun String.isEmailValid(): Boolean {
-        return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
     }
 
     private fun gotoHome(){
         val i = Intent(this, HomeActivity::class.java)
         i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(i)
+    }
+
+    private fun getUserFromSession(): UsuarioResponse?{
+        val gson = Gson()
+
+        return if(sharedPref.getData("user").isNullOrBlank()){
+            null
+        } else {
+            val user = gson.fromJson(sharedPref.getData("user"), UsuarioResponse::class.java)
+            user
+        }
     }
 }

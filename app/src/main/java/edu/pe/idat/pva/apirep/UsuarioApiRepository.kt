@@ -3,10 +3,7 @@ package edu.pe.idat.pva.apirep
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import edu.pe.idat.pva.api.RetrofitInstanceCreate
-import edu.pe.idat.pva.models.LoginRequest
-import edu.pe.idat.pva.models.LoginResponse
-import edu.pe.idat.pva.models.UsuarioRequest
-import edu.pe.idat.pva.models.UsuarioResponse
+import edu.pe.idat.pva.models.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,6 +11,7 @@ import retrofit2.Response
 class UsuarioApiRepository {
     var usuarioResponse = MutableLiveData<UsuarioResponse>()
     var loginResponse = MutableLiveData<LoginResponse>()
+    var mensaje = MutableLiveData<Mensaje>()
 
     fun registrar(usuarioRequest: UsuarioRequest) : MutableLiveData<UsuarioResponse>{
         val call: Call<UsuarioResponse> = RetrofitInstanceCreate
@@ -68,5 +66,22 @@ class UsuarioApiRepository {
         })
 
         return usuarioResponse
+    }
+
+    fun editPassword(usuarioPswRequest: UsuarioPswRequest) : MutableLiveData<Mensaje>{
+        val call: Call<Mensaje> = RetrofitInstanceCreate
+            .getUsuarioRoutes.editPassword(usuarioPswRequest)
+        call.enqueue(object : Callback<Mensaje>{
+            override fun onResponse(call: Call<Mensaje>, response: Response<Mensaje>) {
+                mensaje.value = response.body()
+            }
+
+            override fun onFailure(call: Call<Mensaje>, t: Throwable) {
+                Log.e("ERROR!", t.message.toString())
+            }
+
+        })
+
+        return mensaje
     }
 }

@@ -3,10 +3,7 @@ package edu.pe.idat.pva.providers
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import edu.pe.idat.pva.apirep.OrdenApiRepository
-import edu.pe.idat.pva.models.OrdenHistorialRequest
-import edu.pe.idat.pva.models.OrdenRequest
-import edu.pe.idat.pva.models.OrdenResponse
-import edu.pe.idat.pva.models.ResponseHttp
+import edu.pe.idat.pva.models.*
 
 class OrdenProvider : ViewModel() {
 
@@ -30,5 +27,9 @@ class OrdenProvider : ViewModel() {
 
     fun getOrden(idOrden: String, token: String): LiveData<OrdenResponse>{
         return repository.getOrden(idOrden,token)
+    }
+
+    fun getAllByCliente(idCliente: String, token: String): LiveData<OrdenPageResponse>{
+        return repository.getAllByCliente(idCliente,token)
     }
 }

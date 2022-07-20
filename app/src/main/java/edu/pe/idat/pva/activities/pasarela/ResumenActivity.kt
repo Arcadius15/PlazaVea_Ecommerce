@@ -93,6 +93,7 @@ class ResumenActivity : AppCompatActivity() {
             Toast.makeText(this,
                 "Orden registrada",
                 Toast.LENGTH_LONG).show()
+            sharedPref.remove("shopBag")
         } else {
             Toast.makeText(this,
                 "ERROR! Hubo un problema con el servicio, intente de nuevo más tarde.",

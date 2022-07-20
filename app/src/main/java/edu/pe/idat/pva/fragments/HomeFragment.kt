@@ -25,10 +25,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var categoriaProvider: CategoriaProvider
 
-    var adapter: CategoriaAdapter? = null
     var sharedPref: SharedPref? = null
-
-    var categories = ArrayList<SubCategoriaResponse>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

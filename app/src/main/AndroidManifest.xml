@@ -19,6 +19,9 @@
             android:name=".activities.pasarela.TicketActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.CambiarContraActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.pasarela.ResumenActivity"
             android:exported="false" />
         <activity

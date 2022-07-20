@@ -57,10 +57,7 @@ class HomeActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         binding.btnLogout.setOnClickListener{ logout() }
-
-        binding.btnRegDir.setOnClickListener{ goregdir() }
-        binding.btnRegRuc.setOnClickListener{ goregruc() }
-        binding.btnRegTarjeta.setOnClickListener{ goregtarjeta() }
+        binding.btnGoCambiarContra.setOnClickListener{ startActivity(Intent(this,CambiarContraActivity::class.java)) }
 
         val usuario = getUserFromSession()!!
 
@@ -68,18 +65,6 @@ class HomeActivity : AppCompatActivity() {
         header.findViewById<TextView>(R.id.tvUsuario).text = usuario.cliente.nombre +
                                                                 " " + usuario.cliente.apellidos
         header.findViewById<TextView>(R.id.tvCorreo).text = usuario.email
-    }
-
-    private fun goregtarjeta() {
-        startActivity(Intent(this, RegTarjetaActivity::class.java))
-    }
-
-    private fun goregdir() {
-        startActivity(Intent(this, DireccionRegistroActivity::class.java))
-    }
-
-    private fun goregruc() {
-        startActivity(Intent(this, RegRucActivity::class.java))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

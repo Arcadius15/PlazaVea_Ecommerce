@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
     private fun login() {
         binding.btnLogin.isEnabled = false
         binding.btnGoRegister.isEnabled = false
-        if (isValidForm(binding.edTextEmail.text.toString(),
+        if (isValidForm(binding.edTextEmail.text.toString().trim(),
                 binding.edTextPassword.text.toString())){
             val loginRequest = LoginRequest(
                 binding.edTextEmail.text.toString().trim(),

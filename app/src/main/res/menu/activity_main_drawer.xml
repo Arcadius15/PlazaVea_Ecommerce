@@ -11,14 +11,14 @@
         <item
             android:id="@+id/categoriaFragment"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Categoria"/>
-      <item
-          android:id="@+id/productoFragment"
-          android:icon="@drawable/ic_menu_slideshow"
-          android:title="@string/menu_producto"/>
+            android:title="@string/menu_direcciones"/>
+        <item
+            android:id="@+id/productoFragment"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_tarjetas"/>
         <item
             android:id="@+id/historialFragment"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_historial"
             android:title="@string/menu_historialcompras"/>
     </group>
 </menu>

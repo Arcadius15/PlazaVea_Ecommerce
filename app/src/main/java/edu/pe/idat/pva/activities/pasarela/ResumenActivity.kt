@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import edu.pe.idat.pva.R
+import edu.pe.idat.pva.activities.RegisterActivity
 import edu.pe.idat.pva.adapter.ShoppingBagAdapter
 import edu.pe.idat.pva.databinding.ActivityResumenBinding
 import edu.pe.idat.pva.models.*
@@ -132,6 +133,7 @@ class ResumenActivity : AppCompatActivity() {
                 .setTitle("Confirmar Compra")
                 .setMessage("¿Seguro que desea confirmar la compra?")
                 .setPositiveButton("Sí") { dialogInterface, i ->
+                    ticketVenta()
                     procesarOrden()
                     dialogInterface.cancel()
                 }
@@ -144,6 +146,10 @@ class ResumenActivity : AppCompatActivity() {
             e.printStackTrace()
             binding.btnconfcompra.isEnabled = true
         }
+    }
+    private fun ticketVenta(){
+        val i = Intent(this, TicketActivity::class.java)
+        startActivity(i)
     }
 
     private fun procesarOrden() {

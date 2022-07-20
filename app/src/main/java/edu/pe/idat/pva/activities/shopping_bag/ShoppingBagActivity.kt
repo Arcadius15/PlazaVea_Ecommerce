@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import edu.pe.idat.pva.R
+import edu.pe.idat.pva.activities.HomeActivity
 import edu.pe.idat.pva.activities.MainActivity
 import edu.pe.idat.pva.activities.pasarela.EscogerTipoActivity
 import edu.pe.idat.pva.adapter.ShoppingBagAdapter
@@ -116,5 +117,9 @@ class ShoppingBagActivity : AppCompatActivity(), View.OnClickListener {
                 Toast.LENGTH_LONG
             ).show()
         }
+    }
+
+    override fun onBackPressed() {
+        startActivity(Intent(this,HomeActivity::class.java))
     }
 }

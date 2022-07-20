@@ -26,6 +26,7 @@ class RegRucActivity : AppCompatActivity() {
         clienteProvider = ViewModelProvider(this)[ClienteProvider::class.java]
 
         binding.btnregistrarruc.setOnClickListener{ registrarRuc() }
+        binding.btnGoBackRuc.setOnClickListener{ finish() }
 
         clienteProvider.responseHttp.observe(this){
             obtenerRespuesta(it!!)

@@ -57,6 +57,7 @@ class HomeActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         binding.btnLogout.setOnClickListener{ logout() }
+        binding.btnGoCambiarContra.setOnClickListener{ startActivity(Intent(this,CambiarContraActivity::class.java)) }
 
         val usuario = getUserFromSession()!!
 

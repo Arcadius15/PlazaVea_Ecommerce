@@ -61,6 +61,8 @@
     <string name="fecha_entrega">Entrega estimada:</string>
     <string name="productos_comprados">Productos:</string>
     <string name="frag_historial_label">Historial de Compras</string>
+    <string name="success_ticket">Tu pedido ha sido registrado con exíto</string>
+    <string name="ticket_venta">Ticket de venta</string>
     <string name="sin_compras">Aún no ha realizado ninguna compra</string>
     <string name="menu_tarjetas">Tarjetas</string>
     <string name="menu_direcciones">Direcciones</string>

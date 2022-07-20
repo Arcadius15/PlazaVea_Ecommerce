@@ -61,7 +61,7 @@
     <string name="fecha_entrega">Entrega estimada:</string>
     <string name="productos_comprados">Productos:</string>
     <string name="frag_historial_label">Historial de Compras</string>
-    <string name="success_ticket">Tu pedido ha sido registrado con exíto</string>
+    <string name="success_ticket">Tu pedido ha sido registrado con éxíto</string>
     <string name="ticket_venta">Ticket de venta</string>
     <string name="sin_compras">Aún no ha realizado ninguna compra</string>
     <string name="menu_tarjetas">Tarjetas</string>
@@ -69,7 +69,9 @@
     <string name="olvidaste_contrasenia">¿Olvidaste tu Contraseña?</string>
     <string name="cambiar_contra">Cambiar Contraseña</string>
     <string name="cambiar">Cambiar</string>
-    <string name="ingresa_nueva_contra">Ingresa una nueva contraseña</string>
+    <string name="ingresa_nueva_contra">Completa los siguientes campos</string>
     <string name="hint_nuevacontrasenia">Nueva Contraseña</string>
     <string name="hint_confirmarnuevacontra">Confirmar Nueva Contraseña</string>
+    <string name="hint_contraseniaact">Contraseña Actual</string>
+    <string name="gracias">Gracias por comprar en Plaza Vea</string>
 </resources>

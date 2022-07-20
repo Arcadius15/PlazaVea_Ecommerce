@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
 
         binding.btnGoRegister.setOnClickListener(this)
         binding.btnLogin.setOnClickListener(this)
+        binding.tvCambiarContrasenia.setOnClickListener(this)
 
         usuarioProvider.loginResponse.observe(this){
             try {
@@ -106,7 +107,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
     private fun login() {
         binding.btnLogin.isEnabled = false
         binding.btnGoRegister.isEnabled = false
-        if (isValidForm(binding.edTextEmail.text.toString(),
+        if (isValidForm(binding.edTextEmail.text.toString().trim(),
                 binding.edTextPassword.text.toString())){
             val loginRequest = LoginRequest(
                 binding.edTextEmail.text.toString().trim(),
@@ -200,6 +201,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
         when (p0.id){
             R.id.btn_go_register -> goToRegister()
             R.id.btn_login -> login()
+            R.id.tvCambiarContrasenia -> startActivity(Intent(this,CambiarContraActivity::class.java))
         }
     }
 

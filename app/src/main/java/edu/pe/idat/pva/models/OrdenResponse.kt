@@ -13,5 +13,5 @@ data class OrdenResponse(
     var total: Double,
     var cliente: ClienteIDRequest,
     var tienda: TiendaIDRequest,
-    var ordendetalle: OrdendetalleRequest
+    var ordendetalle: ArrayList<OrdendetalleRequest>
 )

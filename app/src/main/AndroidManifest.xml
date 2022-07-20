@@ -16,6 +16,9 @@
         android:theme="@style/Theme.PlazaVeaApp"
         tools:targetApi="31">
         <activity
+            android:name=".activities.pasarela.TicketActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.pasarela.ResumenActivity"
             android:exported="false" />
         <activity

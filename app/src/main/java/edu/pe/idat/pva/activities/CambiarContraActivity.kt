@@ -17,24 +17,24 @@ class CambiarContraActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityCambiarContraBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnGoBackMain.setOnClickListener(this)
+        binding.btnGoBackHome.setOnClickListener(this)
         binding.btnCambiar.setOnClickListener(this)
     }
 
     override fun onClick(p0: View) {
         when(p0.id){
-            R.id.btnGoBackMain -> startActivity(Intent(this,MainActivity::class.java))
+            R.id.btnGoBackHome -> gotoHome()
             R.id.btn_cambiar -> cambiarContra()
         }
     }
 
     private fun cambiarContra() {
-        binding.btnGoBackMain.isEnabled = false
+        binding.btnGoBackHome.isEnabled = false
         binding.btnCambiar.isEnabled = false
         if (validarCampos()){
 
         } else {
-            binding.btnGoBackMain.isEnabled = true
+            binding.btnGoBackHome.isEnabled = true
             binding.btnCambiar.isEnabled = true
         }
     }
@@ -82,5 +82,11 @@ class CambiarContraActivity : AppCompatActivity(), View.OnClickListener {
 
     fun String.isEmailValid(): Boolean {
         return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
+    }
+
+    private fun gotoHome(){
+        val i = Intent(this, HomeActivity::class.java)
+        i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(i)
     }
 }

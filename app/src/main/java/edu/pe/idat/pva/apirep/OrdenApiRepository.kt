@@ -3,10 +3,7 @@ package edu.pe.idat.pva.apirep
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import edu.pe.idat.pva.api.RetrofitInstanceCreate
-import edu.pe.idat.pva.models.OrdenHistorialRequest
-import edu.pe.idat.pva.models.OrdenRequest
-import edu.pe.idat.pva.models.OrdenResponse
-import edu.pe.idat.pva.models.ResponseHttp
+import edu.pe.idat.pva.models.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,6 +13,7 @@ class OrdenApiRepository {
     var ordenId = MutableLiveData<String>()
     var responseHttp = MutableLiveData<ResponseHttp>()
     var ordenResponse = MutableLiveData<OrdenResponse>()
+    var ordenPageResponse = MutableLiveData<OrdenPageResponse>()
 
     fun registrarOrden(ordenRequest: OrdenRequest, token: String) : MutableLiveData<String> {
         val call: Call<String> = RetrofitInstanceCreate
@@ -89,5 +87,22 @@ class OrdenApiRepository {
         })
 
         return ordenResponse
+    }
+
+    fun getAllByCliente(idCliente: String, token: String) : MutableLiveData<OrdenPageResponse> {
+        val call: Call<OrdenPageResponse> = RetrofitInstanceCreate
+            .getOrdenRoutes.getAllByCliente(idCliente, token)
+        call.enqueue(object : Callback<OrdenPageResponse>{
+            override fun onResponse(call: Call<OrdenPageResponse>, response: Response<OrdenPageResponse>) {
+                ordenPageResponse.value = response.body()
+            }
+
+            override fun onFailure(call: Call<OrdenPageResponse>, t: Throwable) {
+                Log.e("ERROR!", t.message.toString())
+            }
+
+        })
+
+        return ordenPageResponse
     }
 }

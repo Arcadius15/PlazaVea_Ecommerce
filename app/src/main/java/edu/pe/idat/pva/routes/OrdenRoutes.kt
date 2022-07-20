@@ -1,6 +1,7 @@
 package edu.pe.idat.pva.routes
 
 import edu.pe.idat.pva.models.OrdenHistorialRequest
+import edu.pe.idat.pva.models.OrdenPageResponse
 import edu.pe.idat.pva.models.OrdenRequest
 import edu.pe.idat.pva.models.OrdenResponse
 import retrofit2.Call
@@ -23,4 +24,8 @@ interface OrdenRoutes {
     @GET("orden/{idOrden}")
     fun getOrden(@Path("idOrden") idOrden: String,
                 @Header("Authorization") token: String): Call<OrdenResponse>
+
+    @GET("orden/listar/{idCliente}")
+    fun getAllByCliente(@Path("idCliente") idCliente: String,
+                        @Header("Authorization") token: String) : Call<OrdenPageResponse>
 }

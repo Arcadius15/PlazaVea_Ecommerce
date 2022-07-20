@@ -17,7 +17,7 @@
           android:icon="@drawable/ic_menu_slideshow"
           android:title="@string/menu_producto"/>
         <item
-            android:id="@+id/cerrarSesion"
+            android:id="@+id/historialFragment"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_historialcompras"/>
     </group>

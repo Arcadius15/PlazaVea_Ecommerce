@@ -20,5 +20,10 @@
         android:name="edu.pe.idat.pva.fragments.HomeFragment"
         android:label="@string/frag_home_label"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/historialFragment"
+        android:name="edu.pe.idat.pva.fragments.HistorialFragment"
+        android:label="@string/frag_historial_label"
+        tools:layout="@layout/fragment_historial" />
 
 </navigation>

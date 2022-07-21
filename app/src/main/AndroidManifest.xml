@@ -17,10 +17,17 @@
         tools:targetApi="31">
         <activity
 <<<<<<< HEAD
+<<<<<<< HEAD
             android:name=".activities.pasarela.TicketActivity"
 =======
             android:name=".activities.CambiarContraActivity"
 >>>>>>> e4999dfae5557df6bd3c7ba01b1cd2299674eb25
+=======
+            android:name=".activities.pasarela.TicketActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.CambiarContraActivity"
+>>>>>>> 58d80f17d4c28c7ec5bc45aa463ceacf8d21b555
             android:exported="false" />
         <activity
             android:name=".activities.pasarela.ResumenActivity"

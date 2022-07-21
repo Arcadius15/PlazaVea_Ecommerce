@@ -62,9 +62,14 @@
     <string name="productos_comprados">Productos:</string>
     <string name="frag_historial_label">Historial de Compras</string>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <string name="success_ticket">Tu pedido ha sido registrado con exíto</string>
     <string name="ticket_venta">Ticket de venta</string>
 =======
+=======
+    <string name="success_ticket">Tu pedido ha sido registrado con exíto</string>
+    <string name="ticket_venta">Ticket de venta</string>
+>>>>>>> 58d80f17d4c28c7ec5bc45aa463ceacf8d21b555
     <string name="sin_compras">Aún no ha realizado ninguna compra</string>
     <string name="menu_tarjetas">Tarjetas</string>
     <string name="menu_direcciones">Direcciones</string>
@@ -74,5 +79,8 @@
     <string name="ingresa_nueva_contra">Ingresa una nueva contraseña</string>
     <string name="hint_nuevacontrasenia">Nueva Contraseña</string>
     <string name="hint_confirmarnuevacontra">Confirmar Nueva Contraseña</string>
+<<<<<<< HEAD
 >>>>>>> e4999dfae5557df6bd3c7ba01b1cd2299674eb25
+=======
+>>>>>>> 58d80f17d4c28c7ec5bc45aa463ceacf8d21b555
 </resources>

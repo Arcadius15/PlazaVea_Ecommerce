@@ -57,7 +57,7 @@
     <string name="productos_titulo">Productos</string>
     <string name="id_orden">Id de Orden:</string>
     <string name="direccion_cardview">Dirección:</string>
-    <string name="fecha_realizada">Fecha de compra:</string>
+    <string name="fecha_realizada">Fecha de compra</string>
     <string name="fecha_entrega">Entrega estimada:</string>
     <string name="productos_comprados">Productos:</string>
     <string name="frag_historial_label">Historial de Compras</string>

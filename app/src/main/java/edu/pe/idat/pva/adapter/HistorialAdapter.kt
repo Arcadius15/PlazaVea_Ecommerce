@@ -6,8 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.pe.idat.pva.databinding.CardviewOrdenBinding
 import edu.pe.idat.pva.models.OrdenResponse
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HistorialAdapter(private var ordenes: ArrayList<OrdenResponse>): RecyclerView.Adapter<HistorialAdapter.ViewHolder>() {
 
@@ -25,12 +28,15 @@ class HistorialAdapter(private var ordenes: ArrayList<OrdenResponse>): RecyclerV
             with(ordenes[position]){
                 binding.tvIdOrdenCv.text = this.idOrden
                 binding.tvDireccionCv.text = this.direccion
-                val df1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-                val fc = LocalDateTime.parse(this.fecha, df1)
-                val fe = fc.plusDays(10)
-                val df2 = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                binding.tvFechaCompraCv.text = fc.format(df2)
-                binding.tvFechaEstimadaCv.text = fe.format(df2)
+                val fc = Calendar.getInstance()
+                val df1 = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                df1.timeZone = TimeZone.getTimeZone("America/Lima")
+                fc.time = df1.parse(this.fecha)
+                val df2 = SimpleDateFormat("yyyy-MM-dd")
+                df2.timeZone = TimeZone.getTimeZone("America/Lima")
+                binding.tvFechaCompraCv.text = df2.format(fc.time)
+                fc.add(Calendar.DATE, 10)
+                binding.tvFechaEstimadaCv.text = df2.format(fc.time)
                 binding.tvProductosCv.text = this.ordendetalle.size.toString()
             }
         }

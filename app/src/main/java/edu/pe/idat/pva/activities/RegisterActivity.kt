@@ -40,6 +40,7 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
             .get(UsuarioProvider::class.java)
 
         val c = Calendar.getInstance()
+        c.timeZone = TimeZone.getTimeZone("America/Lima")
 
         val dpd = DatePickerDialog.OnDateSetListener { view, year, month, day ->
             c.set(Calendar.YEAR, year)
@@ -54,7 +55,7 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
         binding.edtFechaNacimiento.setOnClickListener {
             val d = DatePickerDialog(this,dpd,c.get(Calendar.YEAR),c.get(Calendar.MONTH),
                 c.get(Calendar.DAY_OF_MONTH))
-            d.datePicker.maxDate = System.currentTimeMillis()
+            d.datePicker.maxDate = c.timeInMillis
             d.show()
         }
 
@@ -137,8 +138,9 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
     }
 
     private fun updateLabel(c: Calendar) {
-        val formatope = "yyyy-MM-dd"
-        val sdf = SimpleDateFormat(formatope, Locale.US)
+        val formatoFecha = "yyyy-MM-dd"
+        val sdf = SimpleDateFormat(formatoFecha)
+        sdf.timeZone = TimeZone.getTimeZone("America/Lima")
         binding.edtFechaNacimiento.setText(sdf.format(c.time))
     }
 

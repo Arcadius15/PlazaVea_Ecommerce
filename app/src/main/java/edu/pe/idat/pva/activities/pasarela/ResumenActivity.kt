@@ -52,11 +52,13 @@ class ResumenActivity : AppCompatActivity() {
             binding.tvTipoTicket.text = intent.getStringExtra("tipo").toString()
         }
 
-        var fechaEstimada = LocalDate.now().plusDays(10)
-        val df = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        var fechaEstimada = Calendar.getInstance()
+        fechaEstimada.add(Calendar.DATE, 10)
+        val df = SimpleDateFormat("yyyy-MM-dd")
+        df.timeZone = TimeZone.getTimeZone("America/Lima")
 
         binding.tvDireccion.text = intent.getStringExtra("direccion").toString() +
-                                    "\nFecha Estimada de Entrega: ${fechaEstimada.format(df)}"
+                                    "\nFecha Estimada de Entrega: ${df.format(fechaEstimada.time)}"
 
         binding.tvMetodoPago.text = "Tarjeta: ****${intent.getStringExtra("numtarjeta")!!.takeLast(4)}"
 
@@ -121,6 +123,7 @@ class ResumenActivity : AppCompatActivity() {
 
             var fechaActual = Calendar.getInstance()
             val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            df.timeZone = TimeZone.getTimeZone("America/Lima")
 
             val ordenHistorialRequest = OrdenHistorialRequest(
                 "Su pedido está en espera de ser aceptado por un repartidor",
@@ -179,6 +182,7 @@ class ResumenActivity : AppCompatActivity() {
 
         var fechaActual = Calendar.getInstance()
         val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        df.timeZone = TimeZone.getTimeZone("America/Lima")
 
         var tipoFop: Int
         if (intent.getStringExtra("tipo").equals("Factura")) {

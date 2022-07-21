@@ -42,16 +42,20 @@
         android:gravity="center"
         android:layout_marginBottom="5dp">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="Introduzca una dirección y mueva el cursor según convenga"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textAlignment="center"></TextView>
+
         <Button
             android:id="@+id/btnGuardarDir"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/boton_guardar_direccion"
             android:background="@drawable/rounded_button"></Button>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Introduzca una dirección y mueva el cursor según convenga"
-            android:textAlignment="center"></TextView>
+
     </LinearLayout>
 </RelativeLayout>

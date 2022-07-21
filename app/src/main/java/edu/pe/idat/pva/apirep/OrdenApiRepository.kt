@@ -20,14 +20,9 @@ class OrdenApiRepository {
             .getOrdenRoutes.registrarOrden(ordenRequest, token)
         call.enqueue(object : Callback<String>{
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                try{
-                    if(response.isSuccessful){
-                        ordenId.value = response.body()
-                    } else {
-                        ordenId.value = "error"
-                    }
-                } catch (e: Exception){
-                    e.printStackTrace()
+                if(response.isSuccessful){
+                    ordenId.value = response.body()
+                } else {
                     ordenId.value = "error"
                 }
             }

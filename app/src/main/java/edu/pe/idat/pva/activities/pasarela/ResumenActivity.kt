@@ -16,9 +16,12 @@ import edu.pe.idat.pva.models.*
 import edu.pe.idat.pva.providers.OrdenProvider
 import edu.pe.idat.pva.utils.SharedPref
 import java.lang.StringBuilder
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ResumenActivity : AppCompatActivity() {
     private lateinit var binding: ActivityResumenBinding
@@ -30,6 +33,8 @@ class ResumenActivity : AppCompatActivity() {
     var monto = 0.0
     var igv = 0.0
     var total = 0.0
+
+    var ordenIdGenerada = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +77,7 @@ class ResumenActivity : AppCompatActivity() {
         binding.tvProductoslista.text = sb.toString()
 
         binding.btnconfcompra.setOnClickListener{ confirmarCompra() }
+        binding.btnGoBackResumen.setOnClickListener{ finish() }
 
         ordenProvider.ordenId.observe(this){
             try {
@@ -95,6 +101,10 @@ class ResumenActivity : AppCompatActivity() {
                 "Orden registrada",
                 Toast.LENGTH_LONG).show()
             sharedPref.remove("shopBag")
+            println("Orden ID: "+ordenIdGenerada)
+            val i = Intent(this,TicketActivity::class.java)
+            i.putExtra("ordenId",ordenIdGenerada)
+            startActivity(i)
         } else {
             Toast.makeText(this,
                 "ERROR! Hubo un problema con el servicio, intente de nuevo más tarde.",
@@ -105,15 +115,17 @@ class ResumenActivity : AppCompatActivity() {
 
     private fun obtenerOrdenRegistrada(ordenId: String) {
         if (ordenId != "error") {
+            ordenIdGenerada = ordenId
+
             val ordenIdRequest = OrdenIDRequest(ordenId)
 
-            var fechaActual = LocalDateTime.now()
-            val df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            var fechaActual = Calendar.getInstance()
+            val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
             val ordenHistorialRequest = OrdenHistorialRequest(
                 "Su pedido está en espera de ser aceptado por un repartidor",
                 1,
-                fechaActual.format(df),
+                df.format(fechaActual.time),
                 ordenIdRequest
             )
 
@@ -133,7 +145,6 @@ class ResumenActivity : AppCompatActivity() {
                 .setTitle("Confirmar Compra")
                 .setMessage("¿Seguro que desea confirmar la compra?")
                 .setPositiveButton("Sí") { dialogInterface, i ->
-                    ticketVenta()
                     procesarOrden()
                     dialogInterface.cancel()
                 }
@@ -146,10 +157,6 @@ class ResumenActivity : AppCompatActivity() {
             e.printStackTrace()
             binding.btnconfcompra.isEnabled = true
         }
-    }
-    private fun ticketVenta(){
-        val i = Intent(this, TicketActivity::class.java)
-        startActivity(i)
     }
 
     private fun procesarOrden() {
@@ -170,8 +177,8 @@ class ResumenActivity : AppCompatActivity() {
             listOrdenDetalle.add(ordendetalleRequest)
         }
 
-        var fechaActual = LocalDateTime.now()
-        val df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        var fechaActual = Calendar.getInstance()
+        val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
         var tipoFop: Int
         if (intent.getStringExtra("tipo").equals("Factura")) {
@@ -183,7 +190,7 @@ class ResumenActivity : AppCompatActivity() {
         val ordenRequest = OrdenRequest(
             clienteIDRequest,
             intent.getStringExtra("direccion").toString(),
-            fechaActual.format(df),
+            df.format(fechaActual.time),
             intent.getStringExtra("numtarjeta").toString(),
             String.format("%.2f",igv).toDouble(),
             String.format("%.2f",monto).toDouble(),

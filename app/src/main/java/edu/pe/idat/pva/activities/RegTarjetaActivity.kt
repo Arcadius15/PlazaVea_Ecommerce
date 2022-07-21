@@ -55,6 +55,7 @@ class RegTarjetaActivity : AppCompatActivity(), View.OnClickListener {
         clienteProvider = ViewModelProvider(this)[ClienteProvider::class.java]
 
         binding.btnregistrartarjeta.setOnClickListener(this)
+        binding.btnGoBackTarjeta.setOnClickListener(this)
         
         clienteProvider.responseHttp.observe(this){
             obtenerRespuesta(it!!)
@@ -97,6 +98,7 @@ class RegTarjetaActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(p0: View) {
         when(p0.id){
             R.id.btnregistrartarjeta -> registrarTarjeta()
+            R.id.btnGoBackTarjeta -> finish()
         }
     }
 

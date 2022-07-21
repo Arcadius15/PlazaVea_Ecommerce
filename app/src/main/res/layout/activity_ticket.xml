@@ -6,23 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".activities.pasarela.TicketActivity">
 
-<!--    <ProgressBar
-        android:id="@+id/progressbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminateTint="@color/granate_700"
-        android:indeterminateTintMode="src_in"
-        android:layout_centerInParent="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />-->
-
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="100dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:orientation="horizontal">
@@ -67,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/montserrat_semibold"
-            android:text="Gracias por comprar el Plaza Vea"
+            android:text="@string/gracias"
             />
 
         <LinearLayout
@@ -253,20 +241,19 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:backgroundTint="@color/white"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_registrar"
+            android:id="@+id/btnFinPasarela"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Finalizar"
             android:layout_marginTop="30dp"
-            android:background="@drawable/rounded_button"/>
+            android:background="@drawable/rounded_button"
+            android:text="Finalizar"
+            app:layout_anchor="@+id/btnFinalizar"
+            app:layout_anchorGravity="bottom|center" />
 
     </LinearLayout>
-
-
-
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

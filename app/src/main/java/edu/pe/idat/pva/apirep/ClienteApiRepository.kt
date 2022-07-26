@@ -11,6 +11,8 @@ import retrofit2.Response
 class ClienteApiRepository {
 
     var responseHttp = MutableLiveData<ResponseHttp>()
+    var listTarjetas = MutableLiveData<ArrayList<TarjetaResponse>>()
+    var listDirecciones = MutableLiveData<ArrayList<DireccionResponse>>()
 
     fun registrarDireccion(direccionRequest: DireccionRequest, token: String) : MutableLiveData<ResponseHttp> {
         val call: Call<Void> = RetrofitInstanceCreate
@@ -105,5 +107,47 @@ class ClienteApiRepository {
         })
 
         return responseHttp
+    }
+
+    fun listarTarjetas(idCliente: String, token: String) : MutableLiveData<ArrayList<TarjetaResponse>> {
+        val call: Call<ArrayList<TarjetaResponse>> = RetrofitInstanceCreate
+            .getClienteRoutes.listarTarjetas(idCliente, token)
+
+        call.enqueue(object : Callback<ArrayList<TarjetaResponse>>{
+            override fun onResponse(
+                call: Call<ArrayList<TarjetaResponse>>,
+                response: Response<ArrayList<TarjetaResponse>>
+            ) {
+                listTarjetas.value = response.body()
+            }
+
+            override fun onFailure(call: Call<ArrayList<TarjetaResponse>>, t: Throwable) {
+                Log.e("ERROR!", t.message.toString())
+            }
+
+        })
+
+        return listTarjetas
+    }
+
+    fun listarDirecciones(idCliente: String, token: String) : MutableLiveData<ArrayList<DireccionResponse>> {
+        val call: Call<ArrayList<DireccionResponse>> = RetrofitInstanceCreate
+            .getClienteRoutes.listarDirecciones(idCliente, token)
+
+        call.enqueue(object : Callback<ArrayList<DireccionResponse>>{
+            override fun onResponse(
+                call: Call<ArrayList<DireccionResponse>>,
+                response: Response<ArrayList<DireccionResponse>>
+            ) {
+                listDirecciones.value = response.body()
+            }
+
+            override fun onFailure(call: Call<ArrayList<DireccionResponse>>, t: Throwable) {
+                Log.e("ERROR!", t.message.toString())
+            }
+
+        })
+
+        return listDirecciones
     }
 }

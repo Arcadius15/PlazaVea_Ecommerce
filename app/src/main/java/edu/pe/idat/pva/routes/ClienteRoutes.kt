@@ -1,8 +1,6 @@
 package edu.pe.idat.pva.routes
 
-import edu.pe.idat.pva.models.DireccionRequest
-import edu.pe.idat.pva.models.RucRequest
-import edu.pe.idat.pva.models.TarjetaRequest
+import edu.pe.idat.pva.models.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -19,4 +17,12 @@ interface ClienteRoutes {
     @POST("tarjeta")
     fun registrarTarjeta(@Body tarjetaRequest: TarjetaRequest,
                          @Header("Authorization") token: String) : Call<Void>
+
+    @GET("tarjeta/listar/{idCliente}")
+    fun listarTarjetas(@Path("idCliente") idCliente: String,
+                        @Header("Authorization") token: String) : Call<ArrayList<TarjetaResponse>>
+
+    @GET("direccion/listar/{idCliente}")
+    fun listarDirecciones(@Path("idCliente") idCliente: String,
+                       @Header("Authorization") token: String) : Call<ArrayList<DireccionResponse>>
 }

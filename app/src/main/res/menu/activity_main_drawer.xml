@@ -9,11 +9,11 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/categoriaFragment"
+            android:id="@+id/direccionesFragment"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_direcciones"/>
         <item
-            android:id="@+id/productoFragment"
+            android:id="@+id/tarjetasFragment"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_tarjetas"/>
         <item

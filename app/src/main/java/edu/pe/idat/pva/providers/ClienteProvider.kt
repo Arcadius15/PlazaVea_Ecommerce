@@ -26,4 +26,12 @@ class ClienteProvider : ViewModel() {
     fun registrarTarjeta(tarjetaRequest: TarjetaRequest, token: String){
         responseHttp = repository.registrarTarjeta(tarjetaRequest, token)
     }
+
+    fun listarTarjetas(idCliente: String, token: String) : LiveData<ArrayList<TarjetaResponse>> {
+        return repository.listarTarjetas(idCliente, token)
+    }
+
+    fun listarDirecciones(idCliente: String, token: String) : LiveData<ArrayList<DireccionResponse>> {
+        return repository.listarDirecciones(idCliente, token)
+    }
 }

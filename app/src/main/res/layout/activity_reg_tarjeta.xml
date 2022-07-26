@@ -58,7 +58,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="20dp"
-                    android:hint="Tipo de Tarjeta">
+                    android:hint="@string/hint_tipotarjeta">
 
                     <AutoCompleteTextView
                         android:id="@+id/edtTipoTarjeta"
@@ -82,7 +82,7 @@
                         android:id="@+id/edtNumTarjeta"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Número de Tarjeta"
+                        android:hint="@string/hint_numerotarjeta"
                         android:inputType="number"
                         android:maxLength="16" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -164,7 +164,7 @@
                         android:id="@+id/edtCvv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="CVV"
+                        android:hint="@string/hint_cvv"
                         android:inputType="number"
                         android:maxLength="3" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -182,7 +182,7 @@
                         android:id="@+id/edtNombrePropietario"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Nombre en la Tarjeta"
+                        android:hint="@string/hint_nombreentarjeta"
                         android:inputType="text"
                         android:maxLength="80" />
                 </com.google.android.material.textfield.TextInputLayout>

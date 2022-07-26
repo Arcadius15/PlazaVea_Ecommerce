@@ -6,15 +6,15 @@
     app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/productoFragment"
-        android:name="edu.pe.idat.pva.fragments.ProductoFragment"
-        android:label="fragment_producto"
-        tools:layout="@layout/fragment_producto" />
+        android:id="@+id/tarjetasFragment"
+        android:name="edu.pe.idat.pva.fragments.TarjetasFragment"
+        android:label="@string/frag_tarjetas_label"
+        tools:layout="@layout/fragment_tarjetas" />
     <fragment
-        android:id="@+id/categoriaFragment"
-        android:name="edu.pe.idat.pva.fragments.CategoriaFragment"
-        android:label="fragment_categoria"
-        tools:layout="@layout/fragment_categoria" />
+        android:id="@+id/direccionesFragment"
+        android:name="edu.pe.idat.pva.fragments.DireccionesFragment"
+        android:label="@string/frag_direcciones_label"
+        tools:layout="@layout/fragment_direcciones" />
     <fragment
         android:id="@+id/homeFragment"
         android:name="edu.pe.idat.pva.fragments.HomeFragment"

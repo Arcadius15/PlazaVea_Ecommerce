@@ -79,4 +79,19 @@
     <string name="registrar_ruc">Registrar RUC</string>
     <string name="registrar_tarjeta">Registrar Tarjeta</string>
     <string name="escoger_tipo_label">Escoger Tipo de Ticket</string>
+    <string name="hint_numerotarjeta">Número de Tarjeta</string>
+    <string name="numero_tarjeta">Número de Tarjeta:</string>
+    <string name="hint_tipotarjeta">Tipo de Tarjeta</string>
+    <string name="hint_cvv">CVV</string>
+    <string name="hint_nombreentarjeta">Nombre en la Tarjeta</string>
+    <string name="tipo_tarjeta">Tipo de Tarjeta:</string>
+    <string name="caducidad">Fecha de Caducidad:</string>
+    <string name="nombre_entarjeta">Nombre en la Tarjeta:</string>
+    <string name="sin_tarjetas">Aún no ha registrado ninguna tarjeta</string>
+    <string name="ver_en_mapa">Ver en el mapa</string>
+    <string name="id_direccion">ID de Dirección:</string>
+    <string name="frag_tarjetas_label">Tus Tarjetas</string>
+    <string name="frag_direcciones_label">Tus Direcciones</string>
+    <string name="sin_direcciones">Aún no registró ninguna dirección</string>
+    <string name="registrar_direccion">Registrar Dirección</string>
 </resources>

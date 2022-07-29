@@ -1,12 +1,13 @@
 package edu.pe.idat.pva.activities
 
 import android.app.Activity
-import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 
@@ -19,37 +20,44 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.gson.Gson
 import edu.pe.idat.pva.R
-import edu.pe.idat.pva.databinding.ActivityDireccionRegistroBinding
-import edu.pe.idat.pva.models.*
-import edu.pe.idat.pva.providers.ClienteProvider
+import edu.pe.idat.pva.databinding.ActivityDireccionDetalleBinding
+import edu.pe.idat.pva.models.DireccionPatchRequest
+import edu.pe.idat.pva.models.DireccionResponse
+import edu.pe.idat.pva.models.LoginResponse
+import edu.pe.idat.pva.models.ResponseHttp
+import edu.pe.idat.pva.providers.DireccionProvider
 import edu.pe.idat.pva.utils.SharedPref
-import java.io.IOException
 
-class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener {
+class DireccionDetalleActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener, View.OnClickListener {
 
     private lateinit var mMap: GoogleMap
-    private lateinit var binding: ActivityDireccionRegistroBinding
+    private lateinit var binding: ActivityDireccionDetalleBinding
 
     private lateinit var sharedPref: SharedPref
-
-    private lateinit var usuario: UsuarioResponse
+    private lateinit var direccionProvider: DireccionProvider
 
     private var marker: Marker? = null
 
-    private lateinit var clienteProvider: ClienteProvider
+    private lateinit var direccion: DireccionResponse
+
+    var accion: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityDireccionRegistroBinding.inflate(layoutInflater)
+        binding = ActivityDireccionDetalleBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         sharedPref = SharedPref(this)
 
-        clienteProvider = ViewModelProvider(this)[ClienteProvider::class.java]
+        direccionProvider = ViewModelProvider(this)[DireccionProvider::class.java]
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
+
+        direccion = intent.getSerializableExtra("direccion") as DireccionResponse
+
+        binding.svLocation.setQuery(direccion.direccion,false)
 
         binding.svLocation.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -62,7 +70,7 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
                     var addressList: List<Address>
 
                     if (location != null) {
-                        var geocoder = Geocoder(this@DireccionRegistroActivity)
+                        var geocoder = Geocoder(this@DireccionDetalleActivity)
                         addressList = geocoder.getFromLocationName(location,1)
 
                         var address = addressList[0]
@@ -100,12 +108,11 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
 
         })
 
-        binding.btnGuardarDir.setOnClickListener{
-            guardarDireccion()
-        }
+        binding.btnEditarDir.setOnClickListener(this)
+        binding.btnBorrarDir.setOnClickListener(this)
 
-        clienteProvider.responseHttp.observe(this){
-            obtenerRespuesta(it!!)
+        direccionProvider.responseHttp.observe(this){
+            obtenerRespuesta(it)
         }
 
         mapFragment.getMapAsync(this)
@@ -115,13 +122,11 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
         if (responseHttp.isSuccess){
             Toast.makeText(
                 applicationContext,
-                "Dirección registrada.",
+                "Dirección $accion.",
                 Toast.LENGTH_LONG
             ).show()
-            if (intent.getStringExtra("origen").toString() == "lista") {
-                setResult(Activity.RESULT_OK)
-                finish()
-            }
+            setResult(Activity.RESULT_OK)
+            finish()
         } else {
             Toast.makeText(
                 applicationContext,
@@ -129,44 +134,22 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
                 Toast.LENGTH_LONG
             ).show()
         }
-        binding.btnGuardarDir.isEnabled = true
-    }
-
-    private fun guardarDireccion() {
-        binding.btnGuardarDir.isEnabled = false
-        if (!binding.svLocation.query.toString().isNullOrBlank() && marker != null) {
-            usuario = getUserFromSession()!!
-
-            var clienteIDRequest = ClienteIDRequest(
-                usuario.cliente.idCliente
-            )
-
-            var direccionRequest = DireccionRequest(
-                binding.svLocation.query.toString(),
-                marker!!.position.latitude,
-                marker!!.position.longitude,
-                clienteIDRequest
-            )
-
-            clienteProvider.registrarDireccion(direccionRequest,
-                "Bearer " + getTokenFromSession()!!.token)
-        } else {
-            Toast.makeText(
-                applicationContext,
-                "Por favor, introduzca una dirección",
-                Toast.LENGTH_LONG
-            ).show()
-            binding.btnGuardarDir.isEnabled = true
-        }
+        binding.btnEditarDir.isEnabled = true
+        binding.btnBorrarDir.isEnabled = true
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.setOnMarkerDragListener(this)
 
-        val puntoFijo = LatLng(-12.017195995642483, -77.0737393231985)
-
+        val puntoFijo = LatLng(direccion.latitud, direccion.longitud)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(puntoFijo, 16.0F))
+
+        marker = mMap.addMarker(MarkerOptions()
+            .position(puntoFijo)
+            .title(direccion.direccion)
+            .draggable(true))
+        marker!!.showInfoWindow()
     }
 
     override fun onMarkerDrag(p0: Marker) {
@@ -184,17 +167,6 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
         p0.showInfoWindow()
     }
 
-    private fun getUserFromSession(): UsuarioResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("user").isNullOrBlank()){
-            null
-        } else {
-            val user = gson.fromJson(sharedPref.getData("user"), UsuarioResponse::class.java)
-            user
-        }
-    }
-
     private fun getTokenFromSession(): LoginResponse?{
         val gson = Gson()
 
@@ -206,4 +178,78 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
         }
     }
 
+    override fun onClick(p0: View) {
+        when (p0.id) {
+            R.id.btnEditarDir -> editarDireccion()
+            R.id.btnBorrarDir -> borrarDireccion()
+        }
+    }
+
+    private fun confirmarEdicion() {
+        AlertDialog.Builder(this)
+            .setTitle("Confirmar Edición")
+            .setMessage("¿Seguro que desea editar esta dirección?")
+            .setPositiveButton("Sí") { dialogInterface, i ->
+                accion = "editada"
+
+                val direccionPatchRequest = DireccionPatchRequest(
+                    binding.svLocation.query.toString(),
+                    marker!!.position.latitude,
+                    marker!!.position.longitude,
+                )
+
+                direccionProvider.editarDireccion(direccion.idDireccion,
+                    direccionPatchRequest,
+                    "Bearer " + getTokenFromSession()!!.token)
+                dialogInterface.cancel()
+            }
+            .setNegativeButton("No"){ dialogInterface, i ->
+                binding.btnEditarDir.isEnabled = true
+                binding.btnBorrarDir.isEnabled = true
+                dialogInterface.cancel()
+            }
+            .show()
+    }
+
+    private fun confirmarBorrar() {
+        AlertDialog.Builder(this)
+            .setTitle("Confirmar Borrar")
+            .setMessage("¿Seguro que desea borrar esta dirección?")
+            .setPositiveButton("Sí") { dialogInterface, i ->
+                accion = "borrada"
+
+                direccionProvider.borrarDireccion(direccion.idDireccion,
+                    "Bearer " + getTokenFromSession()!!.token)
+                dialogInterface.cancel()
+            }
+            .setNegativeButton("No"){ dialogInterface, i ->
+                binding.btnEditarDir.isEnabled = true
+                binding.btnBorrarDir.isEnabled = true
+                dialogInterface.cancel()
+            }
+            .show()
+    }
+
+    private fun borrarDireccion() {
+        binding.btnEditarDir.isEnabled = false
+        binding.btnBorrarDir.isEnabled = false
+
+        confirmarBorrar()
+    }
+
+    private fun editarDireccion() {
+        binding.btnEditarDir.isEnabled = false
+        binding.btnBorrarDir.isEnabled = false
+        if (!binding.svLocation.query.toString().isNullOrBlank() && marker != null) {
+            confirmarEdicion()
+        } else {
+            Toast.makeText(
+                applicationContext,
+                "Por favor, introduzca una dirección",
+                Toast.LENGTH_LONG
+            ).show()
+            binding.btnEditarDir.isEnabled = true
+            binding.btnBorrarDir.isEnabled = true
+        }
+    }
 }

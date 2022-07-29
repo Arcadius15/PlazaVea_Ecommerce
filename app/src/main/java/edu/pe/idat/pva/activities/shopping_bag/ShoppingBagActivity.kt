@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,17 +13,14 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.activities.HomeActivity
-import edu.pe.idat.pva.activities.MainActivity
 import edu.pe.idat.pva.activities.pasarela.EscogerTipoActivity
 import edu.pe.idat.pva.adapter.ShoppingBagAdapter
 import edu.pe.idat.pva.databinding.ActivityShoppingBagBinding
-import edu.pe.idat.pva.models.Product
 import edu.pe.idat.pva.models.Producto
 import edu.pe.idat.pva.utils.SharedPref
 
 class ShoppingBagActivity : AppCompatActivity(), View.OnClickListener {
 
-    val TAG = "ShoppingBag"
     private lateinit var binding: ActivityShoppingBagBinding
 
     var adapter: ShoppingBagAdapter? = null
@@ -43,7 +38,6 @@ class ShoppingBagActivity : AppCompatActivity(), View.OnClickListener {
         binding.rvShoppingBag.layoutManager = LinearLayoutManager(this)
 
         getProductsFromSharedPref()
-        Log.d(TAG, selectProduct.toString())
 
         binding.btnContinuar.setOnClickListener(this)
     }

@@ -6,7 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import edu.pe.idat.pva.databinding.CardviewTarjetaBinding
 import edu.pe.idat.pva.models.TarjetaResponse
 
-class TarjetaAdapter(private var tarjetas: ArrayList<TarjetaResponse>): RecyclerView.Adapter<TarjetaAdapter.ViewHolder>() {
+class TarjetaAdapter(private var tarjetas: ArrayList<TarjetaResponse>,
+                     private val listener: ITarjetaAdapter): RecyclerView.Adapter<TarjetaAdapter.ViewHolder>() {
 
     inner class ViewHolder (val binding: CardviewTarjetaBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -20,17 +21,25 @@ class TarjetaAdapter(private var tarjetas: ArrayList<TarjetaResponse>): Recycler
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder){
             with(tarjetas[position]){
-                binding.tvNumTarjeta.text = "****${this.numeroTarjeta.takeLast(4)}"
-                when (this.tipo){
+                binding.tvNumTarjeta.text = "****${numeroTarjeta.takeLast(4)}"
+                when (tipo){
                     1 -> binding.tvTipoTarjeta.text = "Débito"
                     2 -> binding.tvTipoTarjeta.text = "Crédito"
                 }
-                binding.tvCaducidad.text = this.fechaCaducidad
-                binding.tvNombreEnTarjeta.text = this.nombrePropietario
+                binding.tvCaducidad.text = fechaCaducidad
+                binding.tvNombreEnTarjeta.text = nombrePropietario
+                binding.llbotondetalletarjeta.setOnClickListener{ verDetalles(this) }
             }
         }
     }
 
+    private fun verDetalles(tarjetaResponse: TarjetaResponse) {
+        listener.goToTarjetaDet(tarjetaResponse)
+    }
+
     override fun getItemCount() = tarjetas.size
 
+    interface ITarjetaAdapter{
+        fun goToTarjetaDet(tarjetaResponse: TarjetaResponse)
+    }
 }

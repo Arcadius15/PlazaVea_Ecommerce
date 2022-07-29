@@ -2,21 +2,12 @@ package edu.pe.idat.pva.adapter
 
 import android.app.Activity
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.gson.Gson
-import edu.pe.idat.pva.R
-import edu.pe.idat.pva.activities.products.ProductsActivity
 import edu.pe.idat.pva.activities.products.detail.ProductsDetailActivity
 import edu.pe.idat.pva.databinding.CardviewShoppingbagBinding
-import edu.pe.idat.pva.models.Product
 import edu.pe.idat.pva.models.Producto
 import edu.pe.idat.pva.utils.SharedPref
 

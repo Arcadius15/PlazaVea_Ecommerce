@@ -42,4 +42,12 @@ object RetrofitInstanceCreate {
     val getOrdenRoutes: OrdenRoutes by lazy {
         buildRetrofit().create(OrdenRoutes::class.java)
     }
+
+    val getDireccionRoutes: DireccionRoutes by lazy {
+        buildRetrofit().create(DireccionRoutes::class.java)
+    }
+
+    val getTarjetaRoutes: TarjetaRoutes by lazy {
+        buildRetrofit().create(TarjetaRoutes::class.java)
+    }
 }

@@ -1,5 +1,6 @@
 package edu.pe.idat.pva.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -69,14 +70,10 @@ class RegTarjetaActivity : AppCompatActivity(), View.OnClickListener {
                 "Tarjeta Registrada.",
                 Toast.LENGTH_LONG
             ).show()
-            var i = Intent(this,ResumenActivity::class.java)
-            i.putExtra("tipo",intent.getStringExtra("tipo").toString())
-            i.putExtra("direccion",intent.getStringExtra("direccion").toString())
-            i.putExtra("numtarjeta",binding.edtNumTarjeta.text.toString())
-            if (!intent.getStringExtra("ruc").toString().equals(null)) {
-                i.putExtra("ruc",intent.getStringExtra("ruc").toString())
+            if (intent.getStringExtra("origen").toString() == "lista") {
+                setResult(Activity.RESULT_OK)
+                finish()
             }
-            startActivity(i)
         } else {
             Toast.makeText(
                 applicationContext,

@@ -14,7 +14,7 @@ import retrofit2.Response
 class ProductoApiRepository {
 
     var productoResponse = MutableLiveData<ProductosCategoriaResponse>()
-
+    var producto = MutableLiveData<Producto>()
 
     fun findByCategory(idSubcategoria: String): LiveData<ProductosCategoriaResponse> {
         val call: Call<ProductosCategoriaResponse> = RetrofitInstanceCreate
@@ -33,10 +33,21 @@ class ProductoApiRepository {
         return productoResponse
     }
 
+    fun findById(idProducto: String): LiveData<Producto> {
+        val call: Call<Producto> = RetrofitInstanceCreate
+            .getProductsRoutes.findById(idProducto)
+        call.enqueue(object : Callback<Producto>{
+            override fun onResponse(call: Call<Producto>, response: Response<Producto>) {
+                producto.value = response.body()
+            }
 
+            override fun onFailure(call: Call<Producto>, t: Throwable) {
+                Log.e("ERROR!", t.message.toString())
+            }
 
+        })
 
-
-   
+        return producto
+    }
 
 }

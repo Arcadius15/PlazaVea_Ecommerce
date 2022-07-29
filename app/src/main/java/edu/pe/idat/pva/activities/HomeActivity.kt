@@ -20,6 +20,7 @@ import edu.pe.idat.pva.databinding.ActivityHomeBinding
 import edu.pe.idat.pva.models.UsuarioResponse
 import edu.pe.idat.pva.utils.SharedPref
 
+
 class HomeActivity : AppCompatActivity() {
 
     val TAG = "HomeActivity"
@@ -33,7 +34,6 @@ class HomeActivity : AppCompatActivity() {
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //setupRecyclerView()
         sharedPref= SharedPref(this)
 
         setSupportActionBar(binding.appBarHome.toolbar)
@@ -42,8 +42,7 @@ class HomeActivity : AppCompatActivity() {
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_home)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.homeFragment, R.id.direccionesFragment, R.id.tarjetasFragment, R.id.historialFragment
@@ -61,6 +60,7 @@ class HomeActivity : AppCompatActivity() {
         header.findViewById<TextView>(R.id.tvUsuario).text = usuario.cliente.nombre +
                                                                 " " + usuario.cliente.apellidos
         header.findViewById<TextView>(R.id.tvCorreo).text = usuario.email
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

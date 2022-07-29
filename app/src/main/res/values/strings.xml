@@ -94,4 +94,8 @@
     <string name="frag_direcciones_label">Tus Direcciones</string>
     <string name="sin_direcciones">Aún no registró ninguna dirección</string>
     <string name="registrar_direccion">Registrar Dirección</string>
+    <string name="boton_borrar">Borrar</string>
+    <string name="title_activity_direccion_detalle">DireccionDetalleActivity</string>
+    <string name="boton_editar">Editar</string>
+    <string name="editar_tarjeta">Editar Tarjeta</string>
 </resources>

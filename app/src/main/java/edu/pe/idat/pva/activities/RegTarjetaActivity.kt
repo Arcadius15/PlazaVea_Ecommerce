@@ -85,10 +85,9 @@ class RegTarjetaActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun seleccionarTipo() {
-        if (binding.edtTipoTarjeta.text.toString() == "Débito") {
-            tipo = 1
-        } else if (binding.edtTipoTarjeta.text.toString() == "Crédito") {
-            tipo = 2
+        when (binding.edtTipoTarjeta.text.toString()) {
+            "Débito" -> tipo = 1
+            "Crédito" -> tipo = 2
         }
     }
 

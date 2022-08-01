@@ -1,5 +1,6 @@
 package edu.pe.idat.pva.activities
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -59,9 +60,10 @@ class RegRucActivity : AppCompatActivity() {
                 "RUC registrado.",
                 Toast.LENGTH_LONG
             ).show()
-            startActivity(Intent(this,DireccionRegistroActivity::class.java)
-                .putExtra("tipo",intent.getStringExtra("tipo").toString())
-                .putExtra("ruc",binding.edtRUC.text.toString()))
+            if (intent.getStringExtra("origen").toString() == "lista") {
+                setResult(Activity.RESULT_OK)
+                finish()
+            }
         } else {
             Toast.makeText(
                 applicationContext,

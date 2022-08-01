@@ -13,6 +13,7 @@ class ClienteApiRepository {
     var responseHttp = MutableLiveData<ResponseHttp>()
     var listTarjetas = MutableLiveData<ArrayList<TarjetaResponse>>()
     var listDirecciones = MutableLiveData<ArrayList<DireccionResponse>>()
+    var listRuc = MutableLiveData<ArrayList<RucResponse>>()
 
     fun registrarDireccion(direccionRequest: DireccionRequest, token: String) : MutableLiveData<ResponseHttp> {
         val call: Call<Void> = RetrofitInstanceCreate
@@ -149,5 +150,26 @@ class ClienteApiRepository {
         })
 
         return listDirecciones
+    }
+
+    fun listarRuc(idCliente: String, token: String) : MutableLiveData<ArrayList<RucResponse>> {
+        val call: Call<ArrayList<RucResponse>> = RetrofitInstanceCreate
+            .getClienteRoutes.listarRuc(idCliente, token)
+
+        call.enqueue(object : Callback<ArrayList<RucResponse>>{
+            override fun onResponse(
+                call: Call<ArrayList<RucResponse>>,
+                response: Response<ArrayList<RucResponse>>
+            ) {
+                listRuc.value = response.body()
+            }
+
+            override fun onFailure(call: Call<ArrayList<RucResponse>>, t: Throwable) {
+                Log.e("ERROR!", t.message.toString())
+            }
+
+        })
+
+        return listRuc
     }
 }

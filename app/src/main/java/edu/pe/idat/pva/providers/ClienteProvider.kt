@@ -34,4 +34,8 @@ class ClienteProvider : ViewModel() {
     fun listarDirecciones(idCliente: String, token: String) : LiveData<ArrayList<DireccionResponse>> {
         return repository.listarDirecciones(idCliente, token)
     }
+
+    fun listarRuc(idCliente: String, token: String) : LiveData<ArrayList<RucResponse>> {
+        return repository.listarRuc(idCliente, token)
+    }
 }

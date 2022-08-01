@@ -25,4 +25,8 @@ interface ClienteRoutes {
     @GET("direccion/listar/{idCliente}")
     fun listarDirecciones(@Path("idCliente") idCliente: String,
                        @Header("Authorization") token: String) : Call<ArrayList<DireccionResponse>>
+
+    @GET("ruc/listar/{idCliente}")
+    fun listarRuc(@Path("idCliente") idCliente: String,
+                          @Header("Authorization") token: String) : Call<ArrayList<RucResponse>>
 }

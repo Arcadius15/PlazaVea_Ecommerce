@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import edu.pe.idat.pva.apirep.TarjetaApiRepository
 import edu.pe.idat.pva.models.ResponseHttp
+import edu.pe.idat.pva.models.TarjetaPatchRequest
 
 class TarjetaProvider : ViewModel() {
 
@@ -15,4 +16,11 @@ class TarjetaProvider : ViewModel() {
         responseHttp = repository.responseHttp
     }
 
+    fun editarTarjeta(idTarjeta: Int, tarjetaPatchRequest: TarjetaPatchRequest, token: String){
+        responseHttp = repository.editarTarjeta(idTarjeta, tarjetaPatchRequest, token)
+    }
+
+    fun borrarTarjeta(idTarjeta: Int, token: String){
+        responseHttp = repository.borrarTarjeta(idTarjeta,token)
+    }
 }

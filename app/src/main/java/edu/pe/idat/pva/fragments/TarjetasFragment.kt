@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.activities.DetalleTarjetaActivity
+import edu.pe.idat.pva.activities.ListRucActivity
 import edu.pe.idat.pva.activities.RegTarjetaActivity
 import edu.pe.idat.pva.adapter.TarjetaAdapter
 import edu.pe.idat.pva.databinding.FragmentTarjetasBinding
@@ -51,6 +52,7 @@ class TarjetasFragment : Fragment(), View.OnClickListener, TarjetaAdapter.ITarje
         getTarjetas()
 
         binding.btnGoRegTarjeta.setOnClickListener(this)
+        binding.btnGoListRuc.setOnClickListener(this)
 
         return binding.root
     }
@@ -94,6 +96,7 @@ class TarjetasFragment : Fragment(), View.OnClickListener, TarjetaAdapter.ITarje
         when (p0.id) {
             R.id.btnGoRegTarjeta -> launcher.launch(Intent(requireActivity(),RegTarjetaActivity::class.java)
                 .putExtra("origen","lista"))
+            R.id.btnGoListRuc -> startActivity(Intent(requireActivity(),ListRucActivity::class.java))
         }
     }
 

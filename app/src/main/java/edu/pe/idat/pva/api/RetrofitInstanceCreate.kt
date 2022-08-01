@@ -50,4 +50,8 @@ object RetrofitInstanceCreate {
     val getTarjetaRoutes: TarjetaRoutes by lazy {
         buildRetrofit().create(TarjetaRoutes::class.java)
     }
+
+    val getRucRoutes: RucRoutes by lazy {
+        buildRetrofit().create(RucRoutes::class.java)
+    }
 }

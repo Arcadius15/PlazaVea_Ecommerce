@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.TarjetasFragment">
+    tools:context=".activities.ListRucActivity">
 
     <ProgressBar
-        android:id="@+id/progressbarTarjetas"
+        android:id="@+id/progressbarRuc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminateTint="@color/granate_700"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvMensajeSinTarjetas"
+        android:id="@+id/tvMensajeSinRuc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -27,33 +27,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/sin_tarjetas"></TextView>
+        android:text="@string/sin_rucs"></TextView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
-            android:id="@+id/btnGoRegTarjeta"
-            android:layout_width="260dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp"
-            android:text="@string/registrar_tarjeta"/>
 
         <Button
-            android:id="@+id/btnGoListRuc"
-            android:layout_width="105dp"
+            android:id="@+id/btnGoListTarjetas"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:text="@string/rucs"
+            android:layout_marginLeft="10dp"
+            android:text="@string/volver"
             android:textColor="@color/blue_700"
             android:textStyle="bold"
-            app:backgroundTint="@color/blue_300"/>
+            app:backgroundTint="@color/blue_300" />
+        <Button
+            android:id="@+id/btnGoRegRuc"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:text="@string/registrar_ruc"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvTarjetas"
+        android:id="@+id/rvRucs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"

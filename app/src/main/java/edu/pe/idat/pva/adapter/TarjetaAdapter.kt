@@ -26,7 +26,7 @@ class TarjetaAdapter(private var tarjetas: ArrayList<TarjetaResponse>,
                     1 -> binding.tvTipoTarjeta.text = "Débito"
                     2 -> binding.tvTipoTarjeta.text = "Crédito"
                 }
-                binding.tvCaducidad.text = fechaCaducidad
+                binding.tvCaducidad.text = fechaCaducidad.substring(5,7) + "/" + fechaCaducidad.substring(2,4)
                 binding.tvNombreEnTarjeta.text = nombrePropietario
                 binding.llbotondetalletarjeta.setOnClickListener{ verDetalles(this) }
             }

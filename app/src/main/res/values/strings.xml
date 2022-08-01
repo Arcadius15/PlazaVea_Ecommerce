@@ -98,4 +98,11 @@
     <string name="title_activity_direccion_detalle">DireccionDetalleActivity</string>
     <string name="boton_editar">Editar</string>
     <string name="editar_tarjeta">Editar Tarjeta</string>
+    <string name="numero_ruc">Número de RUC</string>
+    <string name="id_ruc">ID de RUC:</string>
+    <string name="numero_ruc_lista">Número de RUC:</string>
+    <string name="frag_ruc_label">Tus RUC</string>
+    <string name="rucs">Tus RUC</string>
+    <string name="sin_rucs">Aún no registró ningún número de RUC</string>
+    <string name="volver">Volver</string>
 </resources>

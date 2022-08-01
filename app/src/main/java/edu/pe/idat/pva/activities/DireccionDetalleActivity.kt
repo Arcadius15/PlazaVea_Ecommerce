@@ -122,7 +122,7 @@ class DireccionDetalleActivity : AppCompatActivity(), OnMapReadyCallback, Google
         if (responseHttp.isSuccess){
             Toast.makeText(
                 applicationContext,
-                "Dirección $accion.",
+                "Dirección $accion",
                 Toast.LENGTH_LONG
             ).show()
             setResult(Activity.RESULT_OK)

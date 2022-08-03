@@ -118,10 +118,9 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
                 "Dirección registrada.",
                 Toast.LENGTH_LONG
             ).show()
-            if (intent.getStringExtra("origen").toString() == "lista") {
-                setResult(Activity.RESULT_OK)
-                finish()
-            }
+
+            setResult(Activity.RESULT_OK)
+            finish()
         } else {
             Toast.makeText(
                 applicationContext,

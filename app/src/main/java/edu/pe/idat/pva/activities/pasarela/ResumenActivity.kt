@@ -1,9 +1,14 @@
 package edu.pe.idat.pva.activities.pasarela
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.RadioGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
@@ -13,6 +18,7 @@ import edu.pe.idat.pva.activities.RegisterActivity
 import edu.pe.idat.pva.adapter.ShoppingBagAdapter
 import edu.pe.idat.pva.databinding.ActivityResumenBinding
 import edu.pe.idat.pva.models.*
+import edu.pe.idat.pva.providers.ClienteProvider
 import edu.pe.idat.pva.providers.OrdenProvider
 import edu.pe.idat.pva.utils.SharedPref
 import java.lang.StringBuilder
@@ -23,16 +29,19 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ResumenActivity : AppCompatActivity() {
+class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     private lateinit var binding: ActivityResumenBinding
     private lateinit var sharedPref: SharedPref
     private lateinit var ordenProvider: OrdenProvider
+    private lateinit var clienteProvider: ClienteProvider
 
     var gson = Gson()
 
     var monto = 0.0
     var igv = 0.0
     var total = 0.0
+
+    var tipoFop = 0
 
     var ordenIdGenerada = ""
 
@@ -41,26 +50,25 @@ class ResumenActivity : AppCompatActivity() {
         binding = ActivityResumenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.llpasarela.visibility = View.GONE
+
         sharedPref = SharedPref(this)
 
         ordenProvider = ViewModelProvider(this)[OrdenProvider::class.java]
+        clienteProvider = ViewModelProvider(this)[ClienteProvider::class.java]
 
-        if (intent.getStringExtra("tipo").equals("Factura")) {
-            binding.tvTipoTicket.text = intent.getStringExtra("tipo").toString() +
-                                        "\nRUC: ${intent.getStringExtra("ruc").toString()}"
-        } else {
-            binding.tvTipoTicket.text = intent.getStringExtra("tipo").toString()
-        }
+        binding.llRuc.visibility = View.GONE
+
+        cargarListas()
+
+        binding.tipogroup.setOnCheckedChangeListener(this)
 
         var fechaEstimada = Calendar.getInstance()
         fechaEstimada.add(Calendar.DATE, 10)
         val df = SimpleDateFormat("yyyy-MM-dd")
         df.timeZone = TimeZone.getTimeZone("America/Lima")
 
-        binding.tvDireccion.text = intent.getStringExtra("direccion").toString() +
-                                    "\nFecha Estimada de Entrega: ${df.format(fechaEstimada.time)}"
-
-        binding.tvMetodoPago.text = "Tarjeta: ****${intent.getStringExtra("numtarjeta")!!.takeLast(4)}"
+        binding.tvFechaEstimada.text = "Fecha Estimada de Entrega: ${df.format(fechaEstimada.time)}"
 
         val sb = StringBuilder()
 
@@ -78,8 +86,11 @@ class ResumenActivity : AppCompatActivity() {
 
         binding.tvProductoslista.text = sb.toString()
 
-        binding.btnconfcompra.setOnClickListener{ confirmarCompra() }
-        binding.btnGoBackResumen.setOnClickListener{ finish() }
+        binding.progressbarPasarela.visibility = View.GONE
+        binding.llpasarela.visibility = View.VISIBLE
+
+        binding.btnconfcompra.setOnClickListener(this)
+        binding.btnGoBackResumen.setOnClickListener(this)
 
         ordenProvider.ordenId.observe(this){
             try {
@@ -113,6 +124,10 @@ class ResumenActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG).show()
         }
         binding.btnconfcompra.isEnabled = true
+        binding.btnGoBackResumen.isEnabled = true
+        binding.btnregnuevruc.isEnabled = true
+        binding.btnregnuevdir.isEnabled = true
+        binding.btnregnuevtar.isEnabled = true
     }
 
     private fun obtenerOrdenRegistrada(ordenId: String) {
@@ -143,22 +158,42 @@ class ResumenActivity : AppCompatActivity() {
 
     private fun confirmarCompra() {
         binding.btnconfcompra.isEnabled = false
+        binding.btnGoBackResumen.isEnabled = false
+        binding.btnregnuevruc.isEnabled = false
+        binding.btnregnuevdir.isEnabled = false
+        binding.btnregnuevtar.isEnabled = false
         try{
-            AlertDialog.Builder(this)
-                .setTitle("Confirmar Compra")
-                .setMessage("¿Seguro que desea confirmar la compra?")
-                .setPositiveButton("Sí") { dialogInterface, i ->
-                    procesarOrden()
-                    dialogInterface.cancel()
-                }
-                .setNegativeButton("No"){ dialogInterface, i ->
-                    binding.btnconfcompra.isEnabled = true
-                    dialogInterface.cancel()
-                }
-                .show()
+            if (validarCampos()) {
+                AlertDialog.Builder(this)
+                    .setTitle("Confirmar Compra")
+                    .setMessage("¿Seguro que desea confirmar la compra?")
+                    .setPositiveButton("Sí") { dialogInterface, i ->
+                        procesarOrden()
+                        dialogInterface.cancel()
+                    }
+                    .setNegativeButton("No"){ dialogInterface, i ->
+                        binding.btnconfcompra.isEnabled = true
+                        binding.btnGoBackResumen.isEnabled = true
+                        binding.btnregnuevruc.isEnabled = true
+                        binding.btnregnuevdir.isEnabled = true
+                        binding.btnregnuevtar.isEnabled = true
+                        dialogInterface.cancel()
+                    }
+                    .show()
+            } else {
+                binding.btnconfcompra.isEnabled = true
+                binding.btnGoBackResumen.isEnabled = true
+                binding.btnregnuevruc.isEnabled = true
+                binding.btnregnuevdir.isEnabled = true
+                binding.btnregnuevtar.isEnabled = true
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             binding.btnconfcompra.isEnabled = true
+            binding.btnGoBackResumen.isEnabled = true
+            binding.btnregnuevruc.isEnabled = true
+            binding.btnregnuevdir.isEnabled = true
+            binding.btnregnuevtar.isEnabled = true
         }
     }
 
@@ -166,7 +201,7 @@ class ResumenActivity : AppCompatActivity() {
         val clienteIDRequest = ClienteIDRequest(getUserFromSession()!!.cliente.idCliente)
         val tiendaIDRequest = TiendaIDRequest("T_00001")
 
-        var listOrdenDetalle = ArrayList<OrdendetalleRequest>()
+        val listOrdenDetalle = ArrayList<OrdendetalleRequest>()
 
         getProductsFromSharedPref().forEach {
             val productoIDRequest = ProductoIDRequest(it.idProducto)
@@ -180,22 +215,23 @@ class ResumenActivity : AppCompatActivity() {
             listOrdenDetalle.add(ordendetalleRequest)
         }
 
-        var fechaActual = Calendar.getInstance()
+        val fechaActual = Calendar.getInstance()
         val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         df.timeZone = TimeZone.getTimeZone("America/Lima")
 
-        var tipoFop: Int
-        if (intent.getStringExtra("tipo").equals("Factura")) {
-            tipoFop = 2
-        } else {
-            tipoFop = 1
+        var formaPago = ""
+
+        when (tipoFop) {
+            1 -> formaPago = binding.edtTarjetaSelect.text.toString()
+            2 -> formaPago = binding.edtTarjetaSelect.text.toString() + " " +
+                        binding.edtRucSelect.text.toString()
         }
 
         val ordenRequest = OrdenRequest(
             clienteIDRequest,
-            intent.getStringExtra("direccion").toString(),
+            binding.edtDireccionSelect.text.toString(),
             df.format(fechaActual.time),
-            intent.getStringExtra("numtarjeta").toString(),
+            formaPago,
             String.format("%.2f",igv).toDouble(),
             String.format("%.2f",monto).toDouble(),
             listOrdenDetalle,
@@ -206,11 +242,110 @@ class ResumenActivity : AppCompatActivity() {
         )
 
         ordenProvider.registrarOrden(ordenRequest,
-                                    "Bearer ${getTokenFromSession()!!.token}")
+            "Bearer ${getTokenFromSession()!!.token}")
+    }
+
+    private fun cargarListas(){
+        clienteProvider.listarRuc(getUserFromSession()!!.cliente.idCliente, "Bearer " + getTokenFromSession()!!.token).observe(this){
+            val rucs = ArrayList<String>()
+
+            if (it != null) {
+                it.forEach { rr ->
+                    rucs.add(rr.numeroRuc)
+                }
+            } else {
+                rucs.add("No tiene ningún RUC")
+            }
+
+            val adapterRuc = ArrayAdapter(
+                this,
+                R.layout.drop_down_item,
+                rucs
+            )
+
+            binding.edtRucSelect.setAdapter(adapterRuc)
+        }
+
+        clienteProvider.listarDirecciones(getUserFromSession()!!.cliente.idCliente, "Bearer " + getTokenFromSession()!!.token).observe(this){
+            val direcciones = ArrayList<String>()
+
+            if (it != null) {
+                it.forEach { dr ->
+                    direcciones.add(dr.direccion)
+                }
+            } else {
+                direcciones.add("No tiene ninguna dirección")
+            }
+
+            val adapterDir = ArrayAdapter(
+                this,
+                R.layout.drop_down_item,
+                direcciones
+            )
+
+            binding.edtDireccionSelect.setAdapter(adapterDir)
+        }
+
+        clienteProvider.listarTarjetas(getUserFromSession()!!.cliente.idCliente, "Bearer " + getTokenFromSession()!!.token).observe(this){
+            val tarjetas = ArrayList<String>()
+
+            if (it != null) {
+                it.forEach { tr ->
+                    tarjetas.add(tr.numeroTarjeta)
+                }
+            } else {
+                tarjetas.add("No tiene ninguna tarjeta")
+            }
+
+            val adapterTar = ArrayAdapter(
+                this,
+                R.layout.drop_down_item,
+                tarjetas
+            )
+
+            binding.edtTarjetaSelect.setAdapter(adapterTar)
+        }
+    }
+
+    private fun validarCampos() : Boolean {
+        if (tipoFop == 0) {
+            Toast.makeText(this,
+                "Seleccione un tipo de ticket",
+                Toast.LENGTH_LONG).show()
+            return false
+        }
+
+        if (tipoFop == 2) {
+            if (binding.edtRucSelect.text.toString().isNullOrBlank() ||
+                binding.edtRucSelect.text.toString() == "No tiene ningún RUC") {
+                Toast.makeText(this,
+                    "Seleccione o registre un RUC",
+                    Toast.LENGTH_LONG).show()
+                return false
+            }
+        }
+
+        if (binding.edtDireccionSelect.text.toString().isNullOrBlank() ||
+            binding.edtDireccionSelect.text.toString() == "No tiene ninguna dirección") {
+            Toast.makeText(this,
+                "Seleccione o registre una dirección",
+                Toast.LENGTH_LONG).show()
+            return false
+        }
+
+        if (binding.edtTarjetaSelect.text.toString().isNullOrBlank() ||
+            binding.edtTarjetaSelect.text.toString() == "No tiene ninguna tarjeta") {
+            Toast.makeText(this,
+                "Seleccione o registre una tarjeta",
+                Toast.LENGTH_LONG).show()
+            return false
+        }
+
+        return true
     }
 
     private fun getProductsFromSharedPref() : ArrayList<Producto> {
-        var selectProduct: ArrayList<Producto>
+        val selectProduct: ArrayList<Producto>
         val type = object : TypeToken<ArrayList<Producto>>() {}.type
         selectProduct = gson.fromJson(sharedPref.getData("shopBag"), type)
         return selectProduct
@@ -235,6 +370,38 @@ class ResumenActivity : AppCompatActivity() {
         } else {
             val token = gson.fromJson(sharedPref.getData("token"), LoginResponse::class.java)
             token
+        }
+    }
+
+    override fun onClick(p0: View) {
+        when (p0.id) {
+            R.id.btnconfcompra -> confirmarCompra()
+            R.id.btnGoBackResumen -> finish()
+        }
+    }
+
+    override fun onCheckedChanged(p0: RadioGroup, checkedId: Int) {
+        when (checkedId) {
+            R.id.rbBoleta -> {
+                tipoFop = 1
+                binding.llRuc.visibility = View.GONE
+            }
+            R.id.rbFactura -> {
+                tipoFop = 2
+                binding.llRuc.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private val launcher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            binding.llpasarela.visibility = View.GONE
+            binding.progressbarPasarela.visibility = View.VISIBLE
+            cargarListas()
+            binding.progressbarPasarela.visibility = View.GONE
+            binding.llpasarela.visibility = View.VISIBLE
         }
     }
 }

@@ -56,7 +56,7 @@ class TicketActivity : AppCompatActivity(){
             binding.tvTicketTipo.text = "Boleta"
         }
 
-        binding.tvTicketMetodo.text = "Tarjeta: ****${ordenResponse.formaPago.takeLast(4)}"
+        binding.tvTicketMetodo.text = "Tarjeta: ****${ordenResponse.formaPago.take(16).takeLast(4)}"
         binding.tvTicketFecha.text = ordenResponse.fecha
 
         val sb = StringBuilder()

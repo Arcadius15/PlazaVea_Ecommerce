@@ -60,10 +60,9 @@ class RegRucActivity : AppCompatActivity() {
                 "RUC registrado.",
                 Toast.LENGTH_LONG
             ).show()
-            if (intent.getStringExtra("origen").toString() == "lista") {
-                setResult(Activity.RESULT_OK)
-                finish()
-            }
+
+            setResult(Activity.RESULT_OK)
+            finish()
         } else {
             Toast.makeText(
                 applicationContext,

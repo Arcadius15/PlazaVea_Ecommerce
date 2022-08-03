@@ -14,14 +14,16 @@ import edu.pe.idat.pva.databinding.FragmentHistorialBinding
 import edu.pe.idat.pva.models.LoginResponse
 import edu.pe.idat.pva.models.UsuarioResponse
 import edu.pe.idat.pva.providers.OrdenProvider
+import edu.pe.idat.pva.providers.ProductsProvider
 import edu.pe.idat.pva.utils.SharedPref
 
-class HistorialFragment : Fragment() {
+class HistorialFragment : Fragment(), HistorialAdapter.IHistorialAdapter {
 
     private var _binding: FragmentHistorialBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var ordenProvider: OrdenProvider
+    private lateinit var productsProvider: ProductsProvider
     private lateinit var sharedPref: SharedPref
 
     override fun onCreateView(
@@ -31,6 +33,7 @@ class HistorialFragment : Fragment() {
         _binding = FragmentHistorialBinding.inflate(inflater, container, false)
 
         ordenProvider = ViewModelProvider(requireActivity())[OrdenProvider::class.java]
+        productsProvider = ViewModelProvider(requireActivity())[ProductsProvider::class.java]
 
         binding.tvMensajeSinCompras.visibility = View.GONE
 
@@ -48,7 +51,7 @@ class HistorialFragment : Fragment() {
         ordenProvider.getAllByCliente(getUserFromSession()!!.cliente.idCliente,
                                         "Bearer ${getTokenFromSession()!!.token}").observe(viewLifecycleOwner){
                                             if (it != null){
-                                                binding.rvHistorial.adapter = HistorialAdapter(it.content)
+                                                binding.rvHistorial.adapter = HistorialAdapter(it.content,this)
                                                 binding.progressbarHistorial.visibility = View.GONE
                                             } else {
                                                 binding.progressbarHistorial.visibility = View.GONE
@@ -77,5 +80,15 @@ class HistorialFragment : Fragment() {
             val token = gson.fromJson(sharedPref.getData("token"), LoginResponse::class.java)
             token
         }
+    }
+
+    override fun getProductImage(idProducto: String): String {
+        var url = ""
+
+        productsProvider.findById(idProducto).observe(requireActivity()){
+            url = it.imagenUrl
+        }
+
+        return url
     }
 }

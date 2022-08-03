@@ -105,4 +105,9 @@
     <string name="rucs">Tus RUC</string>
     <string name="sin_rucs">Aún no registró ningún número de RUC</string>
     <string name="volver">Volver</string>
+    <string name="ruc">RUC</string>
+    <string name="o">O</string>
+    <string name="boton_regnuevoruc">Registrar Nuevo RUC</string>
+    <string name="boton_regnuevadir">Registrar Nueva Dirección</string>
+    <string name="boton_regnuevatar">Registrar Nueva Tarjeta</string>
 </resources>

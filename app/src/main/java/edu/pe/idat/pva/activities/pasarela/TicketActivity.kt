@@ -62,7 +62,7 @@ class TicketActivity : AppCompatActivity(){
         val sb = StringBuilder()
 
         ordenResponse.ordendetalle.forEach {
-            sb.append("${it.producto.idProducto} x ${it.cantidad} ..... S/${it.precio * it.cantidad}\n")
+            sb.append("${it.producto.nombre} x ${it.cantidad} ..... S/${it.precio * it.cantidad}\n")
         }
 
         binding.tvProductoslista.text = sb.toString()

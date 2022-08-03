@@ -8,7 +8,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitInstanceCreate {
-    private const val HEROKU_URL= "https://plazavea-webservice.herokuapp.com/"
+    private const val HEROKU_URL= "https://plazavea-webservice.herokuapp.com/api/v1/"
 
     private var okHttpClient = OkHttpClient.Builder()
         .connectTimeout(5, TimeUnit.MINUTES)

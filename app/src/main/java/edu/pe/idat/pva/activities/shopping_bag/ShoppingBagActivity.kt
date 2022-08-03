@@ -3,7 +3,6 @@ package edu.pe.idat.pva.activities.shopping_bag
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -13,7 +12,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.activities.HomeActivity
-import edu.pe.idat.pva.activities.pasarela.EscogerTipoActivity
+import edu.pe.idat.pva.activities.pasarela.ResumenActivity
 import edu.pe.idat.pva.adapter.ShoppingBagAdapter
 import edu.pe.idat.pva.databinding.ActivityShoppingBagBinding
 import edu.pe.idat.pva.models.Producto
@@ -97,7 +96,7 @@ class ShoppingBagActivity : AppCompatActivity(), View.OnClickListener {
                 .setTitle("Continuar a Pasarela")
                 .setMessage("¿Seguro que desea proceder a pagar?")
                 .setPositiveButton("Sí") { dialogInterface, i ->
-                    startActivity(Intent(applicationContext, EscogerTipoActivity::class.java))
+                    startActivity(Intent(applicationContext, ResumenActivity::class.java))
                     dialogInterface.cancel()
                 }
                 .setNegativeButton("No"){ dialogInterface, i ->

@@ -7,7 +7,26 @@
     tools:context=".activities.pasarela.TicketActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/progressbarTicket"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="100dp"
+        android:gravity="center">
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="pvloadingscreen.json"
+            app:lottie_loop="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llmensaje"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="100dp"
@@ -34,6 +53,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llticket"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"

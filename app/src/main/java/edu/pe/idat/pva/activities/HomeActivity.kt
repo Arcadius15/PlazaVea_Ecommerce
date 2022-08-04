@@ -101,6 +101,7 @@ class HomeActivity : AppCompatActivity() {
         }
         val i = Intent(this, MainActivity::class.java)
         startActivity(i)
+        finish()
     }
 
     private fun goToShoppingBag(){

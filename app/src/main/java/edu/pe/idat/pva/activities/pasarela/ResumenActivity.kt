@@ -14,6 +14,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import edu.pe.idat.pva.R
+import edu.pe.idat.pva.activities.DireccionRegistroActivity
+import edu.pe.idat.pva.activities.RegRucActivity
+import edu.pe.idat.pva.activities.RegTarjetaActivity
 import edu.pe.idat.pva.activities.RegisterActivity
 import edu.pe.idat.pva.adapter.ShoppingBagAdapter
 import edu.pe.idat.pva.databinding.ActivityResumenBinding
@@ -35,15 +38,15 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
     private lateinit var ordenProvider: OrdenProvider
     private lateinit var clienteProvider: ClienteProvider
 
-    var gson = Gson()
+    private var gson = Gson()
 
-    var monto = 0.0
-    var igv = 0.0
-    var total = 0.0
+    private var monto = 0.0
+    private var igv = 0.0
+    private var total = 0.0
 
-    var tipoFop = 0
+    private var tipoFop = 0
 
-    var ordenIdGenerada = ""
+    private var ordenIdGenerada = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +94,9 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
 
         binding.btnconfcompra.setOnClickListener(this)
         binding.btnGoBackResumen.setOnClickListener(this)
+        binding.btnregnuevruc.setOnClickListener(this)
+        binding.btnregnuevdir.setOnClickListener(this)
+        binding.btnregnuevtar.setOnClickListener(this)
 
         ordenProvider.ordenId.observe(this){
             try {
@@ -114,7 +120,7 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
                 "Orden registrada",
                 Toast.LENGTH_LONG).show()
             sharedPref.remove("shopBag")
-            println("Orden ID: "+ordenIdGenerada)
+            println("Orden ID: $ordenIdGenerada")
             val i = Intent(this,TicketActivity::class.java)
             i.putExtra("ordenId",ordenIdGenerada)
             startActivity(i)
@@ -167,11 +173,11 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
                 AlertDialog.Builder(this)
                     .setTitle("Confirmar Compra")
                     .setMessage("¿Seguro que desea confirmar la compra?")
-                    .setPositiveButton("Sí") { dialogInterface, i ->
+                    .setPositiveButton("Sí") { dialogInterface, _ ->
                         procesarOrden()
                         dialogInterface.cancel()
                     }
-                    .setNegativeButton("No"){ dialogInterface, i ->
+                    .setNegativeButton("No"){ dialogInterface, _ ->
                         binding.btnconfcompra.isEnabled = true
                         binding.btnGoBackResumen.isEnabled = true
                         binding.btnregnuevruc.isEnabled = true
@@ -377,6 +383,9 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
         when (p0.id) {
             R.id.btnconfcompra -> confirmarCompra()
             R.id.btnGoBackResumen -> finish()
+            R.id.btnregnuevruc -> launcher.launch(Intent(this,RegRucActivity::class.java))
+            R.id.btnregnuevdir -> launcher.launch(Intent(this,DireccionRegistroActivity::class.java))
+            R.id.btnregnuevtar -> launcher.launch(Intent(this,RegTarjetaActivity::class.java))
         }
     }
 

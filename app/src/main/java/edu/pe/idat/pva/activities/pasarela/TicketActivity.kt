@@ -34,6 +34,9 @@ class TicketActivity : AppCompatActivity(){
         binding = ActivityTicketBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.llmensaje.visibility = View.GONE
+        binding.llticket.visibility = View.GONE
+
         sharedPref = SharedPref(this)
         binding.btnFinPasarela.setOnClickListener{gotoHome()}
         ordenProvider = ViewModelProvider(this)[OrdenProvider::class.java]
@@ -42,7 +45,6 @@ class TicketActivity : AppCompatActivity(){
     }
 
     private fun cargarDatos() {
-        println("Orden ID XD: " + intent.getStringExtra("ordenId").toString())
         ordenProvider.getOrden(intent.getStringExtra("ordenId").toString(),
                                 "Bearer ${getTokenFromSession()!!.token}").observe(this){
                                     obtenerOrden(it!!)
@@ -70,6 +72,10 @@ class TicketActivity : AppCompatActivity(){
         binding.tvTicketMonto.text = "S/" + ordenResponse.monto.toString()
         binding.tvTicketIGV.text = "S/" + ordenResponse.igv.toString()
         binding.tvTicketTotal.text = "S/" + ordenResponse.total.toString()
+
+        binding.progressbarTicket.visibility = View.GONE
+        binding.llmensaje.visibility = View.VISIBLE
+        binding.llticket.visibility = View.VISIBLE
     }
 
     private fun gotoHome(){

@@ -1,7 +1,11 @@
 package edu.pe.idat.pva.models
 
+import java.io.Serializable
+
 data class OrdenResponse(
     var direccion: String,
+    var lat: Double,
+    var lng: Double,
     var fecha: String,
     var fechaEntrega: String,
     var formaPago: String,
@@ -14,4 +18,4 @@ data class OrdenResponse(
     var cliente: ClienteIDRequest,
     var tienda: TiendaIDRequest,
     var ordendetalle: ArrayList<OrdenDetalleResponse>
-)
+) : Serializable

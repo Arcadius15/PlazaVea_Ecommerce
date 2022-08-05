@@ -2,11 +2,10 @@ package edu.pe.idat.pva.activities
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
@@ -51,7 +50,9 @@ class ListRucActivity : AppCompatActivity(), View.OnClickListener, RucAdapter.IR
                                   "Bearer " + getTokenFromSession()!!.token)
             .observe(this){
                 if (it != null){
-                    binding.rvRucs.adapter = RucAdapter(it,this)
+                    binding.rvRucs.adapter = RucAdapter(ArrayList(it.sortedWith(compareBy { rr ->
+                        rr.idRuc
+                    })),this)
                     binding.progressbarRuc.visibility = View.GONE
                 } else {
                     binding.progressbarRuc.visibility = View.GONE

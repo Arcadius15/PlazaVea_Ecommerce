@@ -1,5 +1,6 @@
 package edu.pe.idat.pva.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,9 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import edu.pe.idat.pva.R
+import edu.pe.idat.pva.activities.DetalleOrdenActivity
 import edu.pe.idat.pva.adapter.HistorialAdapter
 import edu.pe.idat.pva.databinding.FragmentHistorialBinding
 import edu.pe.idat.pva.models.LoginResponse
+import edu.pe.idat.pva.models.OrdenResponse
 import edu.pe.idat.pva.models.UsuarioResponse
 import edu.pe.idat.pva.providers.OrdenProvider
 import edu.pe.idat.pva.providers.ProductsProvider
@@ -51,7 +54,10 @@ class HistorialFragment : Fragment(), HistorialAdapter.IHistorialAdapter {
         ordenProvider.getAllByCliente(getUserFromSession()!!.cliente.idCliente,
                                         "Bearer ${getTokenFromSession()!!.token}").observe(viewLifecycleOwner){
                                             if (it != null){
-                                                binding.rvHistorial.adapter = HistorialAdapter(it.content,this)
+                                                binding.rvHistorial.adapter = HistorialAdapter(ArrayList(it.content.sortedWith(
+                                                    compareBy{ or ->
+                                                        or.idOrden
+                                                    })),this)
                                                 binding.progressbarHistorial.visibility = View.GONE
                                             } else {
                                                 binding.progressbarHistorial.visibility = View.GONE
@@ -82,13 +88,8 @@ class HistorialFragment : Fragment(), HistorialAdapter.IHistorialAdapter {
         }
     }
 
-    override fun getProductImage(idProducto: String): String {
-        var url = ""
-
-        productsProvider.findById(idProducto).observe(requireActivity()){
-            url = it.imagenUrl
-        }
-
-        return url
+    override fun goDetail(ordenResponse: OrdenResponse) {
+        startActivity(Intent(requireActivity(),DetalleOrdenActivity::class.java)
+            .putExtra("orden",ordenResponse))
     }
 }

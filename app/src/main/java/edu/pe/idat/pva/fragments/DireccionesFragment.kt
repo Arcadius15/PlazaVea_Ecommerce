@@ -60,7 +60,9 @@ class DireccionesFragment : Fragment(), View.OnClickListener, DireccionAdapter.I
         clienteProvider.listarDirecciones(getUserFromSession()!!.cliente.idCliente,
             "Bearer ${getTokenFromSession()!!.token}").observe(viewLifecycleOwner){
             if (it != null){
-                var adapter = DireccionAdapter(it,this)
+                var adapter = DireccionAdapter(ArrayList(it.sortedWith(compareBy{ dr ->
+                    dr.idDireccion
+                })),this)
                 adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
                     override fun onChanged() {
                         if (it.size > 0) {

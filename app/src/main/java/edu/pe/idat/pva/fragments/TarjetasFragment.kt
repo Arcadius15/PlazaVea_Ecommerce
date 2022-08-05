@@ -61,7 +61,9 @@ class TarjetasFragment : Fragment(), View.OnClickListener, TarjetaAdapter.ITarje
         clienteProvider.listarTarjetas(getUserFromSession()!!.cliente.idCliente,
             "Bearer ${getTokenFromSession()!!.token}").observe(viewLifecycleOwner){
                 if (it != null){
-                    binding.rvTarjetas.adapter = TarjetaAdapter(it,this)
+                    binding.rvTarjetas.adapter = TarjetaAdapter(ArrayList(it.sortedWith(compareBy{ tr ->
+                        tr.idTarjeta
+                    })),this)
                     binding.progressbarTarjetas.visibility = View.GONE
                 } else {
                     binding.progressbarTarjetas.visibility = View.GONE

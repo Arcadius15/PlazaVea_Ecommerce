@@ -59,7 +59,7 @@
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/ic_mapa"
+                android:src="@drawable/ic_marker"
                 app:tint="@color/granate_700"></ImageView>
 
             <TextView

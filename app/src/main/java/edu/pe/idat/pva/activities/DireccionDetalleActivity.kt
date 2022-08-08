@@ -3,14 +3,13 @@ package edu.pe.idat.pva.activities
 import android.app.Activity
 import android.location.Address
 import android.location.Geocoder
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -18,29 +17,29 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.ActivityDireccionDetalleBinding
+import edu.pe.idat.pva.db.entity.TokenEntity
 import edu.pe.idat.pva.models.DireccionPatchRequest
 import edu.pe.idat.pva.models.DireccionResponse
-import edu.pe.idat.pva.models.LoginResponse
 import edu.pe.idat.pva.models.ResponseHttp
 import edu.pe.idat.pva.providers.DireccionProvider
-import edu.pe.idat.pva.utils.SharedPref
+import edu.pe.idat.pva.providers.TokenRoomProvider
 
 class DireccionDetalleActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener, View.OnClickListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityDireccionDetalleBinding
 
-    private lateinit var sharedPref: SharedPref
     private lateinit var direccionProvider: DireccionProvider
+    private lateinit var tokenRoomProvider: TokenRoomProvider
 
     private var marker: Marker? = null
 
     private lateinit var direccion: DireccionResponse
+    private lateinit var token: TokenEntity
 
-    var accion: String = ""
+    private var accion: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +47,9 @@ class DireccionDetalleActivity : AppCompatActivity(), OnMapReadyCallback, Google
         binding = ActivityDireccionDetalleBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sharedPref = SharedPref(this)
 
         direccionProvider = ViewModelProvider(this)[DireccionProvider::class.java]
+        tokenRoomProvider = ViewModelProvider(this)[TokenRoomProvider::class.java]
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -66,16 +65,16 @@ class DireccionDetalleActivity : AppCompatActivity(), OnMapReadyCallback, Google
                         marker!!.remove()
                     }
 
-                    var location: String = query!!
-                    var addressList: List<Address>
+                    val location: String = query!!
+                    val addressList: List<Address>
 
                     if (location != null) {
-                        var geocoder = Geocoder(this@DireccionDetalleActivity)
+                        val geocoder = Geocoder(this@DireccionDetalleActivity)
                         addressList = geocoder.getFromLocationName(location,1)
 
-                        var address = addressList[0]
+                        val address = addressList[0]
 
-                        var latLng = LatLng(address.latitude,address.longitude)
+                        val latLng = LatLng(address.latitude,address.longitude)
                         marker = mMap.addMarker(MarkerOptions()
                             .position(latLng)
                             .title(location)
@@ -153,7 +152,7 @@ class DireccionDetalleActivity : AppCompatActivity(), OnMapReadyCallback, Google
     }
 
     override fun onMarkerDrag(p0: Marker) {
-        var posicion = p0.position
+        val posicion = p0.position
         p0.showInfoWindow()
         mMap.animateCamera(CameraUpdateFactory.newLatLng(posicion))
     }
@@ -167,21 +166,20 @@ class DireccionDetalleActivity : AppCompatActivity(), OnMapReadyCallback, Google
         p0.showInfoWindow()
     }
 
-    private fun getTokenFromSession(): LoginResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("token").isNullOrBlank()){
-            null
-        } else {
-            val token = gson.fromJson(sharedPref.getData("token"), LoginResponse::class.java)
-            token
+    private fun getTokenFromDB(origen: String){
+        tokenRoomProvider.obtener().observe(this){
+            token = it
+            when (origen) {
+                "e" -> editarDireccion()
+                "b" -> borrarDireccion()
+            }
         }
     }
 
     override fun onClick(p0: View) {
         when (p0.id) {
-            R.id.btnEditarDir -> editarDireccion()
-            R.id.btnBorrarDir -> borrarDireccion()
+            R.id.btnEditarDir -> getTokenFromDB("e")
+            R.id.btnBorrarDir -> getTokenFromDB("b")
         }
     }
 
@@ -189,7 +187,7 @@ class DireccionDetalleActivity : AppCompatActivity(), OnMapReadyCallback, Google
         AlertDialog.Builder(this)
             .setTitle("Confirmar Edición")
             .setMessage("¿Seguro que desea editar esta dirección?")
-            .setPositiveButton("Sí") { dialogInterface, i ->
+            .setPositiveButton("Sí") { dialogInterface, _ ->
                 accion = "editada"
 
                 val direccionPatchRequest = DireccionPatchRequest(
@@ -200,10 +198,10 @@ class DireccionDetalleActivity : AppCompatActivity(), OnMapReadyCallback, Google
 
                 direccionProvider.editarDireccion(direccion.idDireccion,
                     direccionPatchRequest,
-                    "Bearer " + getTokenFromSession()!!.token)
+                    "Bearer " + token.token)
                 dialogInterface.cancel()
             }
-            .setNegativeButton("No"){ dialogInterface, i ->
+            .setNegativeButton("No"){ dialogInterface, _ ->
                 binding.btnEditarDir.isEnabled = true
                 binding.btnBorrarDir.isEnabled = true
                 dialogInterface.cancel()
@@ -215,14 +213,14 @@ class DireccionDetalleActivity : AppCompatActivity(), OnMapReadyCallback, Google
         AlertDialog.Builder(this)
             .setTitle("Confirmar Borrar")
             .setMessage("¿Seguro que desea borrar esta dirección?")
-            .setPositiveButton("Sí") { dialogInterface, i ->
+            .setPositiveButton("Sí") { dialogInterface, _ ->
                 accion = "borrada"
 
                 direccionProvider.borrarDireccion(direccion.idDireccion,
-                    "Bearer " + getTokenFromSession()!!.token)
+                    "Bearer " + token.token)
                 dialogInterface.cancel()
             }
-            .setNegativeButton("No"){ dialogInterface, i ->
+            .setNegativeButton("No"){ dialogInterface, _ ->
                 binding.btnEditarDir.isEnabled = true
                 binding.btnBorrarDir.isEnabled = true
                 dialogInterface.cancel()

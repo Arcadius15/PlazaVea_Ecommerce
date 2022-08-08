@@ -1,25 +1,25 @@
 package edu.pe.idat.pva.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.ActivityCambiarContraBinding
+import edu.pe.idat.pva.db.entity.UsuarioEntity
 import edu.pe.idat.pva.models.Mensaje
 import edu.pe.idat.pva.models.UsuarioPswRequest
-import edu.pe.idat.pva.models.UsuarioResponse
 import edu.pe.idat.pva.providers.UsuarioProvider
-import edu.pe.idat.pva.utils.SharedPref
+import edu.pe.idat.pva.providers.UsuarioRoomProvider
 
 class CambiarContraActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityCambiarContraBinding
     private lateinit var usuarioProvider: UsuarioProvider
-    private lateinit var sharedPref: SharedPref
+    private lateinit var usuarioRoomProvider: UsuarioRoomProvider
+
+    private lateinit var usuario: UsuarioEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +27,7 @@ class CambiarContraActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         usuarioProvider = ViewModelProvider(this)[UsuarioProvider::class.java]
-        sharedPref = SharedPref(this)
+        usuarioRoomProvider = ViewModelProvider(this)[UsuarioRoomProvider::class.java]
 
         binding.btnGoBackHome.setOnClickListener(this)
         binding.btnCambiar.setOnClickListener(this)
@@ -79,7 +79,7 @@ class CambiarContraActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(p0: View) {
         when(p0.id){
             R.id.btnGoBackHome -> gotoHome()
-            R.id.btn_cambiar -> cambiarContra()
+            R.id.btn_cambiar -> getUserFromDB()
         }
     }
 
@@ -88,7 +88,7 @@ class CambiarContraActivity : AppCompatActivity(), View.OnClickListener {
         binding.btnCambiar.isEnabled = false
         if (validarCampos()){
             val usuarioPswRequest = UsuarioPswRequest(
-                getUserFromSession()!!.email,
+                usuario.email,
                 binding.edtNewPassword.text.toString().trim(),
                 binding.edtOldPassword.text.toString().trim()
             )
@@ -138,14 +138,10 @@ class CambiarContraActivity : AppCompatActivity(), View.OnClickListener {
         startActivity(i)
     }
 
-    private fun getUserFromSession(): UsuarioResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("user").isNullOrBlank()){
-            null
-        } else {
-            val user = gson.fromJson(sharedPref.getData("user"), UsuarioResponse::class.java)
-            user
+    private fun getUserFromDB(){
+        usuarioRoomProvider.obtener().observe(this){
+            usuario = it
+            cambiarContra()
         }
     }
 }

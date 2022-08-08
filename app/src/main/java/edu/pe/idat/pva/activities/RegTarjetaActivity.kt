@@ -57,6 +57,8 @@ class RegTarjetaActivity : AppCompatActivity(), View.OnClickListener {
         binding.edtAnioCaducidad.setAdapter((adapterAnios))
 
         clienteProvider = ViewModelProvider(this)[ClienteProvider::class.java]
+        usuarioRoomProvider = ViewModelProvider(this)[UsuarioRoomProvider::class.java]
+        tokenRoomProvider = ViewModelProvider(this)[TokenRoomProvider::class.java]
 
         binding.btnregistrartarjeta.setOnClickListener(this)
         binding.btnGoBackTarjeta.setOnClickListener(this)

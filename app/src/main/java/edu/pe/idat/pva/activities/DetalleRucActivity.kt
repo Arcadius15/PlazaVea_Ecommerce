@@ -34,6 +34,7 @@ class DetalleRucActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         rucProvider = ViewModelProvider(this)[RucProvider::class.java]
+        tokenRoomProvider = ViewModelProvider(this)[TokenRoomProvider::class.java]
 
         ruc = intent.getSerializableExtra("ruc") as RucResponse
 

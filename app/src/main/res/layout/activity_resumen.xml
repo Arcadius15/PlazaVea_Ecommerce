@@ -81,7 +81,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/tipo_ticket_titulo"></TextView>
+                        android:text="@string/tipo_ticket_titulo" />
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -247,12 +247,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/metodopago_titulo"></TextView>
+                        android:text="@string/metodopago_titulo" />
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/gray"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"/>
                 </LinearLayout>
@@ -302,7 +302,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/precio_titulo"></TextView>
+                        android:text="@string/precio_titulo" />
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -319,7 +319,7 @@
                     android:layout_marginTop="5dp"
                     android:text="@string/texto_ejemplo"
                     android:textSize="16sp"
-                    android:textStyle="bold"></TextView>
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -330,7 +330,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/productos_titulo"></TextView>
+                        android:text="@string/productos_titulo" />
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -347,7 +347,7 @@
                     android:layout_marginTop="5dp"
                     android:text="@string/texto_ejemplo"
                     android:textSize="16sp"
-                    android:textStyle="bold"></TextView>
+                    android:textStyle="bold" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

@@ -113,4 +113,10 @@
     <string name="estado_pedido">Estado del pedido</string>
     <string name="Tienda">Tienda</string>
     <string name="mantener_sesion">Mantener sesión iniciada</string>
+    <string name="label_producto">Producto:</string>
+    <string name="label_preciounidad">Precio x Unidad:</string>
+    <string name="label_cantidad">Cantidad:</string>
+    <string name="label_preciototal">Precio Total:</string>
+    <string name="repartidor">Repartidor:</string>
+    <string name="fecha_realizada_cv">Fecha de Compra:</string>
 </resources>

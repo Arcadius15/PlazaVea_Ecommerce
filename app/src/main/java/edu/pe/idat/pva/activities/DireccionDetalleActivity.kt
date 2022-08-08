@@ -47,7 +47,6 @@ class DireccionDetalleActivity : AppCompatActivity(), OnMapReadyCallback, Google
         binding = ActivityDireccionDetalleBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         direccionProvider = ViewModelProvider(this)[DireccionProvider::class.java]
         tokenRoomProvider = ViewModelProvider(this)[TokenRoomProvider::class.java]
 

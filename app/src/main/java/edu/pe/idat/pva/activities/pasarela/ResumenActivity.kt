@@ -2,7 +2,6 @@ package edu.pe.idat.pva.activities.pasarela
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -10,6 +9,7 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -17,26 +17,28 @@ import edu.pe.idat.pva.R
 import edu.pe.idat.pva.activities.DireccionRegistroActivity
 import edu.pe.idat.pva.activities.RegRucActivity
 import edu.pe.idat.pva.activities.RegTarjetaActivity
-import edu.pe.idat.pva.activities.RegisterActivity
-import edu.pe.idat.pva.adapter.ShoppingBagAdapter
 import edu.pe.idat.pva.databinding.ActivityResumenBinding
+import edu.pe.idat.pva.db.entity.TokenEntity
+import edu.pe.idat.pva.db.entity.UsuarioEntity
 import edu.pe.idat.pva.models.*
 import edu.pe.idat.pva.providers.ClienteProvider
 import edu.pe.idat.pva.providers.OrdenProvider
+import edu.pe.idat.pva.providers.TokenRoomProvider
+import edu.pe.idat.pva.providers.UsuarioRoomProvider
 import edu.pe.idat.pva.utils.SharedPref
-import java.lang.StringBuilder
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     private lateinit var binding: ActivityResumenBinding
     private lateinit var sharedPref: SharedPref
     private lateinit var ordenProvider: OrdenProvider
     private lateinit var clienteProvider: ClienteProvider
+    private lateinit var usuarioRoomProvider: UsuarioRoomProvider
+    private lateinit var tokenRoomProvider: TokenRoomProvider
+
+    private lateinit var usuario: UsuarioEntity
+    private lateinit var token: TokenEntity
 
     private var gson = Gson()
 
@@ -59,14 +61,15 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
 
         ordenProvider = ViewModelProvider(this)[OrdenProvider::class.java]
         clienteProvider = ViewModelProvider(this)[ClienteProvider::class.java]
+        tokenRoomProvider = ViewModelProvider(this)[TokenRoomProvider::class.java]
 
         binding.llRuc.visibility = View.GONE
 
-        cargarListas()
+        getUserFromDB("c")
 
         binding.tipogroup.setOnCheckedChangeListener(this)
 
-        var fechaEstimada = Calendar.getInstance()
+        val fechaEstimada = Calendar.getInstance()
         fechaEstimada.add(Calendar.DATE, 10)
         val df = SimpleDateFormat("yyyy-MM-dd")
         df.timeZone = TimeZone.getTimeZone("America/Lima")
@@ -142,7 +145,7 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
 
             val ordenIdRequest = OrdenIDRequest(ordenId)
 
-            var fechaActual = Calendar.getInstance()
+            val fechaActual = Calendar.getInstance()
             val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
             df.timeZone = TimeZone.getTimeZone("America/Lima")
 
@@ -154,7 +157,7 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
             )
 
             ordenProvider.registrarHistorial(ordenHistorialRequest,
-                                            "Bearer ${getTokenFromSession()!!.token}")
+                                            "Bearer ${token.token}")
         } else {
             Toast.makeText(this,
                 "ERROR! Hubo un problema con el servicio, intente de nuevo más tarde.",
@@ -204,7 +207,7 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
     }
 
     private fun procesarOrden() {
-        val clienteIDRequest = ClienteIDRequest(getUserFromSession()!!.cliente.idCliente)
+        val clienteIDRequest = ClienteIDRequest(usuario.idCliente)
         val tiendaIDRequest = TiendaIDRequest("T_00001")
 
         val listOrdenDetalle = ArrayList<OrdendetalleRequest>()
@@ -248,11 +251,11 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
         )
 
         ordenProvider.registrarOrden(ordenRequest,
-            "Bearer ${getTokenFromSession()!!.token}")
+            "Bearer ${token.token}")
     }
 
     private fun cargarListas(){
-        clienteProvider.listarRuc(getUserFromSession()!!.cliente.idCliente, "Bearer " + getTokenFromSession()!!.token).observe(this){
+        clienteProvider.listarRuc(usuario.idCliente, "Bearer " + token.token).observe(this){
             val rucs = ArrayList<String>()
 
             if (it != null) {
@@ -272,7 +275,7 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
             binding.edtRucSelect.setAdapter(adapterRuc)
         }
 
-        clienteProvider.listarDirecciones(getUserFromSession()!!.cliente.idCliente, "Bearer " + getTokenFromSession()!!.token).observe(this){
+        clienteProvider.listarDirecciones(usuario.idCliente, "Bearer " + token.token).observe(this){
             val direcciones = ArrayList<String>()
 
             if (it != null) {
@@ -292,7 +295,7 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
             binding.edtDireccionSelect.setAdapter(adapterDir)
         }
 
-        clienteProvider.listarTarjetas(getUserFromSession()!!.cliente.idCliente, "Bearer " + getTokenFromSession()!!.token).observe(this){
+        clienteProvider.listarTarjetas(usuario.idCliente, "Bearer " + token.token).observe(this){
             val tarjetas = ArrayList<String>()
 
             if (it != null) {
@@ -357,31 +360,26 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
         return selectProduct
     }
 
-    private fun getUserFromSession(): UsuarioResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("user").isNullOrBlank()){
-            null
-        } else {
-            val user = gson.fromJson(sharedPref.getData("user"), UsuarioResponse::class.java)
-            user
+    private fun getUserFromDB(origen: String){
+        usuarioRoomProvider.obtener().observe(this){
+            usuario = it
+            getTokenFromDB(origen)
         }
     }
 
-    private fun getTokenFromSession(): LoginResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("token").isNullOrBlank()){
-            null
-        } else {
-            val token = gson.fromJson(sharedPref.getData("token"), LoginResponse::class.java)
-            token
+    private fun getTokenFromDB(origen: String){
+        tokenRoomProvider.obtener().observe(this){
+            token = it
+            when (origen) {
+                "c" -> cargarListas()
+                "con" -> confirmarCompra()
+            }
         }
     }
 
     override fun onClick(p0: View) {
         when (p0.id) {
-            R.id.btnconfcompra -> confirmarCompra()
+            R.id.btnconfcompra -> getUserFromDB("con")
             R.id.btnGoBackResumen -> finish()
             R.id.btnregnuevruc -> launcher.launch(Intent(this,RegRucActivity::class.java))
             R.id.btnregnuevdir -> launcher.launch(Intent(this,DireccionRegistroActivity::class.java))

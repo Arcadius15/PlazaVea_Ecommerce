@@ -29,7 +29,6 @@ class ProductsActivity : AppCompatActivity() {
     var recyclerViewProducts: RecyclerView? = null
     var adapter: ProductsAdapter? = null
     private lateinit var products: List<Producto>
-    var sharedPref: SharedPref? = null
 
     var idSubcategoria: String? = null
 
@@ -41,24 +40,17 @@ class ProductsActivity : AppCompatActivity() {
         productsProvider = ViewModelProvider(this).get(ProductsProvider::class.java)
 
         idSubcategoria = intent.getIntExtra("idSubcategoria", 0).toString()
-        //Log.d(TAG, idSubcategoria!!)
 
-        sharedPref = SharedPref(this)
-        getUserFromSession()
-        // productsProvider = ProductsProvider(user?.sessionToken!!)
         recyclerViewProducts = findViewById(R.id.rvProducts)
         recyclerViewProducts?.setHasFixedSize(true)
         recyclerViewProducts?.layoutManager= GridLayoutManager(this, 2)
 
-       getProducts(idSubcategoria!!)
+        getProducts(idSubcategoria!!)
 
         productsProvider.productResponse.observe(this){
             findProductById(it!!)
             binding.progressbar.visibility = View.GONE
         }
-
-        getUserFromSession()
-
     }
 
     private fun findProductById(productResponse: ProductosCategoriaResponse) {
@@ -75,14 +67,6 @@ class ProductsActivity : AppCompatActivity() {
 
     private fun getProducts(idSubcategoria: String){
         productsProvider.findByCategory(idSubcategoria)
-    }
-
-    private fun getUserFromSession(){
-        val gson = Gson()
-
-        if(!sharedPref?.getData("user").isNullOrBlank()){
-            val user = gson.fromJson(sharedPref?.getData("user"), UsuarioResponse::class.java)
-        }
     }
 
 }

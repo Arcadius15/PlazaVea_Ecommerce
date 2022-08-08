@@ -1,66 +1,64 @@
 package edu.pe.idat.pva.activities
 
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.ActivityDetalleTarjetaBinding
-import edu.pe.idat.pva.models.LoginResponse
+import edu.pe.idat.pva.db.entity.TokenEntity
 import edu.pe.idat.pva.models.ResponseHttp
 import edu.pe.idat.pva.models.TarjetaPatchRequest
 import edu.pe.idat.pva.models.TarjetaResponse
 import edu.pe.idat.pva.providers.TarjetaProvider
-import edu.pe.idat.pva.utils.SharedPref
+import edu.pe.idat.pva.providers.TokenRoomProvider
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 class DetalleTarjetaActivity : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var sharedPref: SharedPref
-
     private lateinit var binding: ActivityDetalleTarjetaBinding
     private lateinit var tarjetaProvider: TarjetaProvider
+    private lateinit var tokenRoomProvider: TokenRoomProvider
 
     private lateinit var tarjetaResponse: TarjetaResponse
+    private lateinit var token: TokenEntity
 
-    var tipo= 0
-    var accion: String = ""
+    private var tipo= 0
+    private var accion: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetalleTarjetaBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var tipos = arrayOf("Crédito","Débito")
+        val tipos = arrayOf("Crédito","Débito")
 
-        var meses = arrayOf("01","02","03","04","05","06","07","08","09","10","11","12")
+        val meses = arrayOf("01","02","03","04","05","06","07","08","09","10","11","12")
 
         val df: DateFormat = SimpleDateFormat("yy")
         val twodigistanio: Int = df.format(Calendar.getInstance().time).toInt()
-        var anios = (twodigistanio..twodigistanio+10).toList()
+        val anios = (twodigistanio..twodigistanio+10).toList()
 
-        var adapterTipos = ArrayAdapter<String>(this,R.layout.drop_down_item, tipos)
-        var adapterMeses = ArrayAdapter<String>(this,R.layout.drop_down_item, meses)
-        var adapterAnios = ArrayAdapter<Int>(this,R.layout.drop_down_item, anios)
+        val adapterTipos = ArrayAdapter(this,R.layout.drop_down_item, tipos)
+        val adapterMeses = ArrayAdapter(this,R.layout.drop_down_item, meses)
+        val adapterAnios = ArrayAdapter(this,R.layout.drop_down_item, anios)
 
         binding.edtTipoTarjeta.setAdapter(adapterTipos)
-        binding.edtTipoTarjeta.setOnItemClickListener { adapterView, view, i, l -> seleccionarTipo() }
+        binding.edtTipoTarjeta.setOnItemClickListener { _, _, _, _ -> seleccionarTipo() }
 
         binding.edtMesCaducidad.setAdapter(adapterMeses)
         binding.edtAnioCaducidad.setAdapter((adapterAnios))
 
         tarjetaResponse = intent.getSerializableExtra("tarjeta") as TarjetaResponse
 
-        sharedPref = SharedPref(this)
-
         tarjetaProvider = ViewModelProvider(this)[TarjetaProvider::class.java]
+        tokenRoomProvider = ViewModelProvider(this)[TokenRoomProvider::class.java]
 
         cargarDatos()
 
@@ -151,21 +149,20 @@ class DetalleTarjetaActivity : AppCompatActivity(), View.OnClickListener {
         return true
     }
 
-    private fun getTokenFromSession(): LoginResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("token").isNullOrBlank()){
-            null
-        } else {
-            val token = gson.fromJson(sharedPref.getData("token"), LoginResponse::class.java)
-            token
+    private fun getTokenFromDB(origen: String){
+        tokenRoomProvider.obtener().observe(this){
+            token = it
+            when (origen) {
+                "e" -> editarTarjeta()
+                "b" -> borrarTarjeta()
+            }
         }
     }
 
     override fun onClick(p0: View) {
         when (p0.id) {
-            R.id.btneditartarjeta -> editarTarjeta()
-            R.id.btnborrartarjeta -> borrarTarjeta()
+            R.id.btneditartarjeta -> getTokenFromDB("e")
+            R.id.btnborrartarjeta -> getTokenFromDB("b")
             R.id.btnGoBackLstTarjeta -> finish()
         }
     }
@@ -182,15 +179,15 @@ class DetalleTarjetaActivity : AppCompatActivity(), View.OnClickListener {
         AlertDialog.Builder(this)
             .setTitle("Confirmar Borrar")
             .setMessage("¿Seguro que desea borrar esta tarjeta?")
-            .setPositiveButton("Sí") { dialogInterface, i ->
+            .setPositiveButton("Sí") { dialogInterface, _ ->
                 accion = "borrada"
 
                 tarjetaProvider.borrarTarjeta(tarjetaResponse.idTarjeta,
-                    "Bearer " + getTokenFromSession()!!.token)
+                    "Bearer " + token.token)
 
                 dialogInterface.cancel()
             }
-            .setNegativeButton("No"){ dialogInterface, i ->
+            .setNegativeButton("No"){ dialogInterface, _ ->
                 binding.btnborrartarjeta.isEnabled = true
                 binding.btneditartarjeta.isEnabled = true
                 binding.btnGoBackLstTarjeta.isEnabled = true
@@ -217,7 +214,7 @@ class DetalleTarjetaActivity : AppCompatActivity(), View.OnClickListener {
         AlertDialog.Builder(this)
             .setTitle("Confirmar Edición")
             .setMessage("¿Seguro que desea editar esta tarjeta?")
-            .setPositiveButton("Sí") { dialogInterface, i ->
+            .setPositiveButton("Sí") { dialogInterface, _ ->
                 accion = "editada"
 
                 val tarjetaPatchRequest = TarjetaPatchRequest(
@@ -230,11 +227,11 @@ class DetalleTarjetaActivity : AppCompatActivity(), View.OnClickListener {
                 )
 
                 tarjetaProvider.editarTarjeta(tarjetaResponse.idTarjeta, tarjetaPatchRequest,
-                                            "Bearer " + getTokenFromSession()!!.token)
+                                            "Bearer " + token.token)
 
                 dialogInterface.cancel()
             }
-            .setNegativeButton("No"){ dialogInterface, i ->
+            .setNegativeButton("No"){ dialogInterface, _ ->
                 binding.btnborrartarjeta.isEnabled = true
                 binding.btneditartarjeta.isEnabled = true
                 binding.btnGoBackLstTarjeta.isEnabled = true

@@ -8,46 +8,50 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.adapter.RucAdapter
 import edu.pe.idat.pva.databinding.ActivityListRucBinding
-import edu.pe.idat.pva.models.LoginResponse
+import edu.pe.idat.pva.db.entity.TokenEntity
+import edu.pe.idat.pva.db.entity.UsuarioEntity
 import edu.pe.idat.pva.models.RucResponse
-import edu.pe.idat.pva.models.UsuarioResponse
 import edu.pe.idat.pva.providers.ClienteProvider
-import edu.pe.idat.pva.utils.SharedPref
+import edu.pe.idat.pva.providers.TokenRoomProvider
+import edu.pe.idat.pva.providers.UsuarioRoomProvider
 
 class ListRucActivity : AppCompatActivity(), View.OnClickListener, RucAdapter.IRucAdapter {
 
     private lateinit var binding: ActivityListRucBinding
 
     private lateinit var clienteProvider: ClienteProvider
-    private lateinit var sharedPref: SharedPref
+    private lateinit var usuarioRoomProvider: UsuarioRoomProvider
+    private lateinit var tokenRoomProvider: TokenRoomProvider
+
+    private lateinit var usuario: UsuarioEntity
+    private lateinit var token: TokenEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityListRucBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sharedPref = SharedPref(this)
-
         clienteProvider = ViewModelProvider(this)[ClienteProvider::class.java]
+        usuarioRoomProvider = ViewModelProvider(this)[UsuarioRoomProvider::class.java]
+        tokenRoomProvider = ViewModelProvider(this)[TokenRoomProvider::class.java]
 
         binding.tvMensajeSinRuc.visibility = View.GONE
 
         binding.rvRucs.setHasFixedSize(true)
         binding.rvRucs.layoutManager = LinearLayoutManager(this)
 
-        getRucs()
+        getUserFromDB()
 
         binding.btnGoListTarjetas.setOnClickListener(this)
         binding.btnGoRegRuc.setOnClickListener(this)
     }
 
     private fun getRucs() {
-        clienteProvider.listarRuc(getUserFromSession()!!.cliente.idCliente,
-                                  "Bearer " + getTokenFromSession()!!.token)
+        clienteProvider.listarRuc(usuario.idCliente,
+                                  "Bearer " + token.token)
             .observe(this){
                 if (it != null){
                     binding.rvRucs.adapter = RucAdapter(ArrayList(it.sortedWith(compareBy { rr ->
@@ -85,25 +89,17 @@ class ListRucActivity : AppCompatActivity(), View.OnClickListener, RucAdapter.IR
         }
     }
 
-    private fun getUserFromSession(): UsuarioResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("user").isNullOrBlank()){
-            null
-        } else {
-            val user = gson.fromJson(sharedPref.getData("user"), UsuarioResponse::class.java)
-            user
+    private fun getUserFromDB(){
+        usuarioRoomProvider.obtener().observe(this){
+            usuario = it
+            getTokenFromDB()
         }
     }
 
-    private fun getTokenFromSession(): LoginResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("token").isNullOrBlank()){
-            null
-        } else {
-            val token = gson.fromJson(sharedPref.getData("token"), LoginResponse::class.java)
-            token
+    private fun getTokenFromDB(){
+        tokenRoomProvider.obtener().observe(this){
+            token = it
+            getRucs()
         }
     }
 }

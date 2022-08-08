@@ -1,39 +1,37 @@
 package edu.pe.idat.pva.activities
 
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.ActivityDetalleRucBinding
-import edu.pe.idat.pva.models.LoginResponse
+import edu.pe.idat.pva.db.entity.TokenEntity
 import edu.pe.idat.pva.models.ResponseHttp
 import edu.pe.idat.pva.models.RucPatchRequest
 import edu.pe.idat.pva.models.RucResponse
 import edu.pe.idat.pva.providers.RucProvider
-import edu.pe.idat.pva.utils.SharedPref
+import edu.pe.idat.pva.providers.TokenRoomProvider
 
 class DetalleRucActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityDetalleRucBinding
 
-    private lateinit var sharedPref: SharedPref
     private lateinit var rucProvider: RucProvider
+    private lateinit var tokenRoomProvider: TokenRoomProvider
 
     private lateinit var ruc: RucResponse
+    private lateinit var token: TokenEntity
 
-    var accion: String = ""
+    private var accion: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetalleRucBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        sharedPref = SharedPref(this)
 
         rucProvider = ViewModelProvider(this)[RucProvider::class.java]
 
@@ -71,22 +69,21 @@ class DetalleRucActivity : AppCompatActivity(), View.OnClickListener {
         binding.btnborrarruc.isEnabled = true
     }
 
-    private fun getTokenFromSession(): LoginResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("token").isNullOrBlank()){
-            null
-        } else {
-            val token = gson.fromJson(sharedPref.getData("token"), LoginResponse::class.java)
-            token
+    private fun getTokenFromDB(origen: String){
+        tokenRoomProvider.obtener().observe(this){
+            token = it
+            when (origen) {
+                "e" -> editarRuc()
+                "b" -> borrarRuc()
+            }
         }
     }
 
     override fun onClick(p0: View) {
         when (p0.id) {
             R.id.btnGoListRuc -> finish()
-            R.id.btneditarruc -> editarRuc()
-            R.id.btnborrarruc -> borrarRuc()
+            R.id.btneditarruc -> getTokenFromDB("e")
+            R.id.btnborrarruc -> getTokenFromDB("b")
         }
     }
 
@@ -102,15 +99,15 @@ class DetalleRucActivity : AppCompatActivity(), View.OnClickListener {
         AlertDialog.Builder(this)
             .setTitle("Confirmar Borrar")
             .setMessage("¿Seguro que desea borrar este número de RUC?")
-            .setPositiveButton("Sí") { dialogInterface, i ->
+            .setPositiveButton("Sí") { dialogInterface, _ ->
                 accion = "borrado"
 
                 rucProvider.borrarRuc(ruc.idRuc,
-                    "Bearer " + getTokenFromSession()!!.token)
+                    "Bearer " + token.token)
 
                 dialogInterface.cancel()
             }
-            .setNegativeButton("No"){ dialogInterface, i ->
+            .setNegativeButton("No"){ dialogInterface, _ ->
                 binding.btnGoListRuc.isEnabled = true
                 binding.btneditarruc.isEnabled = true
                 binding.btnborrarruc.isEnabled = true
@@ -137,7 +134,7 @@ class DetalleRucActivity : AppCompatActivity(), View.OnClickListener {
         AlertDialog.Builder(this)
             .setTitle("Confirmar Edición")
             .setMessage("¿Seguro que desea editar este número de RUC?")
-            .setPositiveButton("Sí") { dialogInterface, i ->
+            .setPositiveButton("Sí") { dialogInterface, _ ->
                 accion = "editado"
 
                 val rucPatchRequest = RucPatchRequest(
@@ -145,11 +142,11 @@ class DetalleRucActivity : AppCompatActivity(), View.OnClickListener {
                 )
 
                 rucProvider.editarRuc(ruc.idRuc,rucPatchRequest,
-                                      "Bearer " + getTokenFromSession()!!.token)
+                                      "Bearer " + token.token)
 
                 dialogInterface.cancel()
             }
-            .setNegativeButton("No"){ dialogInterface, i ->
+            .setNegativeButton("No"){ dialogInterface, _ ->
                 binding.btnGoListRuc.isEnabled = true
                 binding.btneditarruc.isEnabled = true
                 binding.btnborrarruc.isEnabled = true

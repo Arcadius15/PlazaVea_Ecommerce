@@ -1,32 +1,39 @@
 package edu.pe.idat.pva.activities
 
 import android.app.Activity
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.google.gson.Gson
 import edu.pe.idat.pva.databinding.ActivityRegRucBinding
-import edu.pe.idat.pva.models.*
+import edu.pe.idat.pva.db.entity.TokenEntity
+import edu.pe.idat.pva.db.entity.UsuarioEntity
+import edu.pe.idat.pva.models.ClienteIDRequest
+import edu.pe.idat.pva.models.ResponseHttp
+import edu.pe.idat.pva.models.RucRequest
 import edu.pe.idat.pva.providers.ClienteProvider
-import edu.pe.idat.pva.utils.SharedPref
+import edu.pe.idat.pva.providers.TokenRoomProvider
+import edu.pe.idat.pva.providers.UsuarioRoomProvider
 
 class RegRucActivity : AppCompatActivity() {
 
-    private lateinit var sharedPref: SharedPref
-
     private lateinit var binding: ActivityRegRucBinding
     private lateinit var clienteProvider: ClienteProvider
+    private lateinit var usuarioRoomProvider: UsuarioRoomProvider
+    private lateinit var tokenRoomProvider: TokenRoomProvider
+
+    private lateinit var usuario: UsuarioEntity
+    private lateinit var token: TokenEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegRucBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        sharedPref = SharedPref(this)
         clienteProvider = ViewModelProvider(this)[ClienteProvider::class.java]
+        usuarioRoomProvider = ViewModelProvider(this)[UsuarioRoomProvider::class.java]
+        tokenRoomProvider = ViewModelProvider(this)[TokenRoomProvider::class.java]
 
-        binding.btnregistrarruc.setOnClickListener{ registrarRuc() }
+        binding.btnregistrarruc.setOnClickListener{ getUserFromDB() }
         binding.btnGoBackRuc.setOnClickListener{ finish() }
 
         clienteProvider.responseHttp.observe(this){
@@ -38,7 +45,7 @@ class RegRucActivity : AppCompatActivity() {
         binding.btnregistrarruc.isEnabled = false
         if (validarRuc()){
             val clienteIDRequest = ClienteIDRequest(
-                getUserFromSession()!!.cliente.idCliente
+                usuario.idCliente
             )
 
             val rucRequest = RucRequest(
@@ -47,7 +54,7 @@ class RegRucActivity : AppCompatActivity() {
             )
 
             clienteProvider.registrarRuc(rucRequest,
-                "Bearer ${getTokenFromSession()!!.token}")
+                "Bearer ${token.token}")
         } else {
             binding.btnregistrarruc.isEnabled = true
         }
@@ -99,25 +106,17 @@ class RegRucActivity : AppCompatActivity() {
         return true
     }
 
-    private fun getUserFromSession(): UsuarioResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("user").isNullOrBlank()){
-            null
-        } else {
-            val user = gson.fromJson(sharedPref.getData("user"), UsuarioResponse::class.java)
-            user
+    private fun getUserFromDB(){
+        usuarioRoomProvider.obtener().observe(this){
+            usuario = it
+            getTokenFromDB()
         }
     }
 
-    private fun getTokenFromSession(): LoginResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("token").isNullOrBlank()){
-            null
-        } else {
-            val token = gson.fromJson(sharedPref.getData("token"), LoginResponse::class.java)
-            token
+    private fun getTokenFromDB(){
+        tokenRoomProvider.obtener().observe(this){
+            token = it
+            registrarRuc()
         }
     }
 }

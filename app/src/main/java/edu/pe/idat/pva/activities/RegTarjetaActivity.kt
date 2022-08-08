@@ -1,58 +1,61 @@
 package edu.pe.idat.pva.activities
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.google.gson.Gson
 import edu.pe.idat.pva.R
-import edu.pe.idat.pva.activities.pasarela.ResumenActivity
 import edu.pe.idat.pva.databinding.ActivityRegTarjetaBinding
-import edu.pe.idat.pva.models.*
+import edu.pe.idat.pva.db.entity.TokenEntity
+import edu.pe.idat.pva.db.entity.UsuarioEntity
+import edu.pe.idat.pva.models.ClienteIDRequest
+import edu.pe.idat.pva.models.ResponseHttp
+import edu.pe.idat.pva.models.TarjetaRequest
 import edu.pe.idat.pva.providers.ClienteProvider
-import edu.pe.idat.pva.utils.SharedPref
+import edu.pe.idat.pva.providers.TokenRoomProvider
+import edu.pe.idat.pva.providers.UsuarioRoomProvider
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class RegTarjetaActivity : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var sharedPref: SharedPref
-
     private lateinit var binding: ActivityRegTarjetaBinding
     private lateinit var clienteProvider: ClienteProvider
+    private lateinit var usuarioRoomProvider: UsuarioRoomProvider
+    private lateinit var tokenRoomProvider: TokenRoomProvider
 
-    var tipo= 0
+    private lateinit var usuario: UsuarioEntity
+    private lateinit var token: TokenEntity
+
+    private var tipo= 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegTarjetaBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var tipos = arrayOf("Crédito","Débito")
+        val tipos = arrayOf("Crédito","Débito")
 
-        var meses = arrayOf("01","02","03","04","05","06","07","08","09","10","11","12")
+        val meses = arrayOf("01","02","03","04","05","06","07","08","09","10","11","12")
 
         val df: DateFormat = SimpleDateFormat("yy")
         val twodigistanio: Int = df.format(Calendar.getInstance().time).toInt()
-        var anios = (twodigistanio..twodigistanio+10).toList()
+        val anios = (twodigistanio..twodigistanio+10).toList()
 
-        var adapterTipos = ArrayAdapter<String>(this,R.layout.drop_down_item, tipos)
-        var adapterMeses = ArrayAdapter<String>(this,R.layout.drop_down_item, meses)
-        var adapterAnios = ArrayAdapter<Int>(this,R.layout.drop_down_item, anios)
+        val adapterTipos = ArrayAdapter(this,R.layout.drop_down_item, tipos)
+        val adapterMeses = ArrayAdapter(this,R.layout.drop_down_item, meses)
+        val adapterAnios = ArrayAdapter(this,R.layout.drop_down_item, anios)
 
         binding.edtTipoTarjeta.setAdapter(adapterTipos)
-        binding.edtTipoTarjeta.setOnItemClickListener { adapterView, view, i, l -> seleccionarTipo() }
+        binding.edtTipoTarjeta.setOnItemClickListener { _, _, _, _ -> seleccionarTipo() }
 
         binding.edtMesCaducidad.setAdapter(adapterMeses)
         binding.edtAnioCaducidad.setAdapter((adapterAnios))
 
-        sharedPref = SharedPref(this)
         clienteProvider = ViewModelProvider(this)[ClienteProvider::class.java]
 
         binding.btnregistrartarjeta.setOnClickListener(this)
@@ -92,7 +95,7 @@ class RegTarjetaActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(p0: View) {
         when(p0.id){
-            R.id.btnregistrartarjeta -> registrarTarjeta()
+            R.id.btnregistrartarjeta -> getUserFromDB()
             R.id.btnGoBackTarjeta -> finish()
         }
     }
@@ -102,7 +105,7 @@ class RegTarjetaActivity : AppCompatActivity(), View.OnClickListener {
 
         if (validarCampos()) {
             val clienteIDRequest = ClienteIDRequest(
-                getUserFromSession()!!.cliente.idCliente
+                usuario.idCliente
             )
 
             val tarjetaRequest = TarjetaRequest(
@@ -116,7 +119,7 @@ class RegTarjetaActivity : AppCompatActivity(), View.OnClickListener {
             )
             
             clienteProvider.registrarTarjeta(tarjetaRequest,
-                                            "Bearer ${getTokenFromSession()!!.token}")
+                                            "Bearer ${token.token}")
         } else {
             binding.btnregistrartarjeta.isEnabled = true
         }
@@ -154,25 +157,17 @@ class RegTarjetaActivity : AppCompatActivity(), View.OnClickListener {
         return true
     }
 
-    private fun getUserFromSession(): UsuarioResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("user").isNullOrBlank()){
-            null
-        } else {
-            val user = gson.fromJson(sharedPref.getData("user"), UsuarioResponse::class.java)
-            user
+    private fun getUserFromDB(){
+        usuarioRoomProvider.obtener().observe(this){
+            usuario = it
+            getTokenFromDB()
         }
     }
 
-    private fun getTokenFromSession(): LoginResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("token").isNullOrBlank()){
-            null
-        } else {
-            val token = gson.fromJson(sharedPref.getData("token"), LoginResponse::class.java)
-            token
+    private fun getTokenFromDB(){
+        tokenRoomProvider.obtener().observe(this){
+            token = it
+            registrarTarjeta()
         }
     }
 }

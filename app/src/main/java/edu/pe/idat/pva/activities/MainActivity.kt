@@ -4,37 +4,36 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import android.widget.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.ActivityMainBinding
-import edu.pe.idat.pva.models.*
+import edu.pe.idat.pva.db.entity.TokenEntity
+import edu.pe.idat.pva.db.entity.UsuarioEntity
+import edu.pe.idat.pva.models.LoginRequest
+import edu.pe.idat.pva.models.LoginResponse
+import edu.pe.idat.pva.models.UsuarioResponse
+import edu.pe.idat.pva.providers.TokenRoomProvider
 import edu.pe.idat.pva.providers.UsuarioProvider
+import edu.pe.idat.pva.providers.UsuarioRoomProvider
 import edu.pe.idat.pva.utils.SharedPref
 
 class MainActivity : AppCompatActivity() , View.OnClickListener {
 
-    var imageViewGoToRegister: ImageView? = null
-    var editTextEmail: EditText? = null
-    var editTextPassword: EditText? = null
-    var buttonLogin: Button? = null
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var usuarioProvider: UsuarioProvider
+    private lateinit var usuarioRoomProvider: UsuarioRoomProvider
+    private lateinit var tokenRoomProvider: TokenRoomProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        usuarioProvider = ViewModelProvider(this)
-            .get(UsuarioProvider::class.java)
-
-        imageViewGoToRegister = findViewById(R.id.btn_go_register)
-        editTextEmail = findViewById(R.id.edTextEmail)
-        editTextPassword = findViewById(R.id.edTextPassword)
-        buttonLogin = findViewById(R.id.btn_login)
+        usuarioProvider = ViewModelProvider(this)[UsuarioProvider::class.java]
+        usuarioRoomProvider = ViewModelProvider(this)[UsuarioRoomProvider::class.java]
+        tokenRoomProvider = ViewModelProvider(this)[TokenRoomProvider::class.java]
 
         binding.btnGoRegister.setOnClickListener(this)
         binding.btnLogin.setOnClickListener(this)
@@ -57,33 +56,53 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
             obtenerDatosUsuario(it!!)
         }
 
-        getUserFromSession()
+        checkUserSession()
     }
 
     private fun obtenerDatosUsuario(usuarioResponse: UsuarioResponse) {
-        if(usuarioResponse != null){
-            Toast.makeText(
-                applicationContext,
-                "Sesión Iniciada",
-                Toast.LENGTH_LONG
-            ).show()
-            binding.btnLogin.isEnabled = true
-            binding.btnGoRegister.isEnabled = true
-            saveUserInSession(usuarioResponse)
+        val usuarioEntity = UsuarioEntity(
+            usuarioResponse.idUsuario,
+            usuarioResponse.email,
+            usuarioResponse.activo,
+            usuarioResponse.blocked,
+            usuarioResponse.cliente.idCliente,
+            usuarioResponse.cliente.nombre,
+            usuarioResponse.cliente.apellidos,
+            usuarioResponse.cliente.dni,
+            usuarioResponse.cliente.numTelefonico
+        )
+
+        if (SharedPref(this).getSomeBooleanValue("mantener")) {
+            usuarioRoomProvider.actualizar(usuarioEntity)
         } else {
-            Toast.makeText(
-                applicationContext,
-                "ERROR! Ocurrió un error con el servicio web.",
-                Toast.LENGTH_LONG
-            ).show()
-            binding.btnLogin.isEnabled = true
-            binding.btnGoRegister.isEnabled = true
+            usuarioRoomProvider.insertar(usuarioEntity)
         }
+
+        Toast.makeText(
+            applicationContext,
+            "Sesión Iniciada",
+            Toast.LENGTH_LONG
+        ).show()
+
+        gotoHome()
+        binding.btnLogin.isEnabled = true
+        binding.btnGoRegister.isEnabled = true
     }
 
     private fun obtenerDatosLogin(loginResponse: LoginResponse) {
         try{
-            saveTokenInSession(loginResponse)
+            val tokenEntity = TokenEntity(
+                loginResponse.token
+            )
+
+            if (SharedPref(this).getSomeBooleanValue("mantener")) {
+                tokenRoomProvider.actualizar(tokenEntity)
+            } else {
+                tokenRoomProvider.insertar(tokenEntity)
+                if (binding.chkmantener.isChecked) {
+                    SharedPref(this).setSomeBooleanValue("mantener",true)
+                }
+            }
 
             val loginRequest = LoginRequest(
                 binding.edTextEmail.text.toString().trim(),
@@ -126,37 +145,28 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
         finish()
     }
 
-    private fun saveUserInSession(usuarioResponse: UsuarioResponse){
+    private fun checkUserSession(){
         val sharedPref = SharedPref(this)
-        sharedPref.save("user", usuarioResponse)
 
-        gotoHome()
-    }
-
-    private fun saveTokenInSession(loginResponse: LoginResponse){
-        val sharedPref = SharedPref(this)
-        sharedPref.save("token", loginResponse)
-    }
-
-    private fun getUserFromSession(){
-        val sharedPref = SharedPref(this)
-        val gson = Gson()
-
-        if(!sharedPref.getData("user").isNullOrBlank()){
-            val user = gson.fromJson(sharedPref.getData("user"), UsuarioResponse::class.java)
-            val token = gson.fromJson(sharedPref.getData("token"), LoginResponse::class.java)
-
-         Toast.makeText(
-                applicationContext,
-                "Bienvenido, ${user.cliente.nombre}.",
-                Toast.LENGTH_LONG
-            ).show()
+        if (sharedPref.getSomeBooleanValue("mantener")) {
+            usuarioRoomProvider.obtener().observe(this){
+                usuario -> usuario?.let {
+                    Toast.makeText(
+                        applicationContext,
+                        "Bienvenido de nuevo, ${usuario.nombre}.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
 
             gotoHome()
+        } else {
+            usuarioRoomProvider.eliminarTodo()
+            tokenRoomProvider.eliminarToken()
         }
     }
 
-    fun String.isEmailValid(): Boolean {
+    private fun String.isEmailValid(): Boolean {
         return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
     }
 
@@ -202,12 +212,5 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
             R.id.btn_go_register -> goToRegister()
             R.id.btn_login -> login()
         }
-    }
-
-    override fun onBackPressed() {
-        val a = Intent(Intent.ACTION_MAIN)
-        a.addCategory(Intent.CATEGORY_HOME)
-        a.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(a)
     }
 }

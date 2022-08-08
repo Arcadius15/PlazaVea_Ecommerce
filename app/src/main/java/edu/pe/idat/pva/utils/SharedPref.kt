@@ -37,4 +37,14 @@ class SharedPref(activity: Activity) {
     fun remove(key: String){
         prefs?.edit()?.remove(key)?.apply()
     }
+
+    fun setSomeBooleanValue(nombre: String, valor: Boolean) {
+        val edit = prefs?.edit()
+        edit?.putBoolean(nombre, valor)
+        edit?.apply()
+    }
+
+    fun getSomeBooleanValue(nombre: String) : Boolean {
+        return prefs?.getBoolean(nombre,false) ?: false
+    }
 }

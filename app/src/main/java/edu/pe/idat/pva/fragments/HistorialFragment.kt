@@ -2,23 +2,21 @@ package edu.pe.idat.pva.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
-import edu.pe.idat.pva.R
 import edu.pe.idat.pva.activities.DetalleOrdenActivity
 import edu.pe.idat.pva.adapter.HistorialAdapter
 import edu.pe.idat.pva.databinding.FragmentHistorialBinding
-import edu.pe.idat.pva.models.LoginResponse
+import edu.pe.idat.pva.db.entity.TokenEntity
+import edu.pe.idat.pva.db.entity.UsuarioEntity
 import edu.pe.idat.pva.models.OrdenResponse
-import edu.pe.idat.pva.models.UsuarioResponse
 import edu.pe.idat.pva.providers.OrdenProvider
-import edu.pe.idat.pva.providers.ProductsProvider
-import edu.pe.idat.pva.utils.SharedPref
+import edu.pe.idat.pva.providers.TokenRoomProvider
+import edu.pe.idat.pva.providers.UsuarioRoomProvider
 
 class HistorialFragment : Fragment(), HistorialAdapter.IHistorialAdapter {
 
@@ -26,8 +24,11 @@ class HistorialFragment : Fragment(), HistorialAdapter.IHistorialAdapter {
     private val binding get() = _binding!!
 
     private lateinit var ordenProvider: OrdenProvider
-    private lateinit var productsProvider: ProductsProvider
-    private lateinit var sharedPref: SharedPref
+    private lateinit var usuarioRoomProvider: UsuarioRoomProvider
+    private lateinit var tokenRoomProvider: TokenRoomProvider
+
+    private lateinit var usuario: UsuarioEntity
+    private lateinit var token: TokenEntity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,23 +37,22 @@ class HistorialFragment : Fragment(), HistorialAdapter.IHistorialAdapter {
         _binding = FragmentHistorialBinding.inflate(inflater, container, false)
 
         ordenProvider = ViewModelProvider(requireActivity())[OrdenProvider::class.java]
-        productsProvider = ViewModelProvider(requireActivity())[ProductsProvider::class.java]
+        usuarioRoomProvider = ViewModelProvider(requireActivity())[UsuarioRoomProvider::class.java]
+        tokenRoomProvider = ViewModelProvider(requireActivity())[TokenRoomProvider::class.java]
 
         binding.tvMensajeSinCompras.visibility = View.GONE
 
         binding.rvHistorial.setHasFixedSize(true)
         binding.rvHistorial.layoutManager = LinearLayoutManager(requireActivity())
 
-        sharedPref = SharedPref(requireActivity())
-
-        getOrdenes()
+        getUserFromDB()
 
         return binding.root
     }
 
     private fun getOrdenes() {
-        ordenProvider.getAllByCliente(getUserFromSession()!!.cliente.idCliente,
-                                        "Bearer ${getTokenFromSession()!!.token}").observe(viewLifecycleOwner){
+        ordenProvider.getAllByCliente(usuario.idCliente,
+                                        "Bearer ${token.token}").observe(viewLifecycleOwner){
                                             if (it != null){
                                                 binding.rvHistorial.adapter = HistorialAdapter(ArrayList(it.content.sortedWith(
                                                     compareBy{ or ->
@@ -66,25 +66,17 @@ class HistorialFragment : Fragment(), HistorialAdapter.IHistorialAdapter {
         }
     }
 
-    private fun getUserFromSession(): UsuarioResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("user").isNullOrBlank()){
-            null
-        } else {
-            val user = gson.fromJson(sharedPref.getData("user"), UsuarioResponse::class.java)
-            user
+    private fun getUserFromDB(){
+        usuarioRoomProvider.obtener().observe(requireActivity()){
+            usuario = it
+            getTokenFromDB()
         }
     }
 
-    private fun getTokenFromSession(): LoginResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("token").isNullOrBlank()){
-            null
-        } else {
-            val token = gson.fromJson(sharedPref.getData("token"), LoginResponse::class.java)
-            token
+    private fun getTokenFromDB(){
+        tokenRoomProvider.obtener().observe(requireActivity()){
+            token = it
+            getOrdenes()
         }
     }
 

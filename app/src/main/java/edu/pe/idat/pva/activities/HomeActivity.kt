@@ -7,34 +7,39 @@ import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
-import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.activities.shopping_bag.ShoppingBagActivity
 import edu.pe.idat.pva.databinding.ActivityHomeBinding
-import edu.pe.idat.pva.models.UsuarioResponse
+import edu.pe.idat.pva.db.entity.UsuarioEntity
+import edu.pe.idat.pva.providers.UsuarioRoomProvider
 import edu.pe.idat.pva.utils.SharedPref
 
 
 class HomeActivity : AppCompatActivity() {
 
-    val TAG = "HomeActivity"
     private lateinit var sharedPref: SharedPref
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomeBinding
+
+    private lateinit var usuarioRoomProvider: UsuarioRoomProvider
+
+    private lateinit var usuarioEntity: UsuarioEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        sharedPref= SharedPref(this)
+        sharedPref = SharedPref(this)
+        usuarioRoomProvider = ViewModelProvider(this)[UsuarioRoomProvider::class.java]
 
         setSupportActionBar(binding.appBarHome.toolbar)
 
@@ -54,17 +59,18 @@ class HomeActivity : AppCompatActivity() {
         binding.btnLogout.setOnClickListener{ logout() }
         binding.btnGoCambiarContra.setOnClickListener{ startActivity(Intent(this,CambiarContraActivity::class.java)) }
 
-        val usuario = getUserFromSession()!!
-
-        var header = binding.navView.getHeaderView(0)
-        header.findViewById<TextView>(R.id.tvUsuario).text = usuario.cliente.nombre +
-                                                                " " + usuario.cliente.apellidos
-        header.findViewById<TextView>(R.id.tvCorreo).text = usuario.email
-
+        usuarioRoomProvider.obtener().observe(this){
+                usuario -> usuario?.let {
+                    usuarioEntity = usuario
+                    val header = binding.navView.getHeaderView(0)
+                    header.findViewById<TextView>(R.id.tvUsuario).text = usuarioEntity.nombre +
+                            " " + usuarioEntity.apellidos
+                    header.findViewById<TextView>(R.id.tvCorreo).text = usuarioEntity.email
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.home, menu)
         return true
     }
@@ -82,22 +88,12 @@ class HomeActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    private fun getUserFromSession(): UsuarioResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("user").isNullOrBlank()){
-            null
-        } else {
-            val user = gson.fromJson(sharedPref.getData("user"), UsuarioResponse::class.java)
-            user
-        }
-    }
-
     private fun logout() {
-        sharedPref.remove("user")
-        sharedPref.remove("token")
-        if(!sharedPref.getData("shopBag").isNullOrBlank()){
-            sharedPref.remove(("shopBag"))
+        if (!sharedPref.getData("shopBag").isNullOrBlank()) {
+            sharedPref.remove("shopBag")
+        }
+        if (sharedPref.getSomeBooleanValue("mantener")) {
+            sharedPref.remove("mantener")
         }
         val i = Intent(this, MainActivity::class.java)
         startActivity(i)
@@ -109,10 +105,4 @@ class HomeActivity : AppCompatActivity() {
         startActivity(i)
     }
 
-    override fun onBackPressed() {
-        val a = Intent(Intent.ACTION_MAIN)
-        a.addCategory(Intent.CATEGORY_HOME)
-        a.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(a)
-    }
 }

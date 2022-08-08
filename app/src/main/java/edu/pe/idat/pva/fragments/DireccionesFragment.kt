@@ -4,27 +4,25 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.activities.DireccionDetalleActivity
 import edu.pe.idat.pva.activities.DireccionRegistroActivity
-import edu.pe.idat.pva.activities.RegTarjetaActivity
 import edu.pe.idat.pva.adapter.DireccionAdapter
 import edu.pe.idat.pva.databinding.FragmentDireccionesBinding
+import edu.pe.idat.pva.db.entity.TokenEntity
+import edu.pe.idat.pva.db.entity.UsuarioEntity
 import edu.pe.idat.pva.models.DireccionResponse
-import edu.pe.idat.pva.models.LoginResponse
-import edu.pe.idat.pva.models.UsuarioResponse
 import edu.pe.idat.pva.providers.ClienteProvider
-import edu.pe.idat.pva.utils.SharedPref
+import edu.pe.idat.pva.providers.TokenRoomProvider
+import edu.pe.idat.pva.providers.UsuarioRoomProvider
 
 class DireccionesFragment : Fragment(), View.OnClickListener, DireccionAdapter.IDireccionAdapter {
 
@@ -32,7 +30,11 @@ class DireccionesFragment : Fragment(), View.OnClickListener, DireccionAdapter.I
     private val binding get() = _binding!!
 
     private lateinit var clienteProvider: ClienteProvider
-    private lateinit var sharedPref: SharedPref
+    private lateinit var usuarioRoomProvider: UsuarioRoomProvider
+    private lateinit var tokenRoomProvider: TokenRoomProvider
+
+    private lateinit var usuario: UsuarioEntity
+    private lateinit var token: TokenEntity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,15 +43,15 @@ class DireccionesFragment : Fragment(), View.OnClickListener, DireccionAdapter.I
         _binding = FragmentDireccionesBinding.inflate(inflater, container, false)
 
         clienteProvider = ViewModelProvider(requireActivity())[ClienteProvider::class.java]
+        usuarioRoomProvider = ViewModelProvider(requireActivity())[UsuarioRoomProvider::class.java]
+        tokenRoomProvider = ViewModelProvider(requireActivity())[TokenRoomProvider::class.java]
 
         binding.tvMensajeSinDirecciones.visibility = View.GONE
 
         binding.rvDirecciones.setHasFixedSize(true)
         binding.rvDirecciones.layoutManager = LinearLayoutManager(requireActivity())
 
-        sharedPref = SharedPref(requireActivity())
-
-        getDirecciones()
+        getUserFromDB()
 
         binding.btnGoRegDireccion.setOnClickListener(this)
 
@@ -57,10 +59,10 @@ class DireccionesFragment : Fragment(), View.OnClickListener, DireccionAdapter.I
     }
 
     private fun getDirecciones() {
-        clienteProvider.listarDirecciones(getUserFromSession()!!.cliente.idCliente,
-            "Bearer ${getTokenFromSession()!!.token}").observe(viewLifecycleOwner){
+        clienteProvider.listarDirecciones(usuario.idCliente,
+            "Bearer ${token.token}").observe(viewLifecycleOwner){
             if (it != null){
-                var adapter = DireccionAdapter(ArrayList(it.sortedWith(compareBy{ dr ->
+                val adapter = DireccionAdapter(ArrayList(it.sortedWith(compareBy{ dr ->
                     dr.idDireccion
                 })),this)
                 adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
@@ -86,25 +88,17 @@ class DireccionesFragment : Fragment(), View.OnClickListener, DireccionAdapter.I
         }
     }
 
-    private fun getUserFromSession(): UsuarioResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("user").isNullOrBlank()){
-            null
-        } else {
-            val user = gson.fromJson(sharedPref.getData("user"), UsuarioResponse::class.java)
-            user
+    private fun getUserFromDB(){
+        usuarioRoomProvider.obtener().observe(requireActivity()){
+            usuario = it
+            getTokenFromDB()
         }
     }
 
-    private fun getTokenFromSession(): LoginResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("token").isNullOrBlank()){
-            null
-        } else {
-            val token = gson.fromJson(sharedPref.getData("token"), LoginResponse::class.java)
-            token
+    private fun getTokenFromDB(){
+        tokenRoomProvider.obtener().observe(requireActivity()){
+            token = it
+            getDirecciones()
         }
     }
 
@@ -112,10 +106,10 @@ class DireccionesFragment : Fragment(), View.OnClickListener, DireccionAdapter.I
     ) {
         if (it.resultCode == Activity.RESULT_OK) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                parentFragmentManager.beginTransaction().detach(this).commitNow();
-                parentFragmentManager.beginTransaction().attach(this).commitNow();
+                parentFragmentManager.beginTransaction().detach(this).commitNow()
+                parentFragmentManager.beginTransaction().attach(this).commitNow()
             } else {
-                parentFragmentManager.beginTransaction().detach(this).attach(this).commit();
+                parentFragmentManager.beginTransaction().detach(this).attach(this).commit()
             }
         }
     }

@@ -110,4 +110,5 @@
     <string name="boton_regnuevoruc">Registrar Nuevo RUC</string>
     <string name="boton_regnuevadir">Registrar Nueva Dirección</string>
     <string name="boton_regnuevatar">Registrar Nueva Tarjeta</string>
+    <string name="mantener_sesion">Mantener sesión iniciada</string>
 </resources>

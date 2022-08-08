@@ -1,15 +1,13 @@
 package edu.pe.idat.pva.activities
 
 import android.app.Activity
-import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -17,26 +15,30 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.ActivityDireccionRegistroBinding
-import edu.pe.idat.pva.models.*
+import edu.pe.idat.pva.db.entity.TokenEntity
+import edu.pe.idat.pva.db.entity.UsuarioEntity
+import edu.pe.idat.pva.models.ClienteIDRequest
+import edu.pe.idat.pva.models.DireccionRequest
+import edu.pe.idat.pva.models.ResponseHttp
 import edu.pe.idat.pva.providers.ClienteProvider
-import edu.pe.idat.pva.utils.SharedPref
-import java.io.IOException
+import edu.pe.idat.pva.providers.TokenRoomProvider
+import edu.pe.idat.pva.providers.UsuarioRoomProvider
 
 class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityDireccionRegistroBinding
 
-    private lateinit var sharedPref: SharedPref
-
-    private lateinit var usuario: UsuarioResponse
-
     private var marker: Marker? = null
 
     private lateinit var clienteProvider: ClienteProvider
+    private lateinit var usuarioRoomProvider: UsuarioRoomProvider
+    private lateinit var tokenRoomProvider: TokenRoomProvider
+
+    private lateinit var usuario: UsuarioEntity
+    private lateinit var token: TokenEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +46,9 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
         binding = ActivityDireccionRegistroBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sharedPref = SharedPref(this)
-
         clienteProvider = ViewModelProvider(this)[ClienteProvider::class.java]
+        usuarioRoomProvider = ViewModelProvider(this)[UsuarioRoomProvider::class.java]
+        tokenRoomProvider = ViewModelProvider(this)[TokenRoomProvider::class.java]
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -58,16 +60,16 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
                         marker!!.remove()
                     }
 
-                    var location: String = query!!
-                    var addressList: List<Address>
+                    val location: String = query!!
+                    val addressList: List<Address>
 
                     if (location != null) {
-                        var geocoder = Geocoder(this@DireccionRegistroActivity)
+                        val geocoder = Geocoder(this@DireccionRegistroActivity)
                         addressList = geocoder.getFromLocationName(location,1)
 
-                        var address = addressList[0]
+                        val address = addressList[0]
 
-                        var latLng = LatLng(address.latitude,address.longitude)
+                        val latLng = LatLng(address.latitude,address.longitude)
                         marker = mMap.addMarker(MarkerOptions()
                             .position(latLng)
                             .title(location)
@@ -101,7 +103,7 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
         })
 
         binding.btnGuardarDir.setOnClickListener{
-            guardarDireccion()
+            getUserFromDB()
         }
 
         clienteProvider.responseHttp.observe(this){
@@ -134,13 +136,11 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
     private fun guardarDireccion() {
         binding.btnGuardarDir.isEnabled = false
         if (!binding.svLocation.query.toString().isNullOrBlank() && marker != null) {
-            usuario = getUserFromSession()!!
-
-            var clienteIDRequest = ClienteIDRequest(
-                usuario.cliente.idCliente
+            val clienteIDRequest = ClienteIDRequest(
+                usuario.idCliente
             )
 
-            var direccionRequest = DireccionRequest(
+            val direccionRequest = DireccionRequest(
                 binding.svLocation.query.toString(),
                 marker!!.position.latitude,
                 marker!!.position.longitude,
@@ -148,7 +148,7 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
             )
 
             clienteProvider.registrarDireccion(direccionRequest,
-                "Bearer " + getTokenFromSession()!!.token)
+                "Bearer " + token.token)
         } else {
             Toast.makeText(
                 applicationContext,
@@ -169,7 +169,7 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
     }
 
     override fun onMarkerDrag(p0: Marker) {
-        var posicion = p0.position
+        val posicion = p0.position
         p0.showInfoWindow()
         mMap.animateCamera(CameraUpdateFactory.newLatLng(posicion))
     }
@@ -183,25 +183,17 @@ class DireccionRegistroActivity : AppCompatActivity(), OnMapReadyCallback, Googl
         p0.showInfoWindow()
     }
 
-    private fun getUserFromSession(): UsuarioResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("user").isNullOrBlank()){
-            null
-        } else {
-            val user = gson.fromJson(sharedPref.getData("user"), UsuarioResponse::class.java)
-            user
+    private fun getUserFromDB(){
+        usuarioRoomProvider.obtener().observe(this){
+            usuario = it
+            getTokenFromDB()
         }
     }
 
-    private fun getTokenFromSession(): LoginResponse?{
-        val gson = Gson()
-
-        return if(sharedPref.getData("token").isNullOrBlank()){
-            null
-        } else {
-            val token = gson.fromJson(sharedPref.getData("token"), LoginResponse::class.java)
-            token
+    private fun getTokenFromDB(){
+        tokenRoomProvider.obtener().observe(this){
+            token = it
+            guardarDireccion()
         }
     }
 

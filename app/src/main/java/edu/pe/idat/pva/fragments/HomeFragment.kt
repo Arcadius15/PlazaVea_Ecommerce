@@ -4,18 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import edu.pe.idat.pva.R
 import edu.pe.idat.pva.adapter.CategoriaAdapter
 import edu.pe.idat.pva.databinding.FragmentHomeBinding
-import edu.pe.idat.pva.models.SubCategoriaResponse
 import edu.pe.idat.pva.providers.CategoriaProvider
-import edu.pe.idat.pva.utils.SharedPref
 
 
 class HomeFragment : Fragment() {
@@ -25,7 +19,6 @@ class HomeFragment : Fragment() {
 
     private lateinit var categoriaProvider: CategoriaProvider
 
-    var sharedPref: SharedPref? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,8 +32,6 @@ class HomeFragment : Fragment() {
         binding.rvCategorias.setHasFixedSize(true)
         binding.rvCategorias.layoutManager = GridLayoutManager(requireContext(),2)
 
-        sharedPref = SharedPref(requireActivity())
-
         getCagories()
 
         return binding.root
@@ -52,6 +43,5 @@ class HomeFragment : Fragment() {
             binding.progressbar.visibility = View.GONE
         }
     }
-
 
 }

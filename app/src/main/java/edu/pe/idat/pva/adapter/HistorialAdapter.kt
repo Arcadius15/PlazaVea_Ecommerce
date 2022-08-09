@@ -2,8 +2,10 @@ package edu.pe.idat.pva.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.CardviewOrdenBinding
 import edu.pe.idat.pva.models.OrdenResponse
 import java.text.SimpleDateFormat
@@ -33,8 +35,28 @@ class HistorialAdapter(private var ordenes: ArrayList<OrdenResponse>,
                 val df2 = SimpleDateFormat("yyyy-MM-dd")
                 df2.timeZone = TimeZone.getTimeZone("America/Lima")
                 binding.tvFechaCompraCv.text = df2.format(fc.time)
-                fc.add(Calendar.DATE, 10)
-                binding.tvFechaEstimadaCv.text = df2.format(fc.time)
+                when (status) {
+                    "ENCAMINO" -> {
+                        binding.tvStatusCv.text = "En Camino"
+                        binding.tvStatusCv.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.blue_700))
+                        fc.add(Calendar.DATE, 10)
+                        binding.tvFechaEstimadaCv.text = df2.format(fc.time)
+                    }
+                    "ENTREGADO" -> {
+                        binding.tvStatusCv.text = "Entregado"
+                        binding.tvStatusCv.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.green_accent))
+                        binding.tvEntregaEstimadaCv.text = holder.itemView.context.getString(R.string.entregado_el)
+                        fc.time = df1.parse(fechaEntrega) as Date
+                        binding.tvFechaEstimadaCv.text = df2.format(fc.time)
+                    }
+                    "CANCELADO" -> {
+                        binding.tvStatusCv.text = "Cancelado"
+                        binding.tvStatusCv.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.granate_700))
+                        binding.tvEntregaEstimadaCv.text = holder.itemView.context.getString(R.string.cancelado_el)
+                        fc.time = df1.parse(fechaEntrega) as Date
+                        binding.tvFechaEstimadaCv.text = df2.format(fc.time)
+                    }
+                }
                 binding.tvProductosCv.text = ordendetalle.size.toString()
                 Glide.with(holder.itemView.context)
                     .load(ordendetalle[0].producto.imagenUrl)

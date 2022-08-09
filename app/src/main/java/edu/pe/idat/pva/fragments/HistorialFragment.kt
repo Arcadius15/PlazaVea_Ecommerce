@@ -68,15 +68,19 @@ class HistorialFragment : Fragment(), HistorialAdapter.IHistorialAdapter {
 
     private fun getUserFromDB(){
         usuarioRoomProvider.obtener().observe(requireActivity()){
-            usuario = it
-            getTokenFromDB()
+            ue -> ue?.let {
+                usuario = ue
+                getTokenFromDB()
+            }
         }
     }
 
     private fun getTokenFromDB(){
         tokenRoomProvider.obtener().observe(requireActivity()){
-            token = it
-            getOrdenes()
+            te -> te?.let {
+                token = te
+                getOrdenes()
+            }
         }
     }
 

@@ -22,7 +22,7 @@ class ProductosOrdenAdapter(private var productos: ArrayList<OrdenDetalleRespons
         with(holder){
             with(productos[position]){
                 binding.tvNombreProducto.text = producto.nombre
-                binding.tvPrecioUnidad.text = "S/$precio"
+                binding.tvPrecioUnidad.text = "S/${String.format("%.2f",precio)}"
                 binding.tvCantidad.text = cantidad.toString()
                 binding.tvPrecioTotal.text = "S/${String.format("%.2f",precio * cantidad)}"
                 Glide.with(holder.itemView.context)

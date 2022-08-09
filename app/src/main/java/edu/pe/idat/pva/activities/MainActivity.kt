@@ -76,6 +76,9 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
             usuarioRoomProvider.actualizar(usuarioEntity)
         } else {
             usuarioRoomProvider.insertar(usuarioEntity)
+            if (binding.chkmantener.isChecked) {
+                SharedPref(this).setSomeBooleanValue("mantener",true)
+            }
         }
 
         Toast.makeText(
@@ -99,9 +102,6 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
                 tokenRoomProvider.actualizar(tokenEntity)
             } else {
                 tokenRoomProvider.insertar(tokenEntity)
-                if (binding.chkmantener.isChecked) {
-                    SharedPref(this).setSomeBooleanValue("mantener",true)
-                }
             }
 
             val loginRequest = LoginRequest(

@@ -17,7 +17,7 @@
             android:id="@+id/btnGoListRuc"
             android:layout_width="39dp"
             android:layout_height="37dp"
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="15dp"
             android:clickable="true"
             android:focusable="true"
@@ -31,7 +31,7 @@
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/montserrat_semibold"
             android:text="@string/registrar_ruc"
-            android:textSize="25dp" />
+            android:textSize="25sp" />
 
     </LinearLayout>
 
@@ -88,7 +88,7 @@
             android:layout_alignParentStart="true"
             android:text="@string/boton_editar"
             android:layout_marginTop="30dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:background="@drawable/rounded_button"/>
         <Button
             android:id="@+id/btnborrarruc"
@@ -97,7 +97,7 @@
             android:layout_alignParentEnd="true"
             android:text="@string/boton_borrar"
             android:layout_marginTop="30dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/rounded_button"
             app:backgroundTint="@color/granate_300"/>
 

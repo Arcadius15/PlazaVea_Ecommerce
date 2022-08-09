@@ -29,14 +29,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/id_orden"
-                android:textStyle="bold"></TextView>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvIdOrdenCv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/id_orden"></TextView>
+                android:layout_marginStart="5dp"
+                android:text="@string/id_orden" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/estado_pedido_cv"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvStatusCv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/estado_pedido" />
 
         </LinearLayout>
         <LinearLayout
@@ -48,14 +67,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/direccion_cardview"
-                android:textStyle="bold"></TextView>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvDireccionCv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/direccion_titulo"></TextView>
+                android:layout_marginStart="5dp"
+                android:text="@string/direccion_titulo" />
 
         </LinearLayout>
         <LinearLayout
@@ -67,14 +86,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fecha_realizada"
-                android:textStyle="bold"></TextView>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvFechaCompraCv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/fecha_realizada"></TextView>
+                android:layout_marginStart="5dp"
+                android:text="@string/fecha_realizada" />
 
         </LinearLayout>
         <LinearLayout
@@ -83,17 +102,18 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tvEntregaEstimadaCv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fecha_entrega"
-                android:textStyle="bold"></TextView>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvFechaEstimadaCv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/direccion_titulo"></TextView>
+                android:layout_marginStart="5dp"
+                android:text="@string/direccion_titulo" />
 
         </LinearLayout>
         <LinearLayout
@@ -105,14 +125,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/productos_comprados"
-                android:textStyle="bold"></TextView>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvProductosCv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/direccion_titulo"></TextView>
+                android:layout_marginStart="5dp"
+                android:text="@string/direccion_titulo" />
 
         </LinearLayout>
     </LinearLayout>

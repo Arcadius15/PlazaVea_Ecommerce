@@ -3,18 +3,13 @@ package edu.pe.idat.pva.activities.products.detail
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import edu.pe.idat.pva.R
-import edu.pe.idat.pva.activities.products.ProductsActivity
 import edu.pe.idat.pva.activities.shopping_bag.ShoppingBagActivity
 import edu.pe.idat.pva.databinding.ActivityProductsDetailBinding
 import edu.pe.idat.pva.models.Producto
@@ -22,18 +17,16 @@ import edu.pe.idat.pva.utils.SharedPref
 
 class ProductsDetailActivity : AppCompatActivity() {
 
-    val TAG = "ProductsDetail"
+    private val TAG = "ProductsDetail"
     var producto: Producto? = null
     val gson = Gson()
 
     private lateinit var binding: ActivityProductsDetailBinding
 
-    var selectProduct = ArrayList<Producto>()
+    private var selectProduct = ArrayList<Producto>()
 
-
-
-    var contador = 1
-    var productPrice = 0.0
+    private var contador = 1
+    private var productPrice = 0.0
     var sharedPref: SharedPref? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,7 +91,7 @@ class ProductsDetailActivity : AppCompatActivity() {
                 contador = producto?.quantity!!.toInt()
                 productPrice = producto?.precioRegular!! * producto?.quantity!!
                 binding.tvPrice.text = "S/${String.format("%.2f",productPrice)}"
-                binding.btnAddProduct.setText("Editar producto")
+                binding.btnAddProduct.text = "Editar producto"
                 binding.btnAddProduct.backgroundTintList= ColorStateList.valueOf(Color.RED)
             }
 
@@ -109,12 +102,10 @@ class ProductsDetailActivity : AppCompatActivity() {
     }
 
     private fun getIndexOf(idProduct: String): Int{
-        var ps = 0
-        for(p in selectProduct){
+        for((ps, p) in selectProduct.withIndex()){
             if(p.idProducto == idProduct){
                 return ps
             }
-            ps++
         }
 
         return -1

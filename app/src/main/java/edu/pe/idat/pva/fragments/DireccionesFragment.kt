@@ -90,15 +90,19 @@ class DireccionesFragment : Fragment(), View.OnClickListener, DireccionAdapter.I
 
     private fun getUserFromDB(){
         usuarioRoomProvider.obtener().observe(requireActivity()){
-            usuario = it
-            getTokenFromDB()
+            ue -> ue?.let {
+                usuario = ue
+                getTokenFromDB()
+            }
         }
     }
 
     private fun getTokenFromDB(){
         tokenRoomProvider.obtener().observe(requireActivity()){
-            token = it
-            getDirecciones()
+            te -> te?.let {
+                token = te
+                getDirecciones()
+            }
         }
     }
 

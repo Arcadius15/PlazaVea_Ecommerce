@@ -17,7 +17,7 @@
             android:id="@+id/btnGoBackTarjeta"
             android:layout_width="39dp"
             android:layout_height="37dp"
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="15dp"
             android:clickable="true"
             android:focusable="true"
@@ -31,7 +31,7 @@
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/montserrat_semibold"
             android:text="@string/registrar_tarjeta"
-            android:textSize="25dp" />
+            android:textSize="25sp" />
 
     </LinearLayout>
 
@@ -66,7 +66,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_custom"
                         android:inputType="none">
-                    </AutoCompleteTextView>>
+                    </AutoCompleteTextView>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -95,9 +95,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Caducidad:"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginRight="10dp"
+                        android:text="@string/simple_caducidad"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/montserrat_regular"/>
 
@@ -106,11 +106,10 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:hint="@string/mes_caducidad_tarjeta"
-                        >
+                        android:layout_marginEnd="10dp"
+                        android:hint="@string/mes_caducidad_tarjeta">
 
                         <AutoCompleteTextView
                             android:id="@+id/edtMesCaducidad"
@@ -118,7 +117,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/edittext_custom"
                             android:inputType="none">
-                        </AutoCompleteTextView>>
+                        </AutoCompleteTextView>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
@@ -135,11 +134,10 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginRight="20dp"
-                        android:hint="@string/anio_caducidad_tarjeta"
-                        >
+                        android:layout_marginEnd="20dp"
+                        android:hint="@string/anio_caducidad_tarjeta">
 
                         <AutoCompleteTextView
                             android:id="@+id/edtAnioCaducidad"
@@ -147,7 +145,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/edittext_custom"
                             android:inputType="none">
-                        </AutoCompleteTextView>>
+                        </AutoCompleteTextView>
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 

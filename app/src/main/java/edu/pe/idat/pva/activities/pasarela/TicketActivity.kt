@@ -60,9 +60,9 @@ class TicketActivity : AppCompatActivity(){
 
         binding.tvProductoslista.text = sb.toString()
 
-        binding.tvTicketMonto.text = "S/${ordenResponse.monto}"
-        binding.tvTicketIGV.text = "S/${ordenResponse.igv}"
-        binding.tvTicketTotal.text = "S/${ordenResponse.total}"
+        binding.tvTicketMonto.text = "S/${String.format("%.2f",ordenResponse.monto)}"
+        binding.tvTicketIGV.text = "S/${String.format("%.2f",ordenResponse.igv)}"
+        binding.tvTicketTotal.text = "S/${String.format("%.2f",ordenResponse.total)}"
 
         binding.progressbarTicket.visibility = View.GONE
         binding.llmensaje.visibility = View.VISIBLE

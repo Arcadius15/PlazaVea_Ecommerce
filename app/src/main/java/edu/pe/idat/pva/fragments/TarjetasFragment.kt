@@ -80,15 +80,19 @@ class TarjetasFragment : Fragment(), View.OnClickListener, TarjetaAdapter.ITarje
 
     private fun getUserFromDB(){
         usuarioRoomProvider.obtener().observe(requireActivity()){
-            usuario = it
-            getTokenFromDB()
+            ue -> ue?.let {
+                usuario = ue
+                getTokenFromDB()
+            }
         }
     }
 
     private fun getTokenFromDB(){
         tokenRoomProvider.obtener().observe(requireActivity()){
-            token = it
-            getTarjetas()
+            te -> te?.let {
+                token = te
+                getTarjetas()
+            }
         }
     }
 

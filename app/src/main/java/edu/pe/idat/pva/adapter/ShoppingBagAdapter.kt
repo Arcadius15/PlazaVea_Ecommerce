@@ -30,7 +30,7 @@ class ShoppingBagAdapter(val context: Activity, private var productos: ArrayList
         with(holder){
             with(productos[position]){
                 binding.tvNameBag.text = nombre
-                binding.tvContador.text = "${quantity}"
+                binding.tvContador.text = "$quantity"
                 binding.tvPrecio.text = "S/${String.format("%.2f",precioRegular * quantity!!)}"
                 Glide.with(holder.itemView.context)
                     .load(imagenUrl)

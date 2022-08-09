@@ -24,7 +24,7 @@
     <string name="boton_registrar">Registrar</string>
     <string name="boton_registrarse">Registrarse</string>
     <string name="boton_iniciarseison">Iniciar sesión</string>
-    <string name="boton_registrateaqui">Registrate aqui</string>
+    <string name="boton_registrateaqui">Regístrate aqui</string>
     <string name="boton_guardar_direccion">Guardar Dirección</string>
     <string name="boton_cerrarsesion">Cerrar Sesión</string>
     <string name="registro_titulo">Registro</string>
@@ -102,7 +102,6 @@
     <string name="id_ruc">ID de RUC:</string>
     <string name="numero_ruc_lista">Número de RUC:</string>
     <string name="frag_ruc_label">Tus RUC</string>
-    <string name="rucs">Tus RUC</string>
     <string name="sin_rucs">Aún no registró ningún número de RUC</string>
     <string name="volver">Volver</string>
     <string name="ruc">RUC</string>
@@ -119,4 +118,9 @@
     <string name="label_preciototal">Precio Total:</string>
     <string name="repartidor">Repartidor:</string>
     <string name="fecha_realizada_cv">Fecha de Compra:</string>
+    <string name="entregado_el">Entregado el día:</string>
+    <string name="cancelado_el">Cancelado el día:</string>
+    <string name="simple_caducidad">Caducidad:</string>
+    <string name="cancelar">Cancelar Orden</string>
+    <string name="estado_pedido_cv">Estado:</string>
 </resources>

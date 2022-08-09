@@ -17,5 +17,6 @@ data class OrdenResponse(
     var total: Double,
     var cliente: ClienteIDRequest,
     var tienda: TiendaIDRequest,
-    var ordendetalle: ArrayList<OrdenDetalleResponse>
+    var ordendetalle: ArrayList<OrdenDetalleResponse>,
+    var repartidor: RepartidorOrdenResponse?
 ) : Serializable

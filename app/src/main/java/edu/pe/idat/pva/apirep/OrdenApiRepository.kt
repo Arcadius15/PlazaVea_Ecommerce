@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import edu.pe.idat.pva.api.RetrofitInstanceCreate
 import edu.pe.idat.pva.models.*
+import edu.pe.idat.pva.models.request.OrdenPatchRequest
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,7 +31,6 @@ class OrdenApiRepository {
             override fun onFailure(call: Call<String>, t: Throwable) {
                 Log.e("ERROR!", t.message.toString())
             }
-
         })
 
         return ordenId
@@ -61,7 +61,6 @@ class OrdenApiRepository {
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.e("ERROR!", t.message.toString())
             }
-
         })
 
         return responseHttp
@@ -78,7 +77,6 @@ class OrdenApiRepository {
             override fun onFailure(call: Call<OrdenResponse>, t: Throwable) {
                 Log.e("ERROR!", t.message.toString())
             }
-
         })
 
         return ordenResponse
@@ -95,9 +93,38 @@ class OrdenApiRepository {
             override fun onFailure(call: Call<OrdenPageResponse>, t: Throwable) {
                 Log.e("ERROR!", t.message.toString())
             }
-
         })
 
         return ordenPageResponse
+    }
+
+    fun actualizarOrden(idOrden: String, ordenPatchRequest: OrdenPatchRequest, token: String) : MutableLiveData<ResponseHttp> {
+        val call: Call<Void> = RetrofitInstanceCreate
+            .getOrdenRoutes.actualizarOrden(idOrden,ordenPatchRequest,token)
+        call.enqueue(object : Callback<Void>{
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful){
+                    responseHttp.value = ResponseHttp(
+                        "Éxito",
+                        response.isSuccessful,
+                        "Correcto",
+                        "No"
+                    )
+                } else {
+                    responseHttp.value = ResponseHttp(
+                        "Error",
+                        response.isSuccessful,
+                        "Problema",
+                        "Sí"
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("ERROR!", t.message.toString())
+            }
+        })
+
+        return responseHttp
     }
 }

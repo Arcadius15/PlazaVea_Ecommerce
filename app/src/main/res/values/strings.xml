@@ -123,4 +123,5 @@
     <string name="simple_caducidad">Caducidad:</string>
     <string name="cancelar">Cancelar Orden</string>
     <string name="estado_pedido_cv">Estado:</string>
+    <string name="finalizar">Finalizar</string>
 </resources>

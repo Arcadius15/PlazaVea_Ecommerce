@@ -17,7 +17,7 @@
             android:id="@+id/btnGoBackResumen"
             android:layout_width="39dp"
             android:layout_height="37dp"
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="15dp"
             android:clickable="true"
             android:focusable="true"
@@ -31,7 +31,7 @@
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/montserrat_semibold"
             android:text="@string/resumen_pedido"
-            android:textSize="25dp" />
+            android:textSize="25sp" />
 
     </LinearLayout>
 
@@ -86,8 +86,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/gray"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"/>
                 </LinearLayout>
 
@@ -125,13 +125,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/ruc"></TextView>
+                            android:text="@string/ruc" />
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:background="@color/gray"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="10dp"
                             android:layout_marginTop="10dp"/>
                     </LinearLayout>
 
@@ -143,14 +143,16 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginRight="20dp"
-                        android:hint="@string/numero_ruc">
+                        android:hint="@string/numero_ruc"
+                        tools:ignore="ExtraText">
 
                         <AutoCompleteTextView
                             android:id="@+id/edtRucSelect"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/edittext_custom"
-                            android:inputType="none">
+                            android:inputType="none"
+                            tools:ignore="LabelFor">
                         </AutoCompleteTextView>>
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -181,13 +183,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/direccion_titulo"></TextView>
+                        android:text="@string/direccion_titulo" />
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/gray"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"/>
                 </LinearLayout>
 
@@ -206,7 +208,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_custom"
-                        android:inputType="none">
+                        android:inputType="none"
+                        tools:ignore="LabelFor">
                     </AutoCompleteTextView>>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -253,7 +256,7 @@
                         android:layout_height="1dp"
                         android:background="@color/gray"
                         android:layout_marginStart="5dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"/>
                 </LinearLayout>
 
@@ -272,7 +275,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_custom"
-                        android:inputType="none">
+                        android:inputType="none"
+                        tools:ignore="LabelFor">
                     </AutoCompleteTextView>>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -307,8 +311,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/gray"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"/>
                 </LinearLayout>
 
@@ -335,8 +339,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/gray"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"/>
                 </LinearLayout>
 

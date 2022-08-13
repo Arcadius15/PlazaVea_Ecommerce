@@ -1,10 +1,13 @@
 package edu.pe.idat.pva.fragments
 
+import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -84,8 +87,21 @@ class HistorialFragment : Fragment(), HistorialAdapter.IHistorialAdapter {
         }
     }
 
+    private val launcher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                parentFragmentManager.beginTransaction().detach(this).commitNow()
+                parentFragmentManager.beginTransaction().attach(this).commitNow()
+            } else {
+                parentFragmentManager.beginTransaction().detach(this).attach(this).commit()
+            }
+        }
+    }
+
     override fun goDetail(ordenResponse: OrdenResponse) {
-        startActivity(Intent(requireActivity(),DetalleOrdenActivity::class.java)
+        launcher.launch(Intent(requireActivity(),DetalleOrdenActivity::class.java)
             .putExtra("orden",ordenResponse))
     }
 }

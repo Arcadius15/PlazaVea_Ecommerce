@@ -15,38 +15,31 @@ import edu.pe.idat.pva.models.Producto
 import edu.pe.idat.pva.utils.SharedPref
 
 
-class ProductsAdapter(val context: Activity, val productos: ArrayList<Producto>): RecyclerView.Adapter<ProductsAdapter.ProductViewHolder>() {
+class ProductsAdapter(val context: Activity, private val productos: ArrayList<Producto>): RecyclerView.Adapter<ProductsAdapter.ProductViewHolder>() {
 
     val sharedPref = SharedPref(context)
-
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.cardview_product, parent, false)
        return ProductViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return  productos.size
-    }
+    override fun getItemCount() = productos.size
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val product = productos[position]
         holder.textViewName.text = product.nombre
-        holder.textViewPrice.text = "S/${product.precioRegular}"
+        holder.textViewPrice.text = "S/${String.format("%.2f",product.precioRegular)}"
         Glide.with(context).load(product.imagenUrl).into(holder.imageViewProduct)
 
         holder.itemView.setOnClickListener{goToDetail(product)}
     }
 
     private fun goToDetail(product: Producto){
-
         val i = Intent(context, ProductsDetailActivity::class.java)
         .putExtra("producto", product.toJson())
         context.startActivity(i)
     }
-
-
 
     class  ProductViewHolder(view: View): RecyclerView.ViewHolder(view){
         val textViewName: TextView

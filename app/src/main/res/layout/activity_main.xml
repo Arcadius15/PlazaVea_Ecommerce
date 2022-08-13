@@ -18,13 +18,13 @@
             android:fontFamily="@font/montserrat_semibold"
             android:textSize="50sp"
             android:layout_marginTop="60dp"
-            android:layout_marginLeft="25dp" />
+            android:layout_marginStart="25dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ingresa_con_correoycontra"
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/montserrat_regular"/>
 
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:layout_gravity="center_horizontal"
-            android:text="@string/mantener_sesion"></CheckBox>
+            android:text="@string/mantener_sesion" />
     </LinearLayout>
 
     <LinearLayout
@@ -106,7 +106,6 @@
             android:layout_height="wrap_content"
             android:text="@string/boton_registrateaqui"
             android:layout_marginBottom="20dp"/>
-
 
     </LinearLayout>
 

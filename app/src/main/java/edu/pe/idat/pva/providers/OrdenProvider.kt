@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import edu.pe.idat.pva.apirep.OrdenApiRepository
 import edu.pe.idat.pva.models.*
+import edu.pe.idat.pva.models.request.OrdenPatchRequest
 
 class OrdenProvider : ViewModel() {
 
@@ -31,5 +32,9 @@ class OrdenProvider : ViewModel() {
 
     fun getAllByCliente(idCliente: String, token: String): LiveData<OrdenPageResponse>{
         return repository.getAllByCliente(idCliente,token)
+    }
+
+    fun actualizarOrden(idOrden: String, ordenPatchRequest: OrdenPatchRequest, token: String){
+        responseHttp = repository.actualizarOrden(idOrden, ordenPatchRequest, token)
     }
 }

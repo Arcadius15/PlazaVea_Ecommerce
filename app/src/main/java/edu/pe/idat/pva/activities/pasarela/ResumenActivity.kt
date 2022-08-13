@@ -61,6 +61,7 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
 
         ordenProvider = ViewModelProvider(this)[OrdenProvider::class.java]
         clienteProvider = ViewModelProvider(this)[ClienteProvider::class.java]
+        usuarioRoomProvider = ViewModelProvider(this)[UsuarioRoomProvider::class.java]
         tokenRoomProvider = ViewModelProvider(this)[TokenRoomProvider::class.java]
 
         binding.llRuc.visibility = View.GONE

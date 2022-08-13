@@ -27,6 +27,7 @@ class TicketActivity : AppCompatActivity(){
 
         binding.llmensaje.visibility = View.GONE
         binding.llticket.visibility = View.GONE
+        binding.llRucTicket.visibility = View.GONE
 
         binding.btnFinPasarela.setOnClickListener{gotoHome()}
         ordenProvider = ViewModelProvider(this)[OrdenProvider::class.java]
@@ -45,6 +46,8 @@ class TicketActivity : AppCompatActivity(){
     private fun obtenerOrden(ordenResponse: OrdenResponse) {
         if (ordenResponse.tipoFop == 2) {
             binding.tvTicketTipo.text = "Factura"
+            binding.llRucTicket.visibility = View.VISIBLE
+            binding.tvRucTicket.text = ordenResponse.formaPago.takeLast(11)
         } else {
             binding.tvTicketTipo.text = "Boleta"
         }

@@ -124,4 +124,5 @@
     <string name="cancelar">Cancelar Orden</string>
     <string name="estado_pedido_cv">Estado:</string>
     <string name="finalizar">Finalizar</string>
+    <string name="pagina">Página:</string>
 </resources>

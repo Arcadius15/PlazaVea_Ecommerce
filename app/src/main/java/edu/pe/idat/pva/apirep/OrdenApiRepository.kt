@@ -86,9 +86,9 @@ class OrdenApiRepository {
         return ordenResponse
     }
 
-    fun getAllByCliente(idCliente: String, token: String) : MutableLiveData<OrdenPageResponse> {
+    fun getAllByCliente(idCliente: String, page: Int, token: String) : MutableLiveData<OrdenPageResponse> {
         val call: Call<OrdenPageResponse> = RetrofitInstanceCreate
-            .getOrdenRoutes.getAllByCliente(idCliente, token)
+            .getOrdenRoutes.getAllByCliente(idCliente, page, token)
         call.enqueue(object : Callback<OrdenPageResponse>{
             override fun onResponse(call: Call<OrdenPageResponse>, response: Response<OrdenPageResponse>) {
                 ordenPageResponse.value = response.body()

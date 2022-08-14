@@ -3,6 +3,8 @@ package edu.pe.idat.pva.activities.products
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -15,7 +17,7 @@ import edu.pe.idat.pva.models.response.Producto
 import edu.pe.idat.pva.models.response.ProductosCategoriaResponse
 import edu.pe.idat.pva.providers.ProductsProvider
 
-class ProductsActivity : AppCompatActivity() {
+class ProductsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private val TAG = "ProductsActivity"
 
@@ -29,12 +31,15 @@ class ProductsActivity : AppCompatActivity() {
 
     private var idSubcategoria: String? = null
 
+    private var primeraCarga = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         productsProvider = ViewModelProvider(this)[ProductsProvider::class.java]
+
+        binding.llPaginaProductos.visibility = View.GONE
 
         idSubcategoria = intent.getIntExtra("idSubcategoria", 0).toString()
 
@@ -52,18 +57,40 @@ class ProductsActivity : AppCompatActivity() {
 
     private fun findProductById(productResponse: ProductosCategoriaResponse) {
         if(productResponse.content.isNotEmpty()){
+            if (primeraCarga) {
+                val paginas = (1..productResponse.totalPages).toList()
+                val adapterPaginas = ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                    paginas)
+                binding.spPaginaProductos.adapter = adapterPaginas
+                binding.spPaginaProductos.onItemSelectedListener = this
+                binding.llPaginaProductos.visibility = View.VISIBLE
+            }
+
             products = productResponse.content
             adapter = ProductsAdapter(this, ArrayList(products))
             recyclerViewProducts?.adapter = adapter
         }
         else {
             Log.d(TAG, "Error: Hubo un problema con la consulta")
-            Toast.makeText(this, "Error: Hubo un problema con la consulta", Toast.LENGTH_LONG).show()
         }
     }
 
     private fun getProducts(idSubcategoria: String){
-        productsProvider.findByCategory(idSubcategoria)
+        productsProvider.findByCategory(idSubcategoria, 0)
+    }
+
+    override fun onItemSelected(p0: AdapterView<*>, p1: View?, p2: Int, p3: Long) {
+        val pagseleccionada = p0.getItemAtPosition(p2).toString().toInt() - 1
+        getPagedProducts(idSubcategoria!!, pagseleccionada)
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+        Toast.makeText(this,"Seleccione una página",Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getPagedProducts(idSubcategoria: String, pagseleccionada: Int) {
+        primeraCarga = false
+        productsProvider.findByCategory(idSubcategoria, pagseleccionada)
     }
 
 }

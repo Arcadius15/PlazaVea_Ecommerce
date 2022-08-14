@@ -25,8 +25,9 @@ interface OrdenRoutes {
     fun getOrden(@Path("idOrden") idOrden: String,
                 @Header("Authorization") token: String): Call<OrdenResponse>
 
-    @GET("orden/listar/{idCliente}?size=50")
+    @GET("orden/listar/{idCliente}")
     fun getAllByCliente(@Path("idCliente") idCliente: String,
+                        @Query("page") page: Int,
                         @Header("Authorization") token: String) : Call<OrdenPageResponse>
 
     @PATCH("orden/{idOrden}")

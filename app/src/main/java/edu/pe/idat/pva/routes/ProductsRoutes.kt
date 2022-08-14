@@ -6,12 +6,14 @@ import edu.pe.idat.pva.models.response.ProductosCategoriaResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ProductsRoutes {
 
-    @GET("producto/subcategoria/{idSubcategoria}?size=50")
+    @GET("producto/subcategoria/{idSubcategoria}")
     fun findByCategory(
-        @Path("idSubcategoria") idSubcategoria: String
+        @Path("idSubcategoria") idSubcategoria: String,
+        @Query("page") page: Int
     ): Call<ProductosCategoriaResponse>
 
     @GET("producto/{idProducto}")

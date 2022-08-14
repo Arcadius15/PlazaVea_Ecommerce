@@ -15,9 +15,9 @@ class ProductoApiRepository {
     var productoResponse = MutableLiveData<ProductosCategoriaResponse>()
     var producto = MutableLiveData<Producto>()
 
-    fun findByCategory(idSubcategoria: String): LiveData<ProductosCategoriaResponse> {
+    fun findByCategory(idSubcategoria: String, page: Int): LiveData<ProductosCategoriaResponse> {
         val call: Call<ProductosCategoriaResponse> = RetrofitInstanceCreate
-            .getProductsRoutes.findByCategory(idSubcategoria)
+            .getProductsRoutes.findByCategory(idSubcategoria, page)
         call.enqueue(object : Callback<ProductosCategoriaResponse>{
             override fun onResponse(call: Call<ProductosCategoriaResponse>, response: Response<ProductosCategoriaResponse>
             ) {

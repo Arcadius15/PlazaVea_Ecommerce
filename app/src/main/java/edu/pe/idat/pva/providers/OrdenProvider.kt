@@ -34,8 +34,8 @@ class OrdenProvider : ViewModel() {
         return repository.getOrden(idOrden,token)
     }
 
-    fun getAllByCliente(idCliente: String, token: String): LiveData<OrdenPageResponse>{
-        return repository.getAllByCliente(idCliente,token)
+    fun getAllByCliente(idCliente: String, page: Int, token: String): LiveData<OrdenPageResponse>{
+        return repository.getAllByCliente(idCliente, page, token)
     }
 
     fun actualizarOrden(idOrden: String, ordenPatchRequest: OrdenPatchRequest, token: String){

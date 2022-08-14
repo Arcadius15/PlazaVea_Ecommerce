@@ -16,8 +16,8 @@ class ProductsProvider() : ViewModel() {
        productResponse = repository.productoResponse
     }
 
-    fun findByCategory(@Path("idSubcategoria") idSubcategoria: String)  {
-         productResponse = repository.findByCategory(idSubcategoria)
+    fun findByCategory(@Path("idSubcategoria") idSubcategoria: String, page: Int)  {
+         productResponse = repository.findByCategory(idSubcategoria,page)
     }
 
     fun findById(idProducto: String): LiveData<Producto> {

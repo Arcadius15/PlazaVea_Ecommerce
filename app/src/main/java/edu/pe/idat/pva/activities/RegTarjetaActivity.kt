@@ -54,7 +54,7 @@ class RegTarjetaActivity : AppCompatActivity(), View.OnClickListener {
         binding.edtTipoTarjeta.setOnItemClickListener { _, _, _, _ -> seleccionarTipo() }
 
         binding.edtMesCaducidad.setAdapter(adapterMeses)
-        binding.edtAnioCaducidad.setAdapter((adapterAnios))
+        binding.edtAnioCaducidad.setAdapter(adapterAnios)
 
         clienteProvider = ViewModelProvider(this)[ClienteProvider::class.java]
         usuarioRoomProvider = ViewModelProvider(this)[UsuarioRoomProvider::class.java]
@@ -128,12 +128,12 @@ class RegTarjetaActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun validarCampos(): Boolean {
-        if(binding.edtTipoTarjeta.text.toString().isNullOrBlank() ||
-            binding.edtNumTarjeta.text.toString().isNullOrBlank() ||
-            binding.edtMesCaducidad.text.toString().isNullOrBlank() ||
-            binding.edtAnioCaducidad.text.toString().isNullOrBlank() ||
-            binding.edtCvv.text.toString().isNullOrBlank() ||
-            binding.edtNombrePropietario.text.toString().isNullOrBlank()){
+        if(binding.edtTipoTarjeta.text.toString().isBlank() ||
+            binding.edtNumTarjeta.text.toString().isBlank() ||
+            binding.edtMesCaducidad.text.toString().isBlank() ||
+            binding.edtAnioCaducidad.text.toString().isBlank() ||
+            binding.edtCvv.text.toString().isBlank() ||
+            binding.edtNombrePropietario.text.toString().isBlank()){
             Toast.makeText(
                 applicationContext,
                 "Complete todos los campos.",

@@ -3,7 +3,7 @@ package edu.pe.idat.pva.apirep
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import edu.pe.idat.pva.api.RetrofitInstanceCreate
-import edu.pe.idat.pva.models.SubCategoriaResponse
+import edu.pe.idat.pva.models.response.SubCategoriaResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

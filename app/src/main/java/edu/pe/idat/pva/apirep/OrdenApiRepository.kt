@@ -3,8 +3,12 @@ package edu.pe.idat.pva.apirep
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import edu.pe.idat.pva.api.RetrofitInstanceCreate
-import edu.pe.idat.pva.models.*
+import edu.pe.idat.pva.models.request.OrdenHistorialRequest
 import edu.pe.idat.pva.models.request.OrdenPatchRequest
+import edu.pe.idat.pva.models.request.OrdenRequest
+import edu.pe.idat.pva.models.response.OrdenPageResponse
+import edu.pe.idat.pva.models.response.OrdenResponse
+import edu.pe.idat.pva.models.response.ResponseHttp
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

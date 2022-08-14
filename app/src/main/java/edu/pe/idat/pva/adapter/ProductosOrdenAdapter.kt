@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.pe.idat.pva.databinding.CardviewDetalleordenBinding
-import edu.pe.idat.pva.models.OrdenDetalleResponse
+import edu.pe.idat.pva.models.response.OrdenDetalleResponse
 
 class ProductosOrdenAdapter(private var productos: ArrayList<OrdenDetalleResponse>): RecyclerView.Adapter<ProductosOrdenAdapter.ViewHolder>() {
 

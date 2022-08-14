@@ -19,7 +19,7 @@ import edu.pe.idat.pva.adapter.DireccionAdapter
 import edu.pe.idat.pva.databinding.FragmentDireccionesBinding
 import edu.pe.idat.pva.db.entity.TokenEntity
 import edu.pe.idat.pva.db.entity.UsuarioEntity
-import edu.pe.idat.pva.models.DireccionResponse
+import edu.pe.idat.pva.models.response.DireccionResponse
 import edu.pe.idat.pva.providers.ClienteProvider
 import edu.pe.idat.pva.providers.TokenRoomProvider
 import edu.pe.idat.pva.providers.UsuarioRoomProvider

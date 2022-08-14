@@ -3,8 +3,12 @@ package edu.pe.idat.pva.providers
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import edu.pe.idat.pva.apirep.OrdenApiRepository
-import edu.pe.idat.pva.models.*
+import edu.pe.idat.pva.models.request.OrdenHistorialRequest
 import edu.pe.idat.pva.models.request.OrdenPatchRequest
+import edu.pe.idat.pva.models.request.OrdenRequest
+import edu.pe.idat.pva.models.response.OrdenPageResponse
+import edu.pe.idat.pva.models.response.OrdenResponse
+import edu.pe.idat.pva.models.response.ResponseHttp
 
 class OrdenProvider : ViewModel() {
 

@@ -16,7 +16,7 @@ import edu.pe.idat.pva.adapter.HistorialAdapter
 import edu.pe.idat.pva.databinding.FragmentHistorialBinding
 import edu.pe.idat.pva.db.entity.TokenEntity
 import edu.pe.idat.pva.db.entity.UsuarioEntity
-import edu.pe.idat.pva.models.OrdenResponse
+import edu.pe.idat.pva.models.response.OrdenResponse
 import edu.pe.idat.pva.providers.OrdenProvider
 import edu.pe.idat.pva.providers.TokenRoomProvider
 import edu.pe.idat.pva.providers.UsuarioRoomProvider

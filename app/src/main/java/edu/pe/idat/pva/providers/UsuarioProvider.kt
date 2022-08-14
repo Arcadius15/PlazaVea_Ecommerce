@@ -3,7 +3,12 @@ package edu.pe.idat.pva.providers
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import edu.pe.idat.pva.apirep.UsuarioApiRepository
-import edu.pe.idat.pva.models.*
+import edu.pe.idat.pva.models.request.LoginRequest
+import edu.pe.idat.pva.models.request.UsuarioPswRequest
+import edu.pe.idat.pva.models.request.UsuarioRequest
+import edu.pe.idat.pva.models.response.LoginResponse
+import edu.pe.idat.pva.models.response.Mensaje
+import edu.pe.idat.pva.models.response.UsuarioResponse
 
 class UsuarioProvider : ViewModel() {
     var usuarioResponse: LiveData<UsuarioResponse>

@@ -1,6 +1,6 @@
 package edu.pe.idat.pva.routes
 
-import edu.pe.idat.pva.models.RucPatchRequest
+import edu.pe.idat.pva.models.request.RucPatchRequest
 import retrofit2.Call
 import retrofit2.http.*
 

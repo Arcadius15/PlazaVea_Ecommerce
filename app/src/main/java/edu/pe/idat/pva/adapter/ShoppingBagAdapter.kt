@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.pe.idat.pva.activities.products.detail.ProductsDetailActivity
 import edu.pe.idat.pva.databinding.CardviewShoppingbagBinding
-import edu.pe.idat.pva.models.Producto
+import edu.pe.idat.pva.models.response.Producto
 import edu.pe.idat.pva.utils.SharedPref
 
 class ShoppingBagAdapter(val context: Activity, private var productos: ArrayList<Producto>): RecyclerView.Adapter<ShoppingBagAdapter.ShoppingBagViewHolder>() {

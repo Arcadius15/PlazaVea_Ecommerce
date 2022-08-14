@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.CardviewOrdenBinding
-import edu.pe.idat.pva.models.OrdenResponse
+import edu.pe.idat.pva.models.response.OrdenResponse
 import java.text.SimpleDateFormat
 import java.util.*
 

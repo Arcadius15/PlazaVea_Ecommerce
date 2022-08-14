@@ -3,8 +3,8 @@ package edu.pe.idat.pva.providers
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import edu.pe.idat.pva.apirep.DireccionApiRepository
-import edu.pe.idat.pva.models.DireccionPatchRequest
-import edu.pe.idat.pva.models.ResponseHttp
+import edu.pe.idat.pva.models.request.DireccionPatchRequest
+import edu.pe.idat.pva.models.response.ResponseHttp
 
 class DireccionProvider : ViewModel()  {
 

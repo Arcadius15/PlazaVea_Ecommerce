@@ -1,12 +1,11 @@
 package edu.pe.idat.pva.apirep
 
-import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import edu.pe.idat.pva.api.RetrofitInstanceCreate
-import edu.pe.idat.pva.models.Producto
-import edu.pe.idat.pva.models.ProductosCategoriaResponse
+import edu.pe.idat.pva.models.response.Producto
+import edu.pe.idat.pva.models.response.ProductosCategoriaResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

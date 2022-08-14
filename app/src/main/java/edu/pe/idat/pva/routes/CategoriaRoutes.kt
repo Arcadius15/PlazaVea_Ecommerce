@@ -1,9 +1,8 @@
 package edu.pe.idat.pva.routes
 
-import edu.pe.idat.pva.models.SubCategoriaResponse
+import edu.pe.idat.pva.models.response.SubCategoriaResponse
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Header
 
 interface CategoriaRoutes {
 

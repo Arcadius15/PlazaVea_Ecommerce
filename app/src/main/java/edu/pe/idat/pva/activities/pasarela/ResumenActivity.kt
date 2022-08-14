@@ -20,7 +20,9 @@ import edu.pe.idat.pva.activities.RegTarjetaActivity
 import edu.pe.idat.pva.databinding.ActivityResumenBinding
 import edu.pe.idat.pva.db.entity.TokenEntity
 import edu.pe.idat.pva.db.entity.UsuarioEntity
-import edu.pe.idat.pva.models.*
+import edu.pe.idat.pva.models.request.*
+import edu.pe.idat.pva.models.response.Producto
+import edu.pe.idat.pva.models.response.ResponseHttp
 import edu.pe.idat.pva.providers.ClienteProvider
 import edu.pe.idat.pva.providers.OrdenProvider
 import edu.pe.idat.pva.providers.TokenRoomProvider

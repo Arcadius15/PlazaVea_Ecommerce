@@ -11,9 +11,9 @@ import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.ActivityMainBinding
 import edu.pe.idat.pva.db.entity.TokenEntity
 import edu.pe.idat.pva.db.entity.UsuarioEntity
-import edu.pe.idat.pva.models.LoginRequest
-import edu.pe.idat.pva.models.LoginResponse
-import edu.pe.idat.pva.models.UsuarioResponse
+import edu.pe.idat.pva.models.request.LoginRequest
+import edu.pe.idat.pva.models.response.LoginResponse
+import edu.pe.idat.pva.models.response.UsuarioResponse
 import edu.pe.idat.pva.providers.TokenRoomProvider
 import edu.pe.idat.pva.providers.UsuarioProvider
 import edu.pe.idat.pva.providers.UsuarioRoomProvider
@@ -156,10 +156,9 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
                         "Bienvenido de nuevo, ${usuario.nombre}.",
                         Toast.LENGTH_LONG
                     ).show()
+                    gotoHome()
                 }
             }
-
-            gotoHome()
         } else {
             usuarioRoomProvider.eliminarTodo()
             tokenRoomProvider.eliminarToken()

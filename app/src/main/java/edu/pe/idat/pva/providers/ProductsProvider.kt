@@ -3,9 +3,8 @@ package edu.pe.idat.pva.providers
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import edu.pe.idat.pva.apirep.ProductoApiRepository
-import edu.pe.idat.pva.models.Producto
-import edu.pe.idat.pva.models.ProductosCategoriaResponse
-import retrofit2.Call
+import edu.pe.idat.pva.models.response.Producto
+import edu.pe.idat.pva.models.response.ProductosCategoriaResponse
 import retrofit2.http.Path
 
 class ProductsProvider() : ViewModel() {

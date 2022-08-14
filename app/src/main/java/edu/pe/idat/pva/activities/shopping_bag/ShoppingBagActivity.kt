@@ -15,7 +15,7 @@ import edu.pe.idat.pva.activities.HomeActivity
 import edu.pe.idat.pva.activities.pasarela.ResumenActivity
 import edu.pe.idat.pva.adapter.ShoppingBagAdapter
 import edu.pe.idat.pva.databinding.ActivityShoppingBagBinding
-import edu.pe.idat.pva.models.Producto
+import edu.pe.idat.pva.models.response.Producto
 import edu.pe.idat.pva.utils.SharedPref
 
 class ShoppingBagActivity : AppCompatActivity(), View.OnClickListener {

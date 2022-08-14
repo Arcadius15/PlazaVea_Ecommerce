@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.pe.idat.pva.activities.products.ProductsActivity
 import edu.pe.idat.pva.databinding.CardviewCategoriesBinding
-import edu.pe.idat.pva.models.SubCategoriaResponse
+import edu.pe.idat.pva.models.response.SubCategoriaResponse
 
 
 class CategoriaAdapter(private var categorias: ArrayList<SubCategoriaResponse>): RecyclerView.Adapter<CategoriaAdapter.CategoryViewHolder>() {

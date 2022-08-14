@@ -11,7 +11,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.activities.DetalleTarjetaActivity
 import edu.pe.idat.pva.activities.ListRucActivity
@@ -20,13 +19,10 @@ import edu.pe.idat.pva.adapter.TarjetaAdapter
 import edu.pe.idat.pva.databinding.FragmentTarjetasBinding
 import edu.pe.idat.pva.db.entity.TokenEntity
 import edu.pe.idat.pva.db.entity.UsuarioEntity
-import edu.pe.idat.pva.models.LoginResponse
-import edu.pe.idat.pva.models.TarjetaResponse
-import edu.pe.idat.pva.models.UsuarioResponse
+import edu.pe.idat.pva.models.response.TarjetaResponse
 import edu.pe.idat.pva.providers.ClienteProvider
 import edu.pe.idat.pva.providers.TokenRoomProvider
 import edu.pe.idat.pva.providers.UsuarioRoomProvider
-import edu.pe.idat.pva.utils.SharedPref
 
 class TarjetasFragment : Fragment(), View.OnClickListener, TarjetaAdapter.ITarjetaAdapter {
 

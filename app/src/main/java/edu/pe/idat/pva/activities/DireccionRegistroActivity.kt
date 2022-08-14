@@ -19,9 +19,9 @@ import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.ActivityDireccionRegistroBinding
 import edu.pe.idat.pva.db.entity.TokenEntity
 import edu.pe.idat.pva.db.entity.UsuarioEntity
-import edu.pe.idat.pva.models.ClienteIDRequest
-import edu.pe.idat.pva.models.DireccionRequest
-import edu.pe.idat.pva.models.ResponseHttp
+import edu.pe.idat.pva.models.request.ClienteIDRequest
+import edu.pe.idat.pva.models.request.DireccionRequest
+import edu.pe.idat.pva.models.response.ResponseHttp
 import edu.pe.idat.pva.providers.ClienteProvider
 import edu.pe.idat.pva.providers.TokenRoomProvider
 import edu.pe.idat.pva.providers.UsuarioRoomProvider

@@ -12,7 +12,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import edu.pe.idat.pva.activities.shopping_bag.ShoppingBagActivity
 import edu.pe.idat.pva.databinding.ActivityProductsDetailBinding
-import edu.pe.idat.pva.models.Producto
+import edu.pe.idat.pva.models.response.Producto
 import edu.pe.idat.pva.utils.SharedPref
 
 class ProductsDetailActivity : AppCompatActivity() {

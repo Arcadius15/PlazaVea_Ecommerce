@@ -3,7 +3,13 @@ package edu.pe.idat.pva.providers
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import edu.pe.idat.pva.apirep.ClienteApiRepository
-import edu.pe.idat.pva.models.*
+import edu.pe.idat.pva.models.request.DireccionRequest
+import edu.pe.idat.pva.models.request.RucRequest
+import edu.pe.idat.pva.models.request.TarjetaRequest
+import edu.pe.idat.pva.models.response.DireccionResponse
+import edu.pe.idat.pva.models.response.ResponseHttp
+import edu.pe.idat.pva.models.response.RucResponse
+import edu.pe.idat.pva.models.response.TarjetaResponse
 
 class ClienteProvider : ViewModel() {
 

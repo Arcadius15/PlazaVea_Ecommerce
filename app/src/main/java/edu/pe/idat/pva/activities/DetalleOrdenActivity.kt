@@ -13,8 +13,8 @@ import edu.pe.idat.pva.R
 import edu.pe.idat.pva.adapter.ProductosOrdenAdapter
 import edu.pe.idat.pva.databinding.ActivityDetalleOrdenBinding
 import edu.pe.idat.pva.db.entity.TokenEntity
-import edu.pe.idat.pva.models.OrdenResponse
-import edu.pe.idat.pva.models.ResponseHttp
+import edu.pe.idat.pva.models.response.OrdenResponse
+import edu.pe.idat.pva.models.response.ResponseHttp
 import edu.pe.idat.pva.models.request.OrdenPatchRequest
 import edu.pe.idat.pva.providers.OrdenProvider
 import edu.pe.idat.pva.providers.TokenRoomProvider

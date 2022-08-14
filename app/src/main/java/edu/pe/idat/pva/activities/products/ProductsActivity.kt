@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.adapter.ProductsAdapter
 import edu.pe.idat.pva.databinding.ActivityProductsBinding
-import edu.pe.idat.pva.models.Producto
-import edu.pe.idat.pva.models.ProductosCategoriaResponse
+import edu.pe.idat.pva.models.response.Producto
+import edu.pe.idat.pva.models.response.ProductosCategoriaResponse
 import edu.pe.idat.pva.providers.ProductsProvider
 
 class ProductsActivity : AppCompatActivity() {

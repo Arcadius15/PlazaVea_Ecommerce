@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.activities.products.detail.ProductsDetailActivity
-import edu.pe.idat.pva.models.Producto
+import edu.pe.idat.pva.models.response.Producto
 import edu.pe.idat.pva.utils.SharedPref
 
 

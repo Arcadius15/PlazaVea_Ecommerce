@@ -3,8 +3,8 @@ package edu.pe.idat.pva.apirep
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import edu.pe.idat.pva.api.RetrofitInstanceCreate
-import edu.pe.idat.pva.models.ResponseHttp
-import edu.pe.idat.pva.models.TarjetaPatchRequest
+import edu.pe.idat.pva.models.response.ResponseHttp
+import edu.pe.idat.pva.models.request.TarjetaPatchRequest
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

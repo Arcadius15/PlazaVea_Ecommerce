@@ -1,11 +1,10 @@
 package edu.pe.idat.pva.adapter
 
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import edu.pe.idat.pva.databinding.CardviewDireccionBinding
-import edu.pe.idat.pva.models.DireccionResponse
+import edu.pe.idat.pva.models.response.DireccionResponse
 
 class DireccionAdapter(private var direcciones: ArrayList<DireccionResponse>,
                        private val listener: IDireccionAdapter): RecyclerView.Adapter<DireccionAdapter.ViewHolder>() {

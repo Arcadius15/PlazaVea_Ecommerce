@@ -11,9 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.ActivityDetalleTarjetaBinding
 import edu.pe.idat.pva.db.entity.TokenEntity
-import edu.pe.idat.pva.models.ResponseHttp
-import edu.pe.idat.pva.models.TarjetaPatchRequest
-import edu.pe.idat.pva.models.TarjetaResponse
+import edu.pe.idat.pva.models.response.ResponseHttp
+import edu.pe.idat.pva.models.request.TarjetaPatchRequest
+import edu.pe.idat.pva.models.response.TarjetaResponse
 import edu.pe.idat.pva.providers.TarjetaProvider
 import edu.pe.idat.pva.providers.TokenRoomProvider
 import java.text.DateFormat

@@ -20,9 +20,9 @@ import com.google.android.gms.maps.model.MarkerOptions
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.ActivityDireccionDetalleBinding
 import edu.pe.idat.pva.db.entity.TokenEntity
-import edu.pe.idat.pva.models.DireccionPatchRequest
-import edu.pe.idat.pva.models.DireccionResponse
-import edu.pe.idat.pva.models.ResponseHttp
+import edu.pe.idat.pva.models.request.DireccionPatchRequest
+import edu.pe.idat.pva.models.response.DireccionResponse
+import edu.pe.idat.pva.models.response.ResponseHttp
 import edu.pe.idat.pva.providers.DireccionProvider
 import edu.pe.idat.pva.providers.TokenRoomProvider
 

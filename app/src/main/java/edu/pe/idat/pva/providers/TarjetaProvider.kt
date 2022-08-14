@@ -3,8 +3,8 @@ package edu.pe.idat.pva.providers
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import edu.pe.idat.pva.apirep.TarjetaApiRepository
-import edu.pe.idat.pva.models.ResponseHttp
-import edu.pe.idat.pva.models.TarjetaPatchRequest
+import edu.pe.idat.pva.models.response.ResponseHttp
+import edu.pe.idat.pva.models.request.TarjetaPatchRequest
 
 class TarjetaProvider : ViewModel() {
 

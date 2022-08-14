@@ -1,6 +1,11 @@
 package edu.pe.idat.pva.routes
 
-import edu.pe.idat.pva.models.*
+import edu.pe.idat.pva.models.request.DireccionRequest
+import edu.pe.idat.pva.models.request.RucRequest
+import edu.pe.idat.pva.models.request.TarjetaRequest
+import edu.pe.idat.pva.models.response.DireccionResponse
+import edu.pe.idat.pva.models.response.RucResponse
+import edu.pe.idat.pva.models.response.TarjetaResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -8,7 +13,7 @@ interface ClienteRoutes {
 
     @POST("direccion")
     fun registrarDireccion(@Body direccionRequest: DireccionRequest,
-                  @Header("Authorization") token: String) : Call<Void>
+                           @Header("Authorization") token: String) : Call<Void>
 
     @POST("ruc")
     fun registrarRuc(@Body rucRequest: RucRequest,

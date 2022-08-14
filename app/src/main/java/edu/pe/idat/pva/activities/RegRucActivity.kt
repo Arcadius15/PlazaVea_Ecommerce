@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModelProvider
 import edu.pe.idat.pva.databinding.ActivityRegRucBinding
 import edu.pe.idat.pva.db.entity.TokenEntity
 import edu.pe.idat.pva.db.entity.UsuarioEntity
-import edu.pe.idat.pva.models.ClienteIDRequest
-import edu.pe.idat.pva.models.ResponseHttp
-import edu.pe.idat.pva.models.RucRequest
+import edu.pe.idat.pva.models.request.ClienteIDRequest
+import edu.pe.idat.pva.models.response.ResponseHttp
+import edu.pe.idat.pva.models.request.RucRequest
 import edu.pe.idat.pva.providers.ClienteProvider
 import edu.pe.idat.pva.providers.TokenRoomProvider
 import edu.pe.idat.pva.providers.UsuarioRoomProvider

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import edu.pe.idat.pva.databinding.CardviewRucBinding
-import edu.pe.idat.pva.models.RucResponse
+import edu.pe.idat.pva.models.response.RucResponse
 
 class RucAdapter(private var rucs: ArrayList<RucResponse>,
                  private val listener: IRucAdapter): RecyclerView.Adapter<RucAdapter.ViewHolder>() {

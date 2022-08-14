@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import edu.pe.idat.pva.R
 import edu.pe.idat.pva.databinding.ActivityCambiarContraBinding
 import edu.pe.idat.pva.db.entity.UsuarioEntity
-import edu.pe.idat.pva.models.Mensaje
-import edu.pe.idat.pva.models.UsuarioPswRequest
+import edu.pe.idat.pva.models.response.Mensaje
+import edu.pe.idat.pva.models.request.UsuarioPswRequest
 import edu.pe.idat.pva.providers.UsuarioProvider
 import edu.pe.idat.pva.providers.UsuarioRoomProvider
 

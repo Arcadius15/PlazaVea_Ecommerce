@@ -8,6 +8,7 @@ import edu.pe.idat.pva.models.request.OrdenPatchRequest
 import edu.pe.idat.pva.models.request.OrdenRequest
 import edu.pe.idat.pva.models.response.OrdenPageResponse
 import edu.pe.idat.pva.models.response.OrdenResponse
+import edu.pe.idat.pva.models.response.RepartidorResponse
 import edu.pe.idat.pva.models.response.ResponseHttp
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,6 +20,7 @@ class OrdenApiRepository {
     var responseHttp = MutableLiveData<ResponseHttp>()
     var ordenResponse = MutableLiveData<OrdenResponse>()
     var ordenPageResponse = MutableLiveData<OrdenPageResponse>()
+    var repartidorResponse = MutableLiveData<RepartidorResponse>()
 
     fun registrarOrden(ordenRequest: OrdenRequest, token: String) : MutableLiveData<String> {
         val call: Call<String> = RetrofitInstanceCreate
@@ -33,6 +35,7 @@ class OrdenApiRepository {
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
+                ordenId.value = "error"
                 Log.e("ERROR!", t.message.toString())
             }
         })
@@ -130,5 +133,24 @@ class OrdenApiRepository {
         })
 
         return responseHttp
+    }
+
+    fun getRepartidor(idRepartidor: String, token: String) : MutableLiveData<RepartidorResponse> {
+        val call: Call<RepartidorResponse> = RetrofitInstanceCreate
+            .getOrdenRoutes.getRepartidor(idRepartidor, token)
+        call.enqueue(object: Callback<RepartidorResponse>{
+            override fun onResponse(
+                call: Call<RepartidorResponse>,
+                response: Response<RepartidorResponse>
+            ) {
+                repartidorResponse.value = response.body()
+            }
+
+            override fun onFailure(call: Call<RepartidorResponse>, t: Throwable) {
+                Log.e("ERROR!", t.message.toString())
+            }
+        })
+
+        return repartidorResponse
     }
 }

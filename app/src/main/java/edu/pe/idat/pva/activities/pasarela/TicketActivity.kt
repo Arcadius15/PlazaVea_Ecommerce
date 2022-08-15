@@ -67,9 +67,9 @@ class TicketActivity : AppCompatActivity(){
         binding.tvTicketIGV.text = "S/${String.format("%.2f",ordenResponse.igv)}"
         binding.tvTicketTotal.text = "S/${String.format("%.2f",ordenResponse.total)}"
 
-        binding.progressbarTicket.visibility = View.GONE
         binding.llmensaje.visibility = View.VISIBLE
         binding.llticket.visibility = View.VISIBLE
+        binding.progressbarTicket.visibility = View.GONE
     }
 
     private fun gotoHome(){

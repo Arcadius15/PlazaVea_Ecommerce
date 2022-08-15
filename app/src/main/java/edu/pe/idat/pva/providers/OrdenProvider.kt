@@ -8,6 +8,7 @@ import edu.pe.idat.pva.models.request.OrdenPatchRequest
 import edu.pe.idat.pva.models.request.OrdenRequest
 import edu.pe.idat.pva.models.response.OrdenPageResponse
 import edu.pe.idat.pva.models.response.OrdenResponse
+import edu.pe.idat.pva.models.response.RepartidorResponse
 import edu.pe.idat.pva.models.response.ResponseHttp
 
 class OrdenProvider : ViewModel() {
@@ -40,5 +41,9 @@ class OrdenProvider : ViewModel() {
 
     fun actualizarOrden(idOrden: String, ordenPatchRequest: OrdenPatchRequest, token: String){
         responseHttp = repository.actualizarOrden(idOrden, ordenPatchRequest, token)
+    }
+
+    fun getRepartidor(idRepartidor: String, token: String): LiveData<RepartidorResponse>{
+        return repository.getRepartidor(idRepartidor, token)
     }
 }

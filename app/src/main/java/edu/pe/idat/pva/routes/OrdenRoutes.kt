@@ -5,6 +5,7 @@ import edu.pe.idat.pva.models.response.OrdenPageResponse
 import edu.pe.idat.pva.models.request.OrdenRequest
 import edu.pe.idat.pva.models.response.OrdenResponse
 import edu.pe.idat.pva.models.request.OrdenPatchRequest
+import edu.pe.idat.pva.models.response.RepartidorResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -34,4 +35,8 @@ interface OrdenRoutes {
     fun actualizarOrden(@Path("idOrden") idOrden: String,
                         @Body ordenPatchRequest: OrdenPatchRequest,
                         @Header("Authorization") token: String): Call<Void>
+
+    @GET("repartidor/{idRepartidor}")
+    fun getRepartidor(@Path("idRepartidor") idRepartidor: String,
+                      @Header("Authorization") token: String): Call<RepartidorResponse>
 }

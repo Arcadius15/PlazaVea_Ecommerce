@@ -112,7 +112,7 @@ class DetalleOrdenActivity : AppCompatActivity(), View.OnClickListener {
 
         when (ordenResponse.repartidor) {
             null -> binding.tvRepartidor.text = "Aún sin repartidor"
-            else -> binding.tvRepartidor.text = ordenResponse.repartidor?.idRepartidor
+            else -> getTokenFromDB("r")
         }
 
         binding.tvDetDireccion.text = ordenResponse.direccion
@@ -126,7 +126,7 @@ class DetalleOrdenActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(p0: View) {
         when (p0.id) {
-            R.id.btncancelar -> getTokenFromDB()
+            R.id.btncancelar -> getTokenFromDB("c")
             R.id.btnGoBackOrden -> {
                 setResult(Activity.RESULT_OK)
                 finish()
@@ -166,10 +166,21 @@ class DetalleOrdenActivity : AppCompatActivity(), View.OnClickListener {
             .show()
     }
 
-    private fun getTokenFromDB(){
+    private fun getTokenFromDB(accion: String){
         tokenRoomProvider.obtener().observe(this){
             token = it
-            cancelarOrden()
+            when (accion) {
+                "c" -> cancelarOrden()
+                "r" -> getRepartidor()
+            }
         }
+    }
+
+    private fun getRepartidor() {
+        ordenProvider.getRepartidor(ordenResponse.repartidor!!.idRepartidor,
+                                    "Bearer ${token.token}")
+            .observe(this){
+                binding.tvRepartidor.text = "${it.nombre} ${it.apellidos}"
+            }
     }
 }

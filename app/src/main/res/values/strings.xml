@@ -125,4 +125,9 @@
     <string name="estado_pedido_cv">Estado:</string>
     <string name="finalizar">Finalizar</string>
     <string name="pagina">Página:</string>
+    <string name="boton_selectienda">Seleccionar Tienda En El Mapa</string>
+    <string name="ninguna_tienda_selec">Ninguna tienda seleccionada</string>
+    <string name="title_activity_listar_tiendas">ListarTiendasActivity</string>
+    <string name="mensaje_mapa">Introduzca una dirección y mueva el cursor según convenga</string>
+    <string name="escoger_tienda">Esocger Tienda</string>
 </resources>

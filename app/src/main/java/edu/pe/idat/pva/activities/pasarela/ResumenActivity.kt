@@ -51,6 +51,7 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
     private var tipoFop = 0
 
     private var ordenIdGenerada = ""
+    private var idTienda = "0"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,6 +104,7 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
         binding.btnregnuevruc.setOnClickListener(this)
         binding.btnregnuevdir.setOnClickListener(this)
         binding.btnregnuevtar.setOnClickListener(this)
+        binding.btnselectienda.setOnClickListener(this)
 
         ordenProvider.ordenId.observe(this){
             try {
@@ -145,6 +147,8 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
     private fun obtenerOrdenRegistrada(ordenId: String) {
         if (ordenId != "error") {
             ordenIdGenerada = ordenId
+
+            println("Orden ID Antes: $ordenIdGenerada")
 
             val ordenIdRequest = OrdenIDRequest(ordenId)
 
@@ -211,7 +215,8 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
 
     private fun procesarOrden() {
         val clienteIDRequest = ClienteIDRequest(usuario.idCliente)
-        val tiendaIDRequest = TiendaIDRequest("T_00001")
+        println(idTienda)
+        val tiendaIDRequest = TiendaIDRequest(idTienda)
 
         val listOrdenDetalle = ArrayList<OrdendetalleRequest>()
 
@@ -353,6 +358,13 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
             return false
         }
 
+        if (idTienda == "0"){
+            Toast.makeText(this,
+                "Seleccione una tienda",
+                Toast.LENGTH_LONG).show()
+            return false
+        }
+
         return true
     }
 
@@ -387,6 +399,7 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
             R.id.btnregnuevruc -> launcher.launch(Intent(this,RegRucActivity::class.java))
             R.id.btnregnuevdir -> launcher.launch(Intent(this,DireccionRegistroActivity::class.java))
             R.id.btnregnuevtar -> launcher.launch(Intent(this,RegTarjetaActivity::class.java))
+            R.id.btnselectienda -> launcher.launch(Intent(this,ListarTiendasActivity::class.java))
         }
     }
 
@@ -407,6 +420,10 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
         ActivityResultContracts.StartActivityForResult()
     ) {
         if (it.resultCode == Activity.RESULT_OK) {
+            if (it.data?.getStringExtra("nombreTienda") != null) {
+                binding.tvTienda.text = it.data!!.getStringExtra("nombreTienda")
+                idTienda = it.data!!.getStringExtra("idTienda")!!
+            }
             binding.llpasarela.visibility = View.GONE
             binding.progressbarPasarela.visibility = View.VISIBLE
             cargarListas()

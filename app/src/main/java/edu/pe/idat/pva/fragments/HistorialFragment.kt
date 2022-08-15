@@ -110,6 +110,7 @@ class HistorialFragment : Fragment(), HistorialAdapter.IHistorialAdapter, Adapte
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 parentFragmentManager.beginTransaction().detach(this).commitNow()
                 parentFragmentManager.beginTransaction().attach(this).commitNow()
+                primeraCarga = true
             } else {
                 parentFragmentManager.beginTransaction().detach(this).attach(this).commit()
             }

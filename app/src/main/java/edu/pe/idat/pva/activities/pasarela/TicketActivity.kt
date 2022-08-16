@@ -53,7 +53,7 @@ class TicketActivity : AppCompatActivity(){
         }
 
         binding.tvTicketMetodo.text = "Tarjeta: ****${ordenResponse.formaPago.take(16).takeLast(4)}"
-        binding.tvTicketFecha.text = ordenResponse.fecha
+        binding.tvTicketFecha.text = ordenResponse.fecha.take(10)
 
         val sb = StringBuilder()
 

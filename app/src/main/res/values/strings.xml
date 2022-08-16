@@ -95,7 +95,7 @@
     <string name="sin_direcciones">Aún no registró ninguna dirección</string>
     <string name="registrar_direccion">Registrar Dirección</string>
     <string name="boton_borrar">Borrar</string>
-    <string name="title_activity_direccion_detalle">DireccionDetalleActivity</string>
+    <string name="title_activity_direccion_detalle">Detalle de tu Diirección</string>
     <string name="boton_editar">Editar</string>
     <string name="editar_tarjeta">Editar Tarjeta</string>
     <string name="numero_ruc">Número de RUC</string>
@@ -127,7 +127,8 @@
     <string name="pagina">Página:</string>
     <string name="boton_selectienda">Seleccionar Tienda En El Mapa</string>
     <string name="ninguna_tienda_selec">Ninguna tienda seleccionada</string>
-    <string name="title_activity_listar_tiendas">ListarTiendasActivity</string>
+    <string name="title_activity_listar_tiendas">Escoge una Tienda</string>
     <string name="mensaje_mapa">Introduzca una dirección y mueva el cursor según convenga</string>
     <string name="escoger_tienda">Esocger Tienda</string>
+    <string name="list_ruc_label">Tus RUC</string>
 </resources>

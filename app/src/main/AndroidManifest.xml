@@ -39,13 +39,16 @@
             android:theme="@style/Theme.PlazaVeaApp.NoActionBar" />
         <activity
             android:name=".activities.ListRucActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/list_ruc_label"/>
         <activity
             android:name=".activities.DetalleRucActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.PlazaVeaApp.NoActionBar"/>
         <activity
             android:name=".activities.DetalleTarjetaActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.PlazaVeaApp.NoActionBar"/>
         <activity
             android:name=".activities.DireccionDetalleActivity"
             android:exported="false"
@@ -63,17 +66,15 @@
             android:exported="false"
             android:label="@string/resumen_pedido" />
         <activity
-            android:name=".activities.pasarela.EscogerTipoActivity"
-            android:exported="false"
-            android:label="@string/escoger_tipo_label" />
-        <activity
             android:name=".activities.RegTarjetaActivity"
             android:exported="false"
-            android:label="@string/registrar_tarjeta" />
+            android:label="@string/registrar_tarjeta"
+            android:theme="@style/Theme.PlazaVeaApp.NoActionBar"/>
         <activity
             android:name=".activities.RegRucActivity"
             android:exported="false"
-            android:label="@string/registrar_ruc" />
+            android:label="@string/registrar_ruc"
+            android:theme="@style/Theme.PlazaVeaApp.NoActionBar"/>
         <activity
             android:name=".activities.DireccionRegistroActivity"
             android:exported="false"

@@ -60,34 +60,44 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
     }
 
     private fun obtenerDatosUsuario(usuarioResponse: UsuarioResponse) {
-        val usuarioEntity = UsuarioEntity(
-            usuarioResponse.idUsuario,
-            usuarioResponse.email,
-            usuarioResponse.activo,
-            usuarioResponse.blocked,
-            usuarioResponse.cliente.idCliente,
-            usuarioResponse.cliente.nombre,
-            usuarioResponse.cliente.apellidos,
-            usuarioResponse.cliente.dni,
-            usuarioResponse.cliente.numTelefonico
-        )
+        if (usuarioResponse.cliente != null) {
+            val usuarioEntity = UsuarioEntity(
+                usuarioResponse.idUsuario,
+                usuarioResponse.email,
+                usuarioResponse.activo,
+                usuarioResponse.blocked,
+                usuarioResponse.cliente.idCliente,
+                usuarioResponse.cliente.nombre,
+                usuarioResponse.cliente.apellidos,
+                usuarioResponse.cliente.dni,
+                usuarioResponse.cliente.numTelefonico
+            )
 
-        if (SharedPref(this).getSomeBooleanValue("mantener")) {
-            usuarioRoomProvider.actualizar(usuarioEntity)
-        } else {
-            usuarioRoomProvider.insertar(usuarioEntity)
-            if (binding.chkmantener.isChecked) {
-                SharedPref(this).setSomeBooleanValue("mantener",true)
+            if (SharedPref(this).getSomeBooleanValue("mantener")) {
+                usuarioRoomProvider.actualizar(usuarioEntity)
+            } else {
+                usuarioRoomProvider.insertar(usuarioEntity)
+                if (binding.chkmantener.isChecked) {
+                    SharedPref(this).setSomeBooleanValue("mantener",true)
+                }
             }
+
+            Toast.makeText(
+                applicationContext,
+                "Sesión Iniciada",
+                Toast.LENGTH_LONG
+            ).show()
+
+            gotoHome()
+        } else {
+            Toast.makeText(
+                applicationContext,
+                "ERROR! Los datos ingresados pertenecen a un usuario empleado.",
+                Toast.LENGTH_LONG
+            ).show()
+            tokenRoomProvider.eliminarToken()
         }
 
-        Toast.makeText(
-            applicationContext,
-            "Sesión Iniciada",
-            Toast.LENGTH_LONG
-        ).show()
-
-        gotoHome()
         binding.btnLogin.isEnabled = true
         binding.btnGoRegister.isEnabled = true
     }
@@ -162,6 +172,9 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
         } else {
             usuarioRoomProvider.eliminarTodo()
             tokenRoomProvider.eliminarToken()
+            if (!sharedPref.getData("shopBag").isNullOrBlank()) {
+                sharedPref.remove("shopBag")
+            }
         }
     }
 

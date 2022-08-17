@@ -56,7 +56,8 @@
         <activity
             android:name=".activities.pasarela.TicketActivity"
             android:exported="false"
-            android:label="@string/ticket_venta" />
+            android:label="@string/ticket_venta"
+            android:theme="@style/Theme.PlazaVeaApp.NoActionBar"/>
         <activity
             android:name=".activities.CambiarContraActivity"
             android:exported="false"
@@ -64,7 +65,8 @@
         <activity
             android:name=".activities.pasarela.ResumenActivity"
             android:exported="false"
-            android:label="@string/resumen_pedido" />
+            android:label="@string/resumen_pedido"
+            android:theme="@style/Theme.PlazaVeaApp.NoActionBar"/>
         <activity
             android:name=".activities.RegTarjetaActivity"
             android:exported="false"

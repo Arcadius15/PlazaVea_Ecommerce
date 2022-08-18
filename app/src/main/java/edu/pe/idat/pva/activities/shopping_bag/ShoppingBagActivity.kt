@@ -75,13 +75,15 @@ class ShoppingBagActivity : AppCompatActivity(), View.OnClickListener {
 
         lst.forEach{
             monto += it.precioRegular * it.quantity!!
-            igv += monto * 0.18
-            total += monto + igv
 
             binding.tvMonto.text = "S/${String.format("%.2f",monto)}"
-            binding.tvIgv.text = "S/${String.format("%.2f",igv)}"
-            binding.tvTotal.text = "S/${String.format("%.2f",total)}"
         }
+
+        igv += monto * 0.18
+        total += monto + igv
+
+        binding.tvIgv.text = "S/${String.format("%.2f",igv)}"
+        binding.tvTotal.text = "S/${String.format("%.2f",total)}"
     }
 
     override fun onClick(p0: View) {

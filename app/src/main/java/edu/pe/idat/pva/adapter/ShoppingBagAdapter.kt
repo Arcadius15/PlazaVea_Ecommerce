@@ -51,12 +51,10 @@ class ShoppingBagAdapter(val context: Activity, private var productos: ArrayList
     }
 
     private fun getIndexOf(idProduct: String): Int{
-        var ps = 0
-        for(p in productos){
+        for((ps, p) in productos.withIndex()){
             if(p.idProducto == idProduct){
                 return ps
             }
-            ps++
         }
 
         return -1

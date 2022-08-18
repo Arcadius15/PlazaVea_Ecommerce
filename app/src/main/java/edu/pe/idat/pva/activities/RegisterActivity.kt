@@ -164,7 +164,7 @@ class RegisterActivity : AppCompatActivity() , View.OnClickListener {
                 Toast.LENGTH_LONG
             ).show()
             return false
-        }else if (!validarCorreo(binding.edtEmail.text.toString())) {
+        }else if (!validarCorreo(binding.edtEmail.text.toString().trim())) {
             Toast.makeText(
                 applicationContext,
                 "ERROR! Correo no válido.",

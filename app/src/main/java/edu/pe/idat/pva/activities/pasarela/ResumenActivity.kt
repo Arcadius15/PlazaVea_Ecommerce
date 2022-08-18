@@ -84,11 +84,12 @@ class ResumenActivity : AppCompatActivity(), View.OnClickListener, RadioGroup.On
 
         getProductsFromSharedPref().forEach{
             monto += it.precioRegular * it.quantity!!
-            igv += monto * 0.18
-            total += monto + igv
 
             sb.append("${it.nombre} x ${it.quantity} ..... S/${String.format("%.2f",it.precioRegular * it.quantity!!)}\n")
         }
+
+        igv += monto * 0.18
+        total += monto + igv
 
         binding.tvPrecioPagar.text = "Monto: S/${String.format("%.2f",monto)}" +
                                     "\nIGV (18%): S/${String.format("%.2f",igv)}" +

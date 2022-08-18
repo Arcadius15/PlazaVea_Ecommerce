@@ -111,6 +111,7 @@ class HistorialFragment : Fragment(), HistorialAdapter.IHistorialAdapter, Adapte
                 parentFragmentManager.beginTransaction().detach(this).commitNow()
                 parentFragmentManager.beginTransaction().attach(this).commitNow()
                 primeraCarga = true
+                pagina = 0
             } else {
                 parentFragmentManager.beginTransaction().detach(this).attach(this).commit()
             }
